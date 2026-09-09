@@ -1,15 +1,18 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useSportStore, SPORT_CONFIGS } from '@/lib/sportStore';
+import { useSportStore, SPORT_CONFIGS, SportType } from '@/lib/sportStore';
 
 interface HeatmapViewerProps {
+  sport?: SportType;
+  athleteName?: string;
   heatmapsData?: Record<string, number[][]>;
 }
 
-export function HeatmapViewer({ heatmapsData }: HeatmapViewerProps) {
-  const { activeSport } = useSportStore();
-  const config = SPORT_CONFIGS[activeSport];
+export function HeatmapViewer({ sport: propSport, athleteName, heatmapsData }: HeatmapViewerProps) {
+  const { activeSport: storeSport } = useSportStore();
+  const activeSport = propSport || storeSport;
+  const config = SPORT_CONFIGS[activeSport] || SPORT_CONFIGS['Football'];
   const [activeTab, setActiveTab] = useState<string>(config.heatmapTabs[0].id);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
