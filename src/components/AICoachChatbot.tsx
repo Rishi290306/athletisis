@@ -285,8 +285,6 @@ Analyzing your overall performance in **${sport}** (**${matchName}**):
             <span className="font-bold text-slate-300">Evaluating kinetic chain, release telemetry & tactical counters...</span>
           </div>
         )}
-
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Quick Prompts */}
