@@ -198,7 +198,7 @@ interface MatchState {
   getMatchesForUser: (userEmail: string) => Match[];
 }
 
-const DEFAULT_DEMO_MATCHES: Match[] = [
+export const DEFAULT_DEMO_MATCHES: Match[] = [
   {
     id: 101,
     matchName: 'FC Barcelona vs Real Madrid - El Clasico 2026',

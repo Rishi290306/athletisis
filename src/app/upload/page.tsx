@@ -120,7 +120,7 @@ export default function UploadPage() {
       setQualityAssessment(videoMeta);
 
       setTimeout(() => {
-        router.push(`/matches/${newMatch.id}`);
+        router.push(`/matches/analysis?id=${newMatch.id}`);
       }, 1500);
 
     } catch (err: any) {

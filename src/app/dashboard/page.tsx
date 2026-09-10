@@ -201,7 +201,7 @@ export default function DashboardPage() {
               {userMatches.map((m) => (
                 <Link
                   key={m.id}
-                  href={`/matches/${m.id}`}
+                  href={`/matches/analysis?id=${m.id}`}
                   className="p-5 rounded-2xl bg-dark-950/80 border border-slate-800/80 hover:border-brand-500/40 transition duration-300 group block glass-panel-gold-hover"
                 >
                   <div className="flex items-center justify-between mb-2">

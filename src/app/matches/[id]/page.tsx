@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { MatchDashboardClient } from './MatchDashboardClient';
 
 export function generateStaticParams() {
@@ -14,5 +15,9 @@ export function generateStaticParams() {
 }
 
 export default function MatchPage() {
-  return <MatchDashboardClient />;
+  return (
+    <Suspense fallback={<div className="text-center py-12 text-slate-400 text-xs">Loading Match Analysis...</div>}>
+      <MatchDashboardClient />
+    </Suspense>
+  );
 }

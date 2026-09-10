@@ -24,7 +24,7 @@ function ProcessingContent() {
         if (res.status === 'COMPLETED') {
           clearInterval(interval);
           setTimeout(() => {
-            router.push(`/matches/${matchId}`);
+            router.push(`/matches/analysis?id=${matchId}`);
           }, 1500);
         }
       } catch (err) {
@@ -39,7 +39,7 @@ function ProcessingContent() {
           currentStage: 'Match video analysis successfully completed!',
         });
         setTimeout(() => {
-          router.push(`/matches/${matchId}`);
+            router.push(`/matches/analysis?id=${matchId}`);
         }, 1500);
       }
     };
@@ -122,7 +122,7 @@ function ProcessingContent() {
 
         {job?.status === 'COMPLETED' && (
           <button
-            onClick={() => router.push(`/matches/${matchId}`)}
+            onClick={() => router.push(`/matches/analysis?id=${matchId}`)}
             className="w-full py-3.5 rounded-xl bg-brand-500 hover:bg-brand-600 font-extrabold text-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20 transition"
           >
             View Completed Match Report <ArrowRight className="w-4 h-4" />

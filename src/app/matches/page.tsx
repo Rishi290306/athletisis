@@ -56,7 +56,7 @@ export default function MatchListPage() {
             {userMatches.map((m) => (
               <Link
                 key={m.id}
-                href={`/matches/${m.id}`}
+                href={`/matches/analysis?id=${m.id}`}
                 className="p-5 rounded-2xl bg-dark-900 border border-slate-800 hover:border-brand-500/40 transition group block shadow-lg glass-panel-gold-hover"
               >
                 <div className="flex items-center justify-between mb-3">

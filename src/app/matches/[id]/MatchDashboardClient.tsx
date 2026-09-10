@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { HeatmapViewer } from '@/components/HeatmapViewer';
 import { VideoPlayer } from '@/components/VideoPlayer';
 import { EventTimeline } from '@/components/EventTimeline';
@@ -9,7 +9,7 @@ import { MetricCard } from '@/components/MetricCard';
 import { Activity, Award, TrendingUp, ShieldCheck, CheckCircle2, Info, Users, User, ArrowUpRight } from 'lucide-react';
 import { Match, PerformanceScore, VideoClip, StandardizedEvent, Recommendation } from '@/types';
 import { AuthGuard } from '@/components/AuthGuard';
-import { useAuthStore, useMatchStore } from '@/lib/store';
+import { useAuthStore, useMatchStore, DEFAULT_DEMO_MATCHES } from '@/lib/store';
 import { useSportStore, SportType } from '@/lib/sportStore';
 import { getVideoObjectUrl, getLatestVideoObjectUrl } from '@/lib/videoStore';
 import { AICoachChatbot } from '@/components/AICoachChatbot';
@@ -41,7 +41,10 @@ interface SportAnalysisData {
 
 export function MatchDashboardClient() {
   const params = useParams();
-  const matchId = Number(params?.id || '1');
+  const searchParams = useSearchParams();
+  const paramId = Array.isArray(params?.id) ? params.id[0] : (params?.id as string);
+  const rawId = paramId || searchParams?.get('id') || searchParams?.get('matchId') || '101';
+  const matchId: number = isNaN(Number(rawId)) ? 101 : Number(rawId);
   const { user } = useAuthStore();
   const { matches, getMatchesForUser } = useMatchStore();
   const { setSport } = useSportStore();
@@ -127,7 +130,10 @@ export function MatchDashboardClient() {
     async function loadMatchAndAnalysis() {
       const email = user?.email || '';
       const storedMatches = getMatchesForUser(email);
-      const foundMatch = storedMatches.find(m => String(m.id) === String(matchId)) || matches.find(m => String(m.id) === String(matchId)) || (storedMatches.length > 0 ? storedMatches[0] : null);
+      const foundMatch = storedMatches.find(m => String(m.id) === String(matchId))
+        || matches.find(m => String(m.id) === String(matchId))
+        || DEFAULT_DEMO_MATCHES.find(m => String(m.id) === String(matchId))
+        || (storedMatches.length > 0 ? storedMatches[0] : DEFAULT_DEMO_MATCHES[0]);
 
       const rawSport: SportType = (foundMatch?.sport as SportType) || 'Cricket';
 
