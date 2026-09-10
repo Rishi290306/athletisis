@@ -16,17 +16,22 @@ class ApiClient {
       ...options.headers,
     };
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      ...options,
-      headers,
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        ...options,
+        headers,
+      });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || `API Error: ${response.status}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || `API Error: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (err) {
+      console.warn(`[ApiClient] Network request failed for ${endpoint}. Falling back to client-side state.`, err);
+      throw err;
     }
-
-    return response.json();
   }
 
   // Auth Endpoints
