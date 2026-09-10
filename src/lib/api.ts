@@ -1,6 +1,6 @@
 import { UserProfile, Athlete, Match, VideoMetadata, AnalysisJobStatus, PerformanceScore, StandardizedEvent, VideoClip, Recommendation } from '@/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
 class ApiClient {
   private getAuthHeader(): Record<string, string> {
