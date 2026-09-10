@@ -1,139 +1,114 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-
-interface GlitterSparkle {
-  id: number;
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  color: string;
-  alpha: number;
-  rotation: number;
-  rotationSpeed: number;
-  type: 'star' | 'dot';
-}
+import React, { useEffect, useRef } from 'react';
 
 export function CursorTracer() {
-  const [sparkles, setSparkles] = useState<GlitterSparkle[]>([]);
-  const [isMobile, setIsMobile] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
-      setIsMobile(true);
+    // Disable on touch devices to avoid interference with mobile touch events
+    if (typeof window === 'undefined' || 'ontouchstart' in window || navigator.maxTouchPoints > 0) {
       return;
     }
 
-    let animationFrameId: number;
-    let sparkleId = 0;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    const themeColors = [
-      '#ffc700', // Solar Gold
-      '#ff9100', // Fire Amber
-      '#00f0ff', // Electric Cyan
-      '#ffffff', // Diamond White
-    ];
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animId: number;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    const themeColors = ['#ffc700', '#ff9100', '#00f0ff', '#ffffff'];
+
+    interface Particle {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      size: number;
+      color: string;
+      alpha: number;
+    }
+
+    const particles: Particle[] = [];
 
     const handleMouseMove = (e: MouseEvent) => {
-      const { clientX: x, clientY: y } = e;
-
-      // Subtle spawning: 1 sparkle per move event with 50% probability
-      if (Math.random() > 0.5) return;
+      if (Math.random() > 0.6) return;
 
       const color = themeColors[Math.floor(Math.random() * themeColors.length)];
       const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 0.6 + 0.2;
+      const speed = Math.random() * 0.8 + 0.3;
 
-      const newSparkle: GlitterSparkle = {
-        id: sparkleId++,
-        x: x + (Math.random() * 8 - 4),
-        y: y + (Math.random() * 8 - 4),
+      particles.push({
+        x: e.clientX,
+        y: e.clientY,
         vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed + 0.15,
-        size: Math.random() * 4 + 3, // Subtle size 3px - 7px
+        vy: Math.sin(angle) * speed + 0.2,
+        size: Math.random() * 3 + 2,
         color,
         alpha: 0.85,
-        rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 4,
-        type: Math.random() > 0.5 ? 'star' : 'dot',
-      };
+      });
 
-      setSparkles((prev) => [...prev.slice(-20), newSparkle]);
+      if (particles.length > 25) {
+        particles.shift();
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    const loop = () => {
-      setSparkles((prev) =>
-        prev
-          .map((s) => ({
-            ...s,
-            x: s.x + s.vx,
-            y: s.y + s.vy,
-            alpha: s.alpha - 0.05, // Faster, graceful fade out
-            size: s.size * 0.95,
-            rotation: s.rotation + s.rotationSpeed,
-          }))
-          .filter((s) => s.alpha > 0.05)
-      );
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
 
-      animationFrameId = requestAnimationFrame(loop);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.04;
+        p.size *= 0.96;
+
+        if (p.alpha <= 0.05 || p.size <= 0.5) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 4;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      animId = requestAnimationFrame(render);
     };
 
-    loop();
+    render();
 
     return () => {
+      window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(animId);
     };
   }, []);
 
-  if (isMobile) return null;
-
   return (
-    <div className="pointer-events-none fixed inset-0 z-[999999] overflow-hidden select-none">
-      {sparkles.map((s) => (
-        <div
-          key={s.id}
-          className="absolute"
-          style={{
-            left: `${s.x}px`,
-            top: `${s.y}px`,
-            opacity: s.alpha,
-            transform: `translate(-50%, -50%) rotate(${s.rotation}deg)`,
-            filter: `drop-shadow(0 0 3px ${s.color})`,
-          }}
-        >
-          {s.type === 'star' ? (
-            /* Subtle 4-Point Star Sparkle */
-            <svg
-              width={s.size}
-              height={s.size}
-              viewBox="0 0 24 24"
-              fill={s.color}
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
-            </svg>
-          ) : (
-            /* Subtle Glowing Glitter Dot */
-            <div
-              className="rounded-full"
-              style={{
-                width: `${s.size}px`,
-                height: `${s.size}px`,
-                backgroundColor: s.color,
-                boxShadow: `0 0 4px ${s.color}`,
-              }}
-            />
-          )}
-        </div>
-      ))}
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed inset-0 z-[999999] overflow-hidden select-none"
+    />
   );
 }
-
-
-
