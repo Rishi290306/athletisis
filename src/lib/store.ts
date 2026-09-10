@@ -198,13 +198,66 @@ interface MatchState {
   getMatchesForUser: (userEmail: string) => Match[];
 }
 
+const DEFAULT_DEMO_MATCHES: Match[] = [
+  {
+    id: 101,
+    matchName: 'FC Barcelona vs Real Madrid - El Clasico 2026',
+    sport: 'Football',
+    matchDate: '2026-09-08',
+    teamName: 'FC Barcelona',
+    opponentName: 'Real Madrid CF',
+    venue: 'Camp Nou',
+    matchType: 'Competitive',
+    athleteId: 101,
+    athleteName: 'Pedri Gonzalez',
+    notes: 'Spatial heatmap positioning & high-intensity sprint tracking',
+    videoUrl: '/sample-match.mp4',
+    analysisFocus: 'PLAYER',
+    status: 'COMPLETED',
+  },
+  {
+    id: 201,
+    matchName: 'India vs Australia - T20 World Cup Final 2026',
+    sport: 'Cricket',
+    matchDate: '2026-09-05',
+    teamName: 'India',
+    opponentName: 'Australia',
+    venue: 'Narendra Modi Stadium',
+    matchType: 'Competitive',
+    athleteId: 201,
+    athleteName: 'Virat Kohli',
+    notes: 'Cover drive biomechanics & crease length distribution',
+    videoUrl: '/sample-match2.mp4',
+    analysisFocus: 'PLAYER',
+    status: 'COMPLETED',
+  },
+  {
+    id: 301,
+    matchName: 'Poland vs Italy - FIVB Volleyball Nations League',
+    sport: 'Volleyball',
+    matchDate: '2026-09-02',
+    teamName: 'Poland',
+    opponentName: 'Italy',
+    venue: 'Spodek Arena',
+    matchType: 'Competitive',
+    athleteId: 301,
+    athleteName: 'Wilfredo Leon',
+    notes: 'Spike jump height & net block defense coverage',
+    videoUrl: '/sample-match.mp4',
+    analysisFocus: 'PLAYER',
+    status: 'COMPLETED',
+  },
+];
+
 const getStoredMatches = (email?: string): Match[] => {
-  if (typeof window === 'undefined' || !email) return [];
+  if (typeof window === 'undefined') return DEFAULT_DEMO_MATCHES;
+  const activeEmail = email || localStorage.getItem('athletisis_user_email') || 'rishi.tiwari@athletisis.ai';
   try {
-    const raw = localStorage.getItem(`athletisis_matches_${email.toLowerCase().trim()}`);
-    return raw ? JSON.parse(raw) : [];
+    const raw = localStorage.getItem(`athletisis_matches_${activeEmail.toLowerCase().trim()}`);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return parsed.length > 0 ? parsed : DEFAULT_DEMO_MATCHES;
   } catch (e) {
-    return [];
+    return DEFAULT_DEMO_MATCHES;
   }
 };
 
