@@ -44,10 +44,12 @@ I have analyzed your **${sport}** match footage (**${matchName}**). You can ask 
 
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
@@ -230,7 +232,7 @@ Analyzing your overall performance in **${sport}** (**${matchName}**):
       </div>
 
       {/* Messages Scroll Area */}
-      <div className="flex-1 overflow-y-auto space-y-3 pr-1 text-xs">
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-3 pr-1 text-xs">
         {messages.map((msg) => {
           const isAi = msg.sender === 'ai';
           return (

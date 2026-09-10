@@ -131,9 +131,16 @@ export function MatchDashboardClient() {
 
       const rawSport: SportType = (foundMatch?.sport as SportType) || 'Cricket';
 
-      // Load persistent uploaded video file from IndexedDB
-      const indexedDbVideoUrl = (foundMatch ? await getVideoObjectUrl(foundMatch.id) : null) || (await getLatestVideoObjectUrl());
-      const actualVideoUrl = indexedDbVideoUrl || foundMatch?.videoUrl || '/sample-match.mp4';
+      let actualVideoUrl = foundMatch?.videoUrl || '/sample-match.mp4';
+      try {
+        const indexedDbVideoUrl = foundMatch ? await Promise.race([
+          getVideoObjectUrl(foundMatch.id),
+          new Promise<null>((r) => setTimeout(() => r(null), 150))
+        ]) : null;
+        if (indexedDbVideoUrl) actualVideoUrl = indexedDbVideoUrl;
+      } catch (e) {
+        // Fallback to sample match video
+      }
 
       // AI Sport Mismatch Detection & Auto-Calibration
       const searchString = `${foundMatch?.matchName || ''} ${foundMatch?.notes || ''} ${actualVideoUrl}`;
