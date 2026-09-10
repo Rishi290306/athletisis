@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
-import { HeatmapViewer } from '@/components/HeatmapViewer';
+import { MatchStrategyTrainingHub } from '@/components/MatchStrategyTrainingHub';
 import { VideoPlayer } from '@/components/VideoPlayer';
 import { EventTimeline } from '@/components/EventTimeline';
 import { MetricCard } from '@/components/MetricCard';
@@ -324,8 +324,8 @@ export function MatchDashboardClient() {
           fileName={match.matchName}
         />
 
-        {/* Spatial Heatmap */}
-        <HeatmapViewer sport={match.sport as SportType} athleteName={match.athleteName} />
+        {/* AI Strategy & Custom Training Drills */}
+        <MatchStrategyTrainingHub sport={match.sport as SportType} athleteName={match.athleteName} matchName={match.matchName} />
 
         {/* Event Timeline */}
         <EventTimeline events={analysis.events} />
