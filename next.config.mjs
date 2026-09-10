@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const isProd = process.env.NODE_ENV === 'production';
+const isGithubActions = process.env.GITHUB_ACTIONS === 'true';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -13,7 +13,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: isProd ? '/athletisis' : '',
+  basePath: isGithubActions ? '/athletisis' : '',
   outputFileTracingRoot: __dirname,
 };
 
