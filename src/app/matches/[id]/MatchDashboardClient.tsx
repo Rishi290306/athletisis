@@ -127,7 +127,7 @@ export function MatchDashboardClient() {
     async function loadMatchAndAnalysis() {
       const email = user?.email || '';
       const storedMatches = getMatchesForUser(email);
-      const foundMatch = storedMatches.find(m => m.id === matchId) || (storedMatches.length > 0 ? storedMatches[storedMatches.length - 1] : matches.find(m => m.id === matchId));
+      const foundMatch = storedMatches.find(m => String(m.id) === String(matchId)) || matches.find(m => String(m.id) === String(matchId)) || (storedMatches.length > 0 ? storedMatches[0] : null);
 
       const rawSport: SportType = (foundMatch?.sport as SportType) || 'Cricket';
 
