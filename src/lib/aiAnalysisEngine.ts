@@ -55,7 +55,7 @@ export function generateDynamicAIAnalysis(
 ): DynamicAnalysisResult {
   let effectiveSport = sport;
   const fnLower = (fileName || '').toLowerCase();
-  if (fnLower.includes('volleyball') || fnLower.includes('vball') || fnLower.includes('spike') || fnLower.includes('indian') || fnLower.includes('petroleum') || fnLower.includes('sample') || fnLower.includes('match')) {
+  if (fnLower.includes('volleyball') || fnLower.includes('vball') || fnLower.includes('spike') || fnLower.includes('indian') || fnLower.includes('petroleum')) {
     effectiveSport = 'Volleyball';
   }
 
