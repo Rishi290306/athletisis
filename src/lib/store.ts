@@ -64,8 +64,12 @@ const getInitialAuthState = (): { token: string | null; user: UserProfile | null
     return { token: null, user: null, athlete: null };
   }
   
-  const token = localStorage.getItem('athletisis_token') || 'demo-token-athletisis';
-  const storedEmail = localStorage.getItem('athletisis_user_email') || 'rishi.tiwari@athletisis.ai';
+  const token = localStorage.getItem('athletisis_token');
+  const storedEmail = localStorage.getItem('athletisis_user_email');
+
+  if (!token || !storedEmail) {
+    return { token: null, user: null, athlete: null };
+  }
 
   const accounts = getStoredAccounts();
   const accountKey = storedEmail.toLowerCase().trim();

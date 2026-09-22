@@ -98,7 +98,15 @@ export default function LandingPage() {
               </button>
             </form>
 
-            <div className="pt-4 border-t border-slate-800/80 text-center">
+            <div className="pt-4 border-t border-slate-800/80 space-y-3 text-center">
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('rishi.tiwari@athletisis.ai')}
+                className="w-full py-3.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-brand-400 font-extrabold text-xs flex items-center justify-center gap-2 border border-brand-500/30 shadow-md transition hover:scale-[1.01]"
+              >
+                ⚡ Instant Demo One-Click Login (Rishi Tiwari)
+              </button>
+
               <p className="text-xs text-slate-400">
                 Don't have an account yet?{' '}
                 <Link href="/register" className="text-brand-400 font-bold hover:underline">

@@ -89,12 +89,25 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800/80">
-          Don't have an account?{' '}
-          <Link href="/register" className="text-brand-400 font-bold hover:underline">
-            Register new account
-          </Link>
-        </p>
+        <div className="pt-3 border-t border-slate-800/80 space-y-3 text-center">
+          <button
+            type="button"
+            onClick={() => {
+              loginWithCredentials('rishi.tiwari@athletisis.ai', 'Rishi Tiwari');
+              router.push('/dashboard');
+            }}
+            className="w-full py-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-brand-400 font-extrabold text-xs flex items-center justify-center gap-2 border border-brand-500/30 shadow-md transition hover:scale-[1.01]"
+          >
+            ⚡ Instant Demo Login (Rishi Tiwari)
+          </button>
+
+          <p className="text-xs text-slate-400">
+            Don't have an account?{' '}
+            <Link href="/register" className="text-brand-400 font-bold hover:underline">
+              Register new account
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
