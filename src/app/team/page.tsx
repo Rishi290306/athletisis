@@ -119,12 +119,9 @@ export default function TeamAnalyticsPage() {
                 {teamData.networkTitle}
               </h2>
 
-              <div className={`relative aspect-video max-h-96 ${teamData.bg} rounded-xl border border-slate-800 flex items-center justify-center overflow-hidden transition-colors duration-300`}>
-                {/* Field/Pitch Markings */}
-                <div className="absolute inset-4 border border-white/20 rounded">
-                  <div className="absolute left-1/2 inset-y-0 border-r border-white/20" />
-                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full border border-white/20" />
-                </div>
+              <div className="relative aspect-video max-h-96 bg-[#070d1e] rounded-xl border border-slate-800 flex items-center justify-center overflow-hidden">
+                {/* Tactical Formation Grid */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#152037_1px,transparent_1px),linear-gradient(to_bottom,#152037_1px,transparent_1px)] bg-[size:32px_32px] opacity-40" />
 
                 {/* Node Connections */}
                 <svg className="absolute inset-0 w-full h-full">

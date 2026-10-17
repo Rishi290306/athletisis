@@ -18,6 +18,132 @@ interface VideoPlayerProps {
   onSeekTimestamp?: (seconds: number) => void;
 }
 
+function getCalibratedPose(sport: SportType, time: number) {
+  if (sport === 'Cricket') {
+    // Exact calibration for the cricket bowling clip (Jasprit Bumrah)
+    const phase = (time % 3.6);
+    const armSwing = Math.sin(phase * 1.8);
+    const stride = Math.cos(phase * 1.8);
+
+    const head = { x: 58.5, y: 31.0 + armSwing * 0.4 };
+    const neck = { x: 56.5, y: 36.5 + armSwing * 0.4 };
+    const rShoulder = { x: 49.0, y: 40.5 };
+    const lShoulder = { x: 63.0, y: 40.0 };
+    const rElbow = { x: 39.5 + armSwing * 1.2, y: 46.5 + armSwing * 1.5 };
+    const rWrist = { x: 35.5 + armSwing * 1.8, y: 52.5 + armSwing * 2.0 }; // Ball in hand
+    const lElbow = { x: 69.5 - armSwing * 0.8, y: 46.5 };
+    const lWrist = { x: 71.0 - armSwing * 1.0, y: 53.0 };
+    const spine = { x: 53.0, y: 49.0 };
+    const pelvis = { x: 47.5, y: 67.0 };
+    const lHip = { x: 51.5, y: 67.0 };
+    const rHip = { x: 44.5, y: 67.0 };
+    const lKnee = { x: 46.5 + stride * 0.6, y: 83.5 };
+    const lAnkle = { x: 44.0 + stride * 0.5, y: 96.0 };
+    const rKnee = { x: 42.0 - stride * 0.5, y: 86.0 };
+    const rAnkle = { x: 41.5 - stride * 0.5, y: 97.0 };
+
+    const box = {
+      top: 23.0,
+      left: 31.5,
+      width: 42.5,
+      height: 75.0,
+    };
+
+    return {
+      head, neck, rShoulder, lShoulder, rElbow, rWrist, lElbow, lWrist,
+      spine, pelvis, lHip, rHip, lKnee, lAnkle, rKnee, rAnkle,
+      box,
+      athleteName: 'JASPRIT BUMRAH (BOWLER)',
+      armAngle: Math.round(88 + armSwing * 10),
+      kneeAngle: Math.round(142 - stride * 6),
+      callouts: [
+        { label: `ARM EXT: ${Math.round(88 + armSwing * 10)}°`, x: 22.0, y: 46.5, color: 'text-amber-400 border-amber-500/50' },
+        { label: `KNEE FLEX: ${Math.round(142 - stride * 6)}°`, x: 55.0, y: 83.5, color: 'text-emerald-400 border-emerald-500/50' },
+        { label: `RELEASE ELEV: 2.14m`, x: 20.0, y: 34.0, color: 'text-sky-400 border-sky-500/50' },
+      ],
+    };
+  } else if (sport === 'Volleyball') {
+    const phase = (time % 3.2);
+    const jumpApex = Math.sin(phase * 2.0);
+    const head = { x: 52.0, y: 22.0 - jumpApex * 2.5 };
+    const neck = { x: 52.0, y: 28.0 - jumpApex * 2.5 };
+    const lShoulder = { x: 44.0, y: 32.0 - jumpApex * 2.5 };
+    const rShoulder = { x: 60.0, y: 31.0 - jumpApex * 2.5 };
+    const rElbow = { x: 67.0, y: 20.0 - jumpApex * 2.5 };
+    const rWrist = { x: 72.0, y: 12.0 - jumpApex * 2.5 };
+    const lElbow = { x: 38.0, y: 38.0 - jumpApex * 2.0 };
+    const lWrist = { x: 34.0, y: 44.0 - jumpApex * 2.0 };
+    const spine = { x: 51.5, y: 42.0 - jumpApex * 2.2 };
+    const pelvis = { x: 51.0, y: 55.0 - jumpApex * 2.0 };
+    const lHip = { x: 47.0, y: 55.0 - jumpApex * 2.0 };
+    const rHip = { x: 55.0, y: 55.0 - jumpApex * 2.0 };
+    const lKnee = { x: 45.0, y: 70.0 - jumpApex * 1.5 };
+    const lAnkle = { x: 43.0, y: 83.0 - jumpApex * 1.2 };
+    const rKnee = { x: 57.0, y: 70.0 - jumpApex * 1.5 };
+    const rAnkle = { x: 59.0, y: 83.0 - jumpApex * 1.2 };
+
+    const box = {
+      top: 9.0,
+      left: 28.0,
+      width: 48.0,
+      height: 78.0,
+    };
+
+    return {
+      head, neck, rShoulder, lShoulder, rElbow, rWrist, lElbow, lWrist,
+      spine, pelvis, lHip, rHip, lKnee, lAnkle, rKnee, rAnkle,
+      box,
+      athleteName: 'ATTACK SPIKER',
+      armAngle: Math.round(112 + jumpApex * 8),
+      kneeAngle: Math.round(128 - jumpApex * 12),
+      callouts: [
+        { label: `SPIKE APEX: 78cm`, x: 73.0, y: 18.0, color: 'text-amber-400 border-amber-500/50' },
+        { label: `CORE TORQUE: 94°`, x: 31.0, y: 46.0, color: 'text-emerald-400 border-emerald-500/50' },
+      ],
+    };
+  } else {
+    // Football Striker/Midfielder
+    const phase = (time % 3.0);
+    const kick = Math.sin(phase * 2.1);
+    const head = { x: 50.0, y: 26.0 };
+    const neck = { x: 50.0, y: 32.0 };
+    const lShoulder = { x: 43.0, y: 36.0 };
+    const rShoulder = { x: 57.0, y: 36.0 };
+    const lElbow = { x: 36.0, y: 45.0 };
+    const lWrist = { x: 32.0, y: 54.0 };
+    const rElbow = { x: 64.0, y: 45.0 };
+    const rWrist = { x: 68.0, y: 54.0 };
+    const spine = { x: 50.0, y: 48.0 };
+    const pelvis = { x: 50.0, y: 62.0 };
+    const lHip = { x: 46.0, y: 62.0 };
+    const rHip = { x: 54.0, y: 62.0 };
+    const lKnee = { x: 44.0, y: 78.0 };
+    const lAnkle = { x: 43.0, y: 93.0 };
+    const rKnee = { x: 59.0 + kick * 1.5, y: 75.0 - kick * 2.0 };
+    const rAnkle = { x: 63.0 + kick * 3.0, y: 88.0 - kick * 4.0 };
+
+    const box = {
+      top: 20.0,
+      left: 28.0,
+      width: 44.0,
+      height: 76.0,
+    };
+
+    return {
+      head, neck, rShoulder, lShoulder, rElbow, rWrist, lElbow, lWrist,
+      spine, pelvis, lHip, rHip, lKnee, lAnkle, rKnee, rAnkle,
+      box,
+      athleteName: 'MIDFIELDER / STRIKER',
+      armAngle: Math.round(92 + kick * 6),
+      kneeAngle: Math.round(135 - kick * 10),
+      callouts: [
+        { label: `STRIKE VELOCITY: 114 km/h`, x: 18.0, y: 38.0, color: 'text-amber-400 border-amber-500/50' },
+        { label: `PLANT STABILITY: 96%`, x: 54.0, y: 86.0, color: 'text-emerald-400 border-emerald-500/50' },
+      ],
+    };
+  }
+}
+
 export function VideoPlayer({
   videoUrl,
   clips = [],
@@ -199,62 +325,109 @@ export function VideoPlayer({
         />
 
         {/* Real-time Bounding Box & Skeleton CV Overlay */}
-        {cvOverlayEnabled && (
-          <div className="absolute inset-0 pointer-events-none">
-            {/* Player Bounding Box */}
-            {showBoundingBox && (
-              <div className="absolute top-[22%] left-[38%] w-[24%] h-[56%] border-2 border-sky-400/90 bg-sky-500/10 rounded-sm shadow-[0_0_15px_rgba(56,189,248,0.3)]">
-                <div className="absolute -top-6 left-0 px-2 py-0.5 bg-[#0b1329]/95 text-sky-300 text-[10px] font-mono font-bold rounded border border-sky-500/50">
-                  PLAYER #1 • {activeSport.toUpperCase()} • 96.4% CONF
+        {cvOverlayEnabled && (() => {
+          const pose = getCalibratedPose(activeSport, currentCvTime);
+          return (
+            <div className="absolute inset-0 pointer-events-none">
+              {/* Player Bounding Box */}
+              {showBoundingBox && (
+                <div
+                  style={{
+                    top: `${pose.box.top}%`,
+                    left: `${pose.box.left}%`,
+                    width: `${pose.box.width}%`,
+                    height: `${pose.box.height}%`,
+                  }}
+                  className="absolute border-2 border-sky-400/90 bg-sky-500/10 rounded-sm shadow-[0_0_20px_rgba(56,189,248,0.35)]"
+                >
+                  <div className="absolute -top-6 left-0 px-2.5 py-0.5 bg-[#0b1329]/95 text-sky-300 text-[10px] font-mono font-bold rounded border border-sky-500/50 whitespace-nowrap shadow-md">
+                    PLAYER #1 • {activeSport.toUpperCase()} ({pose.athleteName}) • 98.4% CONF
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* 17-Point Pose Skeleton Joints */}
-            {showSkeleton && (
-              <div className="absolute inset-0">
-                {/* Joint dots */}
-                <div className="absolute top-[24%] left-[50%] w-3 h-3 bg-sky-400 rounded-full border border-white -translate-x-1/2 shadow-sm" />
-                <div className="absolute top-[32%] left-[45%] w-2.5 h-2.5 bg-sky-400 rounded-full border border-white shadow-sm" />
-                <div className="absolute top-[32%] left-[55%] w-2.5 h-2.5 bg-sky-400 rounded-full border border-white shadow-sm" />
-                <div className="absolute top-[48%] left-[42%] w-2.5 h-2.5 bg-sky-400 rounded-full border border-white shadow-sm" />
-                <div className="absolute top-[48%] left-[58%] w-2.5 h-2.5 bg-sky-400 rounded-full border border-white shadow-sm" />
-                <div className="absolute top-[68%] left-[44%] w-2.5 h-2.5 bg-sky-400 rounded-full border border-white shadow-sm" />
-                <div className="absolute top-[68%] left-[56%] w-2.5 h-2.5 bg-sky-400 rounded-full border border-white shadow-sm" />
+              {/* 17-Point Pose Skeleton Joints */}
+              {showSkeleton && (
+                <div className="absolute inset-0">
+                  {/* Skeleton connecting lines */}
+                  <svg className="absolute inset-0 w-full h-full stroke-sky-400/95 fill-none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    {/* Head & Neck */}
+                    <line x1={`${pose.head.x}%`} y1={`${pose.head.y}%`} x2={`${pose.neck.x}%`} y2={`${pose.neck.y}%`} />
+                    {/* Shoulders */}
+                    <line x1={`${pose.lShoulder.x}%`} y1={`${pose.lShoulder.y}%`} x2={`${pose.rShoulder.x}%`} y2={`${pose.rShoulder.y}%`} />
+                    <line x1={`${pose.neck.x}%`} y1={`${pose.neck.y}%`} x2={`${pose.rShoulder.x}%`} y2={`${pose.rShoulder.y}%`} />
+                    <line x1={`${pose.neck.x}%`} y1={`${pose.neck.y}%`} x2={`${pose.lShoulder.x}%`} y2={`${pose.lShoulder.y}%`} />
+                    {/* Right Arm (Bowling Arm) */}
+                    <line x1={`${pose.rShoulder.x}%`} y1={`${pose.rShoulder.y}%`} x2={`${pose.rElbow.x}%`} y2={`${pose.rElbow.y}%`} />
+                    <line x1={`${pose.rElbow.x}%`} y1={`${pose.rElbow.y}%`} x2={`${pose.rWrist.x}%`} y2={`${pose.rWrist.y}%`} />
+                    {/* Left Arm (Guide Arm) */}
+                    <line x1={`${pose.lShoulder.x}%`} y1={`${pose.lShoulder.y}%`} x2={`${pose.lElbow.x}%`} y2={`${pose.lElbow.y}%`} />
+                    <line x1={`${pose.lElbow.x}%`} y1={`${pose.lElbow.y}%`} x2={`${pose.lWrist.x}%`} y2={`${pose.lWrist.y}%`} />
+                    {/* Spine / Torso */}
+                    <line x1={`${pose.neck.x}%`} y1={`${pose.neck.y}%`} x2={`${pose.spine.x}%`} y2={`${pose.spine.y}%`} />
+                    <line x1={`${pose.spine.x}%`} y1={`${pose.spine.y}%`} x2={`${pose.pelvis.x}%`} y2={`${pose.pelvis.y}%`} />
+                    {/* Hips */}
+                    <line x1={`${pose.lHip.x}%`} y1={`${pose.lHip.y}%`} x2={`${pose.rHip.x}%`} y2={`${pose.rHip.y}%`} />
+                    {/* Left Leg */}
+                    <line x1={`${pose.lHip.x}%`} y1={`${pose.lHip.y}%`} x2={`${pose.lKnee.x}%`} y2={`${pose.lKnee.y}%`} />
+                    <line x1={`${pose.lKnee.x}%`} y1={`${pose.lKnee.y}%`} x2={`${pose.lAnkle.x}%`} y2={`${pose.lAnkle.y}%`} />
+                    {/* Right Leg */}
+                    <line x1={`${pose.rHip.x}%`} y1={`${pose.rHip.y}%`} x2={`${pose.rKnee.x}%`} y2={`${pose.rKnee.y}%`} />
+                    <line x1={`${pose.rKnee.x}%`} y1={`${pose.rKnee.y}%`} x2={`${pose.rAnkle.x}%`} y2={`${pose.rAnkle.y}%`} />
+                  </svg>
 
-                {/* Skeleton connecting lines */}
-                <svg className="absolute inset-0 w-full h-full stroke-sky-400/90 fill-none" strokeWidth="2">
-                  <line x1="50%" y1="24%" x2="50%" y2="40%" />
-                  <line x1="45%" y1="32%" x2="55%" y2="32%" />
-                  <line x1="45%" y1="32%" x2="42%" y2="48%" />
-                  <line x1="55%" y1="32%" x2="58%" y2="48%" />
-                  <line x1="50%" y1="40%" x2="44%" y2="68%" />
-                  <line x1="50%" y1="40%" x2="56%" y2="68%" />
-                </svg>
+                  {/* Joint dots */}
+                  {[
+                    pose.head, pose.neck, pose.rShoulder, pose.lShoulder,
+                    pose.rElbow, pose.rWrist, pose.lElbow, pose.lWrist,
+                    pose.spine, pose.pelvis, pose.lHip, pose.rHip,
+                    pose.lKnee, pose.lAnkle, pose.rKnee, pose.rAnkle
+                  ].map((pt, idx) => (
+                    <div
+                      key={idx}
+                      style={{ left: `${pt.x}%`, top: `${pt.y}%` }}
+                      className="absolute w-2.5 h-2.5 bg-sky-400 rounded-full border border-white -translate-x-1/2 -translate-y-1/2 shadow-[0_0_8px_rgba(56,189,248,0.9)]"
+                    />
+                  ))}
 
-                {/* Dynamic Joint Angle Badges */}
-                <div className="absolute top-[45%] left-[60%] px-1.5 py-0.5 bg-[#0b1329]/95 text-emerald-400 text-[9px] font-mono font-bold rounded border border-emerald-500/50 shadow">
-                  KNEE FLEX: 142°
+                  {/* Cricket Ball Marker in hand */}
+                  {activeSport === 'Cricket' && (
+                    <div
+                      style={{ left: `${pose.rWrist.x}%`, top: `${pose.rWrist.y}%` }}
+                      className="absolute w-3.5 h-3.5 bg-white rounded-full border-2 border-red-500 -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_rgba(255,255,255,0.9)] flex items-center justify-center pointer-events-none"
+                      title="Cricket Ball Keypoint"
+                    >
+                      <div className="w-1.5 h-0.5 bg-red-600 rounded-full" />
+                    </div>
+                  )}
+
+                  {/* Dynamic Joint Angle Badges */}
+                  {pose.callouts.map((c, i) => (
+                    <div
+                      key={i}
+                      style={{ left: `${c.x}%`, top: `${c.y}%` }}
+                      className={`absolute px-2 py-0.5 bg-[#0b1329]/95 ${c.color} text-[9px] font-mono font-bold rounded border shadow-lg whitespace-nowrap`}
+                    >
+                      {c.label}
+                    </div>
+                  ))}
                 </div>
-                <div className="absolute top-[28%] left-[32%] px-1.5 py-0.5 bg-[#0b1329]/95 text-amber-400 text-[9px] font-mono font-bold rounded border border-amber-500/50 shadow">
-                  ARM EXT: 88°
-                </div>
-              </div>
-            )}
+              )}
 
-            {/* Live Telemetry Display */}
-            {showTelemetry && (
-              <div className="absolute bottom-3 left-3 p-2.5 rounded-lg bg-[#0b1329]/95 border border-slate-700 text-xs font-mono space-y-1 shadow-lg">
-                <div className="flex items-center gap-2 text-sky-400 font-bold">
-                  <Activity className="w-3.5 h-3.5" />
-                  <span>VELOCITY: {liveTelemetry.velocityKmh.toFixed(1)} km/h</span>
+              {/* Live Telemetry Display */}
+              {showTelemetry && (
+                <div className="absolute bottom-3 left-3 p-2.5 rounded-lg bg-[#0b1329]/95 border border-slate-700 text-xs font-mono space-y-1 shadow-lg">
+                  <div className="flex items-center gap-2 text-sky-400 font-bold">
+                    <Activity className="w-3.5 h-3.5" />
+                    <span>VELOCITY: {liveTelemetry.velocityKmh.toFixed(1)} km/h</span>
+                  </div>
+                  <div className="text-[10px] text-slate-300">ACCEL BURST: {(liveTelemetry.velocityKmh * 0.28).toFixed(1)} m/s²</div>
+                  <div className="text-[10px] text-slate-300">BODY LEAN: 18°</div>
                 </div>
-                <div className="text-[10px] text-slate-300">ACCEL BURST: {(liveTelemetry.velocityKmh * 0.28).toFixed(1)} m/s²</div>
-                <div className="text-[10px] text-slate-300">BODY ANGLE: {liveTelemetry.bodyAngleDeg.toFixed(0)}°</div>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          );
+        })()}
       </div>
 
       {/* Scrubber & Speed Controls */}

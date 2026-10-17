@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { MatchStrategyTrainingHub } from '@/components/MatchStrategyTrainingHub';
 import { VideoPlayer } from '@/components/VideoPlayer';
-import { TacticalPitchMap } from '@/components/TacticalPitchMap';
 import { InjuryRiskRadar } from '@/components/InjuryRiskRadar';
 import { ComparisonWorkbench } from '@/components/ComparisonWorkbench';
 import { MatchReportExporter } from '@/components/MatchReportExporter';
 import { ClipTagger } from '@/components/ClipTagger';
 import { AICoachChatbot } from '@/components/AICoachChatbot';
-import { Compass, ShieldAlert, Dumbbell, FileText, Columns, Bot } from 'lucide-react';
+import { Activity, Play, ShieldAlert, Dumbbell, FileText, Columns, Bot, Zap, CheckCircle2 } from 'lucide-react';
 import { Match, PerformanceScore, VideoClip, StandardizedEvent, Recommendation } from '@/types';
 import { AuthGuard } from '@/components/AuthGuard';
 import { useAuthStore, useMatchStore, DEFAULT_DEMO_MATCHES } from '@/lib/store';
@@ -47,7 +46,7 @@ export function MatchDashboardClient() {
 
   const [match, setMatch] = useState<Match | null>(null);
   const [analysis, setAnalysis] = useState<SportAnalysisData | null>(null);
-  const [activeTab, setActiveTab] = useState<'tactical' | 'drills' | 'injury' | 'report' | 'chat'>('tactical');
+  const [activeTab, setActiveTab] = useState<'overview' | 'drills' | 'injury' | 'report' | 'chat'>('overview');
   const [showComparison, setShowComparison] = useState(false);
   const [activeSeekTimestamp, setActiveSeekTimestamp] = useState<number>(0);
 
@@ -180,12 +179,12 @@ export function MatchDashboardClient() {
             {/* Tab Navigation Controls */}
             <div className="flex items-center gap-1.5 p-1.5 rounded-xl bg-[#152037] border border-slate-700 overflow-x-auto text-xs font-bold shadow-md">
               <button
-                onClick={() => setActiveTab('tactical')}
+                onClick={() => setActiveTab('overview')}
                 className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'tactical' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                  activeTab === 'overview' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
                 }`}
               >
-                <Compass className="w-3.5 h-3.5" /> 2D Map
+                <Activity className="w-3.5 h-3.5" /> Biometrics & Clips
               </button>
               <button
                 onClick={() => setActiveTab('drills')}
@@ -222,14 +221,8 @@ export function MatchDashboardClient() {
             </div>
 
             {/* Active Tab Component Render */}
-            {activeTab === 'tactical' && (
+            {activeTab === 'overview' && (
               <div className="space-y-4">
-                <TacticalPitchMap
-                  sport={activeSportName}
-                  activeTimestamp={activeSeekTimestamp}
-                  onSeekTimestamp={handleSeek}
-                />
-                
                 {/* Metric Summary Cards */}
                 <div className="grid grid-cols-2 gap-3">
                   {analysis.metricCards.slice(0, 4).map((card, idx) => (
@@ -241,6 +234,78 @@ export function MatchDashboardClient() {
                       <div className="text-[11px] text-sky-400 font-medium mt-0.5">{card.subtitle}</div>
                     </div>
                   ))}
+                </div>
+
+                {/* Biomechanical Angle Calibrations */}
+                <div className="p-4 rounded-xl bg-[#152037] border border-slate-700 shadow-sm space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs font-bold text-white uppercase tracking-wider">
+                      <Zap className="w-4 h-4 text-amber-400" />
+                      <span>Pose Skeleton Telemetry</span>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                      LIVE CALIBRATED
+                    </span>
+                  </div>
+
+                  <div className="space-y-2 text-xs font-mono">
+                    <div className="flex items-center justify-between p-2 rounded-lg bg-[#0b1329] border border-slate-800">
+                      <span className="text-slate-300">Bowling Arm Angle</span>
+                      <span className="text-amber-400 font-bold">88° (Optimal: 85°-95°)</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 rounded-lg bg-[#0b1329] border border-slate-800">
+                      <span className="text-slate-300">Front Knee Brace Angle</span>
+                      <span className="text-emerald-400 font-bold">142° (Strong Leverage)</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 rounded-lg bg-[#0b1329] border border-slate-800">
+                      <span className="text-slate-300">Release Height Apex</span>
+                      <span className="text-sky-400 font-bold">2.14 m</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 rounded-lg bg-[#0b1329] border border-slate-800">
+                      <span className="text-slate-300">Trunk Forward Flexion</span>
+                      <span className="text-white font-bold">18° Body Lean</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key Delivery Clips & Breakdown */}
+                <div className="p-4 rounded-xl bg-[#152037] border border-slate-700 shadow-sm space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-white uppercase tracking-wider">
+                      Action Phase Highlights
+                    </span>
+                    <span className="text-[10px] text-slate-300">Click to jump frame</span>
+                  </div>
+
+                  <div className="space-y-2">
+                    {[
+                      { label: 'Run-up & Accelerating Approach', time: 1.0, badge: 'APPROACH', color: 'bg-sky-500/20 text-sky-300 border-sky-500/30' },
+                      { label: 'Back Foot Impact & Coil', time: 2.0, badge: 'COIL', color: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
+                      { label: 'Front Foot Brace & Release Point', time: 2.8, badge: 'RELEASE', color: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+                      { label: 'Follow-Through & Momentum Decay', time: 3.5, badge: 'FINISH', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
+                    ].map((phase, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleSeek(phase.time)}
+                        className="w-full flex items-center justify-between p-2.5 rounded-lg bg-[#0b1329] border border-slate-800 hover:border-sky-500/50 hover:bg-[#101b33] transition group text-left"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <div className="p-1 rounded bg-slate-800 group-hover:bg-sky-600 transition text-slate-300 group-hover:text-white">
+                            <Play className="w-3 h-3 fill-current" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-white group-hover:text-sky-300 transition">
+                              {phase.label}
+                            </div>
+                            <div className="text-[10px] font-mono text-slate-300">Timestamp: 00:0{Math.floor(phase.time)}s</div>
+                          </div>
+                        </div>
+                        <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border ${phase.color}`}>
+                          {phase.badge}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
