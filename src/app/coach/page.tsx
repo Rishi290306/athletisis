@@ -177,15 +177,15 @@ export default function AICoachPage() {
     <AuthGuard>
       <div className="max-w-4xl mx-auto py-6 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between bg-dark-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div className="flex items-center justify-between pro-card p-6 shadow-xl">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-500 to-amber-400 text-slate-950 flex items-center justify-center font-black shadow-[0_0_20px_rgba(255,199,0,0.3)]">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center font-black shadow-[0_0_20px_rgba(56,189,248,0.3)]">
               <Bot className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2 mb-0.5">
                 <span className="text-base">{config.icon}</span>
-                <span className="text-[10px] font-black uppercase text-brand-400 tracking-widest">{config.name} Conversational AI</span>
+                <span className="text-[10px] font-black uppercase text-sky-400 tracking-widest">{config.name} Conversational AI</span>
               </div>
               <h1 className="text-2xl font-black text-white">24/7 AI Performance Coach</h1>
               <p className="text-xs text-slate-400">Ask questions about tactical strategy, drills, technique, fitness, or match video analytics</p>
@@ -199,21 +199,21 @@ export default function AICoachPage() {
             <button
               key={idx}
               onClick={() => handleQuickPrompt(item.prompt)}
-              className="px-3.5 py-2 rounded-xl bg-dark-900/90 hover:bg-slate-800 border border-slate-800 hover:border-brand-500/40 text-[11px] font-bold text-slate-300 hover:text-white whitespace-nowrap transition duration-200 shadow-sm flex items-center gap-1.5 shrink-0"
+              className="px-3.5 py-2 rounded-xl bg-[#152037] hover:bg-[#1a2845] border border-slate-800 hover:border-sky-500/40 text-[11px] font-bold text-slate-300 hover:text-white whitespace-nowrap transition duration-200 shadow-sm flex items-center gap-1.5 shrink-0"
             >
-              <Sparkles className="w-3 h-3 text-brand-400" />
+              <Sparkles className="w-3 h-3 text-sky-400" />
               {item.label}
             </button>
           ))}
         </div>
 
         {/* Chat Messages Container */}
-        <div className="bg-dark-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4 min-h-[440px] flex flex-col justify-between">
+        <div className="pro-card p-6 shadow-xl space-y-4 min-h-[440px] flex flex-col justify-between">
           <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
             {messages.map((m) => (
               <div key={m.id} className={`flex gap-3 ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                 {m.sender === 'coach' && (
-                  <div className="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
                     <Bot className="w-4 h-4" />
                   </div>
                 )}
@@ -221,22 +221,22 @@ export default function AICoachPage() {
                 <div
                   className={`max-w-xl p-4 rounded-2xl text-xs space-y-2 leading-relaxed whitespace-pre-line ${
                     m.sender === 'user'
-                      ? 'bg-brand-500 text-black font-semibold rounded-tr-none shadow-lg'
-                      : 'bg-dark-950 border border-slate-800 text-slate-200 rounded-tl-none shadow-md'
+                      ? 'bg-sky-600 text-white font-medium rounded-tr-none shadow-lg'
+                      : 'bg-[#0b1329] border border-slate-800 text-slate-200 rounded-tl-none shadow-md'
                   }`}
                 >
                   <p>{m.text}</p>
 
                   {m.clips && m.clips.length > 0 && (
                     <div className="pt-2 border-t border-slate-800 space-y-2 mt-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1">
                         <Video className="w-3 h-3" /> Relevant Analyzed Clips ({m.clips.length})
                       </span>
                       {m.clips.map((clip, i) => (
                         <div key={i} className="p-2.5 rounded-lg bg-black/40 border border-slate-800 text-[11px] space-y-1">
                           <div className="font-bold text-white flex justify-between">
                             <span>{clip.title}</span>
-                            <span className="font-mono text-amber-400">{clip.timestamp}</span>
+                            <span className="font-mono text-sky-400">{clip.timestamp}</span>
                           </div>
                           {clip.guidance && <p className="text-slate-300 text-[10px]">{clip.guidance}</p>}
                         </div>
@@ -255,10 +255,10 @@ export default function AICoachPage() {
 
             {loading && (
               <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4 animate-pulse" />
                 </div>
-                <div className="p-3 rounded-2xl bg-dark-950 border border-slate-800 text-xs text-slate-400">
+                <div className="p-3 rounded-2xl bg-[#0b1329] border border-slate-800 text-xs text-slate-400">
                   AI Performance Coach is thinking...
                 </div>
               </div>
@@ -272,12 +272,12 @@ export default function AICoachPage() {
               placeholder={`Ask AI Coach: 'How do I improve my ${config.name} jump/passing?' or 'How do I analyze my game?'`}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="flex-1 px-4 py-3.5 rounded-xl bg-dark-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500 transition"
+              className="flex-1 px-4 py-3.5 rounded-xl bg-[#0b1329] border border-slate-800 text-xs text-white focus:outline-none focus:border-sky-500 transition"
             />
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-brand-500 via-amber-400 to-cyan-400 hover:from-brand-400 hover:to-cyan-300 font-extrabold text-black text-xs flex items-center gap-1.5 shadow-lg shadow-brand-500/20 transition disabled:opacity-50 hover:scale-105"
+              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-bold text-white text-xs flex items-center gap-1.5 shadow-lg shadow-sky-500/25 transition disabled:opacity-50 active:scale-95"
             >
               Send <Send className="w-3.5 h-3.5" />
             </button>

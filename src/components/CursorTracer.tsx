@@ -29,7 +29,7 @@ export function CursorTracer() {
 
     window.addEventListener('resize', handleResize);
 
-    const themeColors = ['#ffc700', '#ff9100', '#00f0ff', '#ffffff'];
+    const themeColors = ['#38bdf8', '#0284c7', '#06b6d4', '#e2e8f0'];
 
     interface Particle {
       x: number;

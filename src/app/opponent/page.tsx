@@ -50,23 +50,23 @@ export default function OpponentAnalysisPage() {
     },
   };
 
-  const oppData = sportOpponentData[activeSport] || sportOpponentData.Football;
+  const oppData = (sportOpponentData as any)[activeSport] || sportOpponentData.Football;
 
   return (
     <AuthGuard>
       <div className="space-y-8">
-        <div className="bg-dark-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div className="pro-card p-6 shadow-xl">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xl">{config.icon}</span>
-            <span className="text-[10px] font-black uppercase text-brand-400 tracking-widest">{config.name} Scouting Engine</span>
+            <span className="text-[10px] font-black uppercase text-sky-400 tracking-widest">{config.name} Scouting Engine</span>
           </div>
           <h1 className="text-2xl font-black text-white">Opponent Analysis & Pre-Match AI Strategy</h1>
           <p className="text-xs text-slate-400">Analyze opponent video footage to uncover attack patterns, defensive gaps, and tactical tendencies for {config.name}</p>
         </div>
 
         {userMatches.length === 0 ? (
-          <div className="glass-panel border border-brand-500/30 rounded-3xl p-12 text-center space-y-6 shadow-2xl">
-            <div className="w-16 h-16 rounded-3xl bg-brand-500/10 border border-brand-500/30 text-brand-400 flex items-center justify-center mx-auto shadow-xl">
+          <div className="pro-card p-12 text-center space-y-6 shadow-2xl">
+            <div className="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center mx-auto shadow-xl">
               <FolderPlus className="w-8 h-8" />
             </div>
             <div className="max-w-md mx-auto space-y-2">
@@ -77,30 +77,30 @@ export default function OpponentAnalysisPage() {
             </div>
             <Link
               href="/upload"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brand-500 via-amber-400 to-cyan-400 font-black text-black text-xs uppercase tracking-wider shadow-xl shadow-brand-500/25 transition hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-bold text-white text-xs uppercase tracking-wider shadow-xl shadow-sky-500/25 transition active:scale-95"
             >
               <Upload className="w-4 h-4" /> Upload Opponent Video <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         ) : (
-          <div className="bg-dark-900 border border-brand-500/30 rounded-2xl p-6 shadow-xl space-y-4">
-            <div className="flex items-center gap-2 text-brand-400 font-extrabold text-xs uppercase tracking-wider">
+          <div className="pro-card p-6 shadow-xl space-y-4">
+            <div className="flex items-center gap-2 text-sky-400 font-extrabold text-xs uppercase tracking-wider">
               <ShieldAlert className="w-4 h-4" />
               Pre-Match AI Game Plan vs {oppData.opponent} ({config.name})
             </div>
 
             <div className="space-y-3">
-              <div className="p-3.5 rounded-xl bg-dark-950 border border-slate-800 text-xs text-slate-200">
-                <strong className="text-brand-400 font-bold block mb-1">{oppData.obs1Title}</strong>
+              <div className="p-3.5 rounded-xl bg-[#0b1329] border border-slate-800 text-xs text-slate-200">
+                <strong className="text-sky-400 font-bold block mb-1">{oppData.obs1Title}</strong>
                 {oppData.obs1Desc}
               </div>
 
-              <div className="p-3.5 rounded-xl bg-dark-950 border border-slate-800 text-xs text-slate-200">
+              <div className="p-3.5 rounded-xl bg-[#0b1329] border border-slate-800 text-xs text-slate-200">
                 <strong className="text-amber-400 font-bold block mb-1">{oppData.obs2Title}</strong>
                 {oppData.obs2Desc}
               </div>
 
-              <div className="p-3.5 rounded-xl bg-brand-500/10 border border-brand-500/30 text-xs text-slate-200">
+              <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-slate-200">
                 <strong className="text-emerald-400 font-bold block mb-1">{oppData.recTitle}</strong>
                 {oppData.recDesc}
               </div>

@@ -51,23 +51,23 @@ export default function PerformanceHistoryPage() {
     },
   };
 
-  const perfData = sportPerformanceData[activeSport] || sportPerformanceData.Football;
+  const perfData = (sportPerformanceData as any)[activeSport] || sportPerformanceData.Football;
 
   return (
     <AuthGuard>
       <div className="space-y-8">
-        <div className="glass-panel border border-brand-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl">
+        <div className="pro-card p-6 sm:p-8 shadow-2xl">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xl">{config.icon}</span>
-            <span className="text-[10px] font-black uppercase text-brand-400 tracking-widest">{config.name} Analytics</span>
+            <span className="text-[10px] font-black uppercase text-sky-400 tracking-widest">{config.name} Analytics</span>
           </div>
           <h1 className="text-3xl font-black text-white tracking-tight">{config.name} Performance History & Multi-Match Trends</h1>
           <p className="text-xs text-slate-300 mt-1">Track longitudinal rating evolution across technical, tactical, physical, and decision-making dimensions</p>
         </div>
 
         {userMatches.length === 0 ? (
-          <div className="glass-panel border border-brand-500/30 rounded-3xl p-12 text-center space-y-6 shadow-2xl">
-            <div className="w-16 h-16 rounded-3xl bg-brand-500/10 border border-brand-500/30 text-brand-400 flex items-center justify-center mx-auto shadow-xl">
+          <div className="pro-card p-12 text-center space-y-6 shadow-2xl">
+            <div className="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center mx-auto shadow-xl">
               <FolderPlus className="w-8 h-8" />
             </div>
             <div className="max-w-md mx-auto space-y-2">
@@ -78,7 +78,7 @@ export default function PerformanceHistoryPage() {
             </div>
             <Link
               href="/upload"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brand-500 via-amber-400 to-cyan-400 font-black text-black text-xs uppercase tracking-wider shadow-xl shadow-brand-500/25 transition hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-bold text-white text-xs uppercase tracking-wider shadow-xl shadow-sky-500/25 transition active:scale-95"
             >
               <Upload className="w-4 h-4" /> Upload First Match <ArrowRight className="w-4 h-4" />
             </Link>
@@ -86,18 +86,18 @@ export default function PerformanceHistoryPage() {
         ) : (
           <>
             {/* Main Multi-Match Trend Chart */}
-            <div className="glass-panel border border-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-4">
+            <div className="pro-card p-6 sm:p-8 shadow-2xl space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 text-brand-400" />
+                    <TrendingUp className="w-4 h-4 text-sky-400" />
                     {config.name} Rating Evolution Trend
                   </h2>
                   <p className="text-xs text-slate-400">Progress across analyzed {config.name} matches</p>
                 </div>
                 <div className="flex items-center gap-4 text-xs font-bold">
                   <span className="text-emerald-400">● Overall</span>
-                  <span className="text-cyan-400">● Tactical / Technical</span>
+                  <span className="text-sky-400">● Tactical / Technical</span>
                 </div>
               </div>
 
@@ -111,16 +111,16 @@ export default function PerformanceHistoryPage() {
                           <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                         </linearGradient>
                         <linearGradient id="colorTactical" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#00f0ff" stopOpacity={0.4} />
-                          <stop offset="95%" stopColor="#00f0ff" stopOpacity={0} />
+                          <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.4} />
+                          <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#243454" />
                       <XAxis dataKey="match" stroke="#64748b" tick={{ fontSize: 11, fontWeight: 700 }} />
                       <YAxis domain={[50, 100]} stroke="#64748b" tick={{ fontSize: 11, fontWeight: 700 }} />
-                      <Tooltip contentStyle={{ backgroundColor: '#0b0f17', borderColor: '#334155', borderRadius: '12px', fontSize: '12px' }} />
+                      <Tooltip contentStyle={{ backgroundColor: '#0b1329', borderColor: '#243454', borderRadius: '12px', fontSize: '12px', color: '#fff' }} />
                       <Area type="monotone" dataKey="Overall" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorOverall)" />
-                      <Area type="monotone" dataKey="Tactical" stroke="#00f0ff" strokeWidth={2} fillOpacity={1} fill="url(#colorTactical)" />
+                      <Area type="monotone" dataKey="Tactical" stroke="#38bdf8" strokeWidth={2} fillOpacity={1} fill="url(#colorTactical)" />
                     </AreaChart>
                   </ResponsiveContainer>
                 ) : (
@@ -131,20 +131,20 @@ export default function PerformanceHistoryPage() {
 
             {/* Improvement Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-6 rounded-3xl glass-panel glass-panel-gold-hover border border-slate-800/80 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-brand-400">Highest Improved Dimension</span>
+              <div className="p-6 rounded-2xl pro-card space-y-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-sky-400">Highest Improved Dimension</span>
                 <h3 className="text-xl font-black text-white">{perfData.highestTitle}</h3>
                 <p className="text-xs text-slate-300">{perfData.highestDesc}</p>
               </div>
 
-              <div className="p-6 rounded-3xl glass-panel glass-panel-hover border border-slate-800/80 space-y-2">
+              <div className="p-6 rounded-2xl pro-card space-y-2">
                 <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400">Most Consistent Metric</span>
                 <h3 className="text-xl font-black text-white">{perfData.consistentTitle}</h3>
                 <p className="text-xs text-slate-300">{perfData.consistentDesc}</p>
               </div>
 
-              <div className="p-6 rounded-3xl glass-panel glass-panel-hover border border-slate-800/80 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-cyan-400">Predictive Estimate</span>
+              <div className="p-6 rounded-2xl pro-card space-y-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-sky-400">Predictive Estimate</span>
                 <h3 className="text-xl font-black text-white">Next Match Range: 85 - 88</h3>
                 <p className="text-xs text-slate-300">Estimated expected performance rating based on time-series regression modeling.</p>
               </div>

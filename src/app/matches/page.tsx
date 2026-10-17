@@ -20,22 +20,22 @@ export default function MatchListPage() {
   return (
     <AuthGuard>
       <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-dark-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pro-card p-6 shadow-xl">
           <div>
             <h1 className="text-2xl font-black text-white">Match History & Video Analytics</h1>
-            <p className="text-xs text-slate-400">All analyzed match footage, AI reports, and historical game state logs</p>
+            <p className="text-xs text-slate-400">All analyzed match footage, AI reports, and tactical game state logs</p>
           </div>
           <Link
             href="/upload"
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-500 via-amber-400 to-cyan-400 font-extrabold text-black text-xs flex items-center gap-2 shadow-lg shadow-brand-500/20 transition hover:scale-105"
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-bold text-white text-xs flex items-center gap-2 shadow-lg shadow-sky-500/25 transition active:scale-95"
           >
             <Upload className="w-4 h-4" /> Upload New Match
           </Link>
         </div>
 
         {userMatches.length === 0 ? (
-          <div className="glass-panel border border-brand-500/30 rounded-3xl p-12 text-center space-y-5 shadow-2xl">
-            <div className="w-16 h-16 rounded-3xl bg-brand-500/10 border border-brand-500/30 text-brand-400 flex items-center justify-center mx-auto shadow-xl">
+          <div className="pro-card p-12 text-center space-y-5 shadow-2xl">
+            <div className="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center mx-auto shadow-xl">
               <FolderPlus className="w-8 h-8" />
             </div>
             <div className="max-w-md mx-auto space-y-2">
@@ -46,7 +46,7 @@ export default function MatchListPage() {
             </div>
             <Link
               href="/upload"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brand-500 via-amber-400 to-cyan-400 font-black text-black text-xs uppercase tracking-wider shadow-xl shadow-brand-500/25 transition hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-bold text-white text-xs uppercase tracking-wider shadow-xl shadow-sky-500/25 transition active:scale-95"
             >
               <Upload className="w-4 h-4" /> Upload First Match <ArrowRight className="w-4 h-4" />
             </Link>
@@ -57,10 +57,10 @@ export default function MatchListPage() {
               <Link
                 key={m.id}
                 href={`/matches/analysis?id=${m.id}`}
-                className="p-5 rounded-2xl bg-dark-900 border border-slate-800 hover:border-brand-500/40 transition group block shadow-lg glass-panel-gold-hover"
+                className="pro-card p-5 group block shadow-lg hover:border-sky-500/60 transition"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20">
+                  <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20">
                     {m.matchType || 'Competitive'}
                   </span>
                   <span className="text-xs text-slate-400 font-mono flex items-center gap-1">
@@ -68,15 +68,15 @@ export default function MatchListPage() {
                   </span>
                 </div>
 
-                <h3 className="text-lg font-bold text-white group-hover:text-brand-300 transition-colors">{m.matchName}</h3>
+                <h3 className="text-lg font-bold text-white group-hover:text-sky-300 transition-colors">{m.matchName}</h3>
                 <p className="text-xs text-slate-400 mt-1">{m.teamName} vs {m.opponentName} • {m.venue}</p>
 
-                <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+                <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
                   <div className="text-xs">
                     <span className="text-slate-400">Match Status: </span>
                     <span className="font-extrabold text-emerald-400 text-xs ml-1 uppercase">{m.status}</span>
                   </div>
-                  <span className="text-xs font-bold text-brand-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  <span className="text-xs font-bold text-sky-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                     View Analysis <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>

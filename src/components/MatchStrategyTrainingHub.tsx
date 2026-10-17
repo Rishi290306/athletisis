@@ -26,9 +26,7 @@ interface DrillItem {
 
 export function MatchStrategyTrainingHub({ sport = 'Cricket', athleteName = 'Rishi Tiwari', matchName = 'Match Analysis' }: MatchStrategyTrainingHubProps) {
   const config = SPORT_CONFIGS[sport] || SPORT_CONFIGS['Cricket'];
-
   const [completedDrills, setCompletedDrills] = useState<Record<number, boolean>>({});
-  const [downloadNotice, setDownloadNotice] = useState<boolean>(false);
 
   const toggleDrillCompletion = (id: number) => {
     setCompletedDrills((prev) => ({
@@ -37,7 +35,6 @@ export function MatchStrategyTrainingHub({ sport = 'Cricket', athleteName = 'Ris
     }));
   };
 
-  // Sport-specific grounded training drills
   const getDrillsForSport = (): DrillItem[] => {
     if (sport === 'Cricket') {
       return [
@@ -75,96 +72,78 @@ export function MatchStrategyTrainingHub({ sport = 'Cricket', athleteName = 'Ris
             'Hold high finish stance for 2 seconds to reinforce core balance.',
           ],
         },
-        {
-          id: 3,
-          title: 'Spin Bowling Flight Loop & Turn Control',
-          focusArea: 'Revolutions & Flight Arc Variance',
-          priority: 'MEDIUM',
-          prescribedSets: '4 Sets x 10 Deliveries',
-          durationMins: 25,
-          equipment: 'Revolutions Counter Ball / Targets',
-          currentScore: 81.0,
-          targetScore: 92.0,
-          description: 'Flight trajectory flattened by 8° when batsmen stepped out.',
-          instructions: [
-            'Increase index/middle finger snap to generate higher RPM.',
-            'Toss the ball higher above the batsman eye level.',
-            'Vary release point by 5cm to induce uncertainty.',
-          ],
-        },
       ];
     } else if (sport === 'Volleyball') {
       return [
         {
-          id: 101,
-          title: 'Spike Approach Takeoff Delay Drill',
-          focusArea: 'Peak Vertical Jump Timing Over Double Block',
-          priority: 'HIGH',
-          prescribedSets: '4 Sets x 10 Spikes',
-          durationMins: 20,
-          equipment: 'High Set Setter / Plyo Box',
-          currentScore: 72.0,
-          targetScore: 86.0,
-          description: 'Takeoff initiated 0.12s too early on high sets, spiking into 2-man blocks.',
-          instructions: [
-            'Delay final explosive step-close plant by 0.1 seconds.',
-            'Strike the ball at absolute peak vertical extension (78cm).',
-            'Snap wrist downward toward deep cross-court corners.',
-          ],
-        },
-        {
-          id: 102,
-          title: 'Serve Receive Platform Stability Drill',
-          focusArea: 'Deep Float Serve Trajectory Reading',
-          priority: 'HIGH',
-          prescribedSets: '5 Sets x 12 Receives',
-          durationMins: 25,
-          equipment: 'Serve Machine / Defense Target',
-          currentScore: 76.0,
-          targetScore: 89.0,
-          description: 'Platform arms separated during fast float serve trajectory shifts.',
-          instructions: [
-            'Lock elbows and extend platform 1m before ball arrival.',
-            'Angle platform toward setter position 3.',
-            'Absorb ball pace with slight knee flex upon contact.',
-          ],
-        },
-      ];
-    } else {
-      // Football
-      return [
-        {
           id: 201,
-          title: 'Defensive Line Compactness & Press Trigger Drill',
-          focusArea: 'Midfield Compactness & Wing Traps',
+          title: '3-Step Spike Approach & Vertical Explosion Drill',
+          focusArea: 'Penultimate Foot Plant & Vertical Lift',
           priority: 'HIGH',
-          prescribedSets: '4 Sets x 8 Mins',
-          durationMins: 30,
-          equipment: 'Agility Cones & Full Pitch Grid',
-          currentScore: 75.0,
-          targetScore: 88.0,
-          description: 'Backline depth expanded to 21m during fast opponent counter-attacks.',
+          prescribedSets: '4 Sets x 10 Approaches',
+          durationMins: 20,
+          equipment: 'Vertec Vertical Jump Tester / Attack Line Marker',
+          currentScore: 76.0,
+          targetScore: 91.0,
+          description: 'Penultimate foot plant angle leaked horizontal momentum into the net during set 2.',
           instructions: [
-            'Maintain strict 12m vertical distance between defense and midfield.',
-            'Trigger wing press trap simultaneously when central midfielder steps up.',
-            'Force opposition passes outward toward sideline boundaries.',
+            'Initiate 3-step explosive approach starting behind the 3-meter attack line.',
+            'Plant penultimate right foot hard at a 30° brake angle to convert forward velocity.',
+            'Swing both arms explosively backward to forward-overhead for maximum vertical apex.',
           ],
         },
         {
           id: 202,
-          title: 'First-Touch Turn under High Press Drill',
-          focusArea: 'Scanning Frequency & Body Angle Control',
+          title: 'Overhead Block Penetration & Lateral Shuffling Drill',
+          focusArea: 'Hand Positioning Across Net Plane',
           priority: 'HIGH',
-          prescribedSets: '3 Sets x 12 Reps',
+          prescribedSets: '3 Sets x 12 Blocks',
           durationMins: 15,
-          equipment: 'Rebounder Board / Passer',
-          currentScore: 80.0,
-          targetScore: 91.0,
-          description: 'Scanned shoulder only 1 time before receiving central pass.',
+          equipment: 'Volleyball Net & Elastic Resistance Bands',
+          currentScore: 79.0,
+          targetScore: 88.0,
+          description: 'Hands were positioned 8cm behind the tape on quick middle attacks.',
           instructions: [
-            'Perform 2 quick shoulder scans before receiving the ball.',
-            'Take first touch into open space away from defender pressure.',
-            'Execute 1-touch layoff to wing option when pressed from behind.',
+            'Execute two-step lateral shuffle along the net band.',
+            'Press shoulders and reach hands actively over the tape into opponent space.',
+            'Keep core engaged and eyes focused on setter ball contact.',
+          ],
+        },
+      ];
+    } else { // Football & default
+      return [
+        {
+          id: 301,
+          title: 'High-Press Recovery & Closing Speed Drill',
+          focusArea: 'Deceleration Control & Low Body Stance',
+          priority: 'HIGH',
+          prescribedSets: '4 Sets x 8 Sprints',
+          durationMins: 18,
+          equipment: 'Agility Cones & Resistance Band',
+          currentScore: 75.5,
+          targetScore: 88.5,
+          description: 'Footwork decelerated 1.2s too early when pressing opponent wingers at min 14:20.',
+          instructions: [
+            'Sprint 15 meters towards target cone at maximum velocity.',
+            'Shorten stride 3 meters before cone to drop center of gravity.',
+            'Maintain low 45° defensive stance to force opponent wide.',
+          ],
+        },
+        {
+          id: 302,
+          title: 'Box-to-Box Transition & First-Touch Acceleration',
+          focusArea: 'Directional Ball Control & Half-Turn',
+          priority: 'HIGH',
+          prescribedSets: '3 Sets x 10 Reps',
+          durationMins: 15,
+          equipment: 'Football & Rebounder Board',
+          currentScore: 78.0,
+          targetScore: 90.0,
+          description: 'First touch under defensive pressure yielded a 0.6s delay before distribution.',
+          instructions: [
+            'Receive pass on the back foot while scanning shoulder.',
+            'Push ball into open channel in a single fluid motion.',
+            'Accelerate immediately into passing lane within 2 touches.',
           ],
         },
       ];
@@ -172,254 +151,71 @@ export function MatchStrategyTrainingHub({ sport = 'Cricket', athleteName = 'Ris
   };
 
   const drills = getDrillsForSport();
-  const completedCount = Object.values(completedDrills).filter(Boolean).length;
-
-  const handleDownloadCheatsheet = () => {
-    setDownloadNotice(true);
-    setTimeout(() => setDownloadNotice(false), 3000);
-  };
 
   return (
-    <div className="glass-panel border border-slate-800/80 rounded-3xl p-5 sm:p-7 shadow-2xl space-y-7">
-      {/* Module Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-brand-500/10 text-brand-400 border border-brand-500/30 flex items-center gap-1.5">
-              <Dumbbell className="w-3.5 h-3.5" /> Actionable Training Engine
-            </span>
-            <span className="text-xs text-slate-400 font-mono">100% Grounded from Match Video</span>
-          </div>
-          <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-            AI Match Strategy & Custom Training Drill Generator
-          </h2>
-          <p className="text-xs text-slate-300 mt-1">
-            Personalized training drills, biomechanical fixes, and pre-match tactical directives tailored to your match video.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleDownloadCheatsheet}
-            className="px-4 py-2.5 rounded-2xl bg-dark-950 border border-slate-800 hover:border-brand-500/40 text-slate-200 hover:text-white text-xs font-black flex items-center gap-2 transition hover:scale-105"
-          >
-            <FileText className="w-4 h-4 text-brand-400" /> Export Tactical Cheatsheet
-          </button>
-        </div>
-      </div>
-
-      {downloadNotice && (
-        <div className="p-3.5 rounded-2xl bg-brand-500/15 border border-brand-500/40 text-brand-300 text-xs font-bold flex items-center justify-between animate-fade-in shadow-xl">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-brand-400" />
-            Tactical Game-Plan Cheatsheet generated and saved to your account reports!
-          </div>
-        </div>
-      )}
-
-      {/* SECTION 1: Match Video Technical Diagnosis Cards */}
-      <div className="space-y-3">
-        <h3 className="text-xs font-black text-slate-300 uppercase tracking-widest flex items-center gap-2">
-          <ShieldAlert className="w-4 h-4 text-amber-400" /> 1. Video Technical Flaws & Diagnosis Breakdown
-        </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 rounded-2xl bg-dark-950/80 border border-amber-500/30 text-xs space-y-2 shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-black uppercase text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                High Priority
-              </span>
-              <span className="text-[10px] text-slate-400 font-mono">Timestamp 04:12</span>
-            </div>
-            <h4 className="font-extrabold text-white text-sm">
-              {sport === 'Cricket' ? 'Over-Pitched Full Delivery Trajectory' : sport === 'Volleyball' ? 'Early Takeoff into Double Block' : 'Defensive Transition Gap'}
-            </h4>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
-              {sport === 'Cricket'
-                ? 'Pitching 0.5m too full outside off-stump allowed opposition boundary strokes.'
-                : sport === 'Volleyball'
-                ? 'Jumped 0.12s too early on high set, spiking directly into 2-man net block.'
-                : 'Backline spread expanded to 21m during fast opponent counter-attack.'}
-            </p>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-dark-950/80 border border-brand-500/30 text-xs space-y-2 shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-black uppercase text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded border border-brand-500/20">
-                High Priority
-              </span>
-              <span className="text-[10px] text-slate-400 font-mono">Timestamp 08:45</span>
-            </div>
-            <h4 className="font-extrabold text-white text-sm">
-              {sport === 'Cricket' ? 'Lead Toe Footwork Angle Shift' : sport === 'Volleyball' ? 'Serve Receive Platform Separation' : 'Pre-Receive Shoulder Scan Frequency'}
-            </h4>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
-              {sport === 'Cricket'
-                ? 'Lead foot toe was angled 15° outward, reducing weight transfer into drive shot.'
-                : sport === 'Volleyball'
-                ? 'Platform arms separated during fast float serve trajectory shifts.'
-                : 'Player scanned shoulder only 1 time before receiving central pass.'}
-            </p>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-dark-950/80 border border-cyan-500/30 text-xs space-y-2 shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-black uppercase text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
-                Medium Priority
-              </span>
-              <span className="text-[10px] text-slate-400 font-mono">Timestamp 12:30</span>
-            </div>
-            <h4 className="font-extrabold text-white text-sm">
-              {sport === 'Cricket' ? 'Seam Release Alignment Variance' : sport === 'Volleyball' ? 'Block Line Net Penetration' : 'Wing Trap Synchronization Delay'}
-            </h4>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
-              {sport === 'Cricket'
-                ? 'Wrist position tilted 8° inward, reducing outswing movement off good length.'
-                : sport === 'Volleyball'
-                ? 'Block reach delayed by 10cm, allowing ball to land along sidelines.'
-                : 'Wingers delayed high-press trap trigger by 0.7s during central press.'}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* SECTION 2: Custom Interactive Training Drill Cards */}
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-          <h3 className="text-xs font-black text-slate-300 uppercase tracking-widest flex items-center gap-2">
-            <Dumbbell className="w-4 h-4 text-brand-400" /> 2. Tailored Custom Training Drills
+    <div className="pro-card p-4 space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="flex items-center gap-2">
+          <Dumbbell className="w-4 h-4 text-sky-400" />
+          <h3 className="text-sm font-bold text-white uppercase tracking-wider">
+            AI Strategy & Actionable Training Drill Generator
           </h3>
-          <span className="text-xs font-bold text-slate-400">
-            Completed <strong className="text-emerald-400">{completedCount}</strong> of {drills.length} Drills
-          </span>
         </div>
+        <span className="text-xs font-mono text-slate-400">
+          Tailored for: <span className="text-white font-bold">{athleteName}</span>
+        </span>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          {drills.map((drill) => {
-            const isDone = !!completedDrills[drill.id];
-            return (
-              <div
-                key={drill.id}
-                className={`p-5 rounded-3xl border transition-all duration-300 flex flex-col justify-between space-y-4 shadow-xl relative overflow-hidden ${
-                  isDone
-                    ? 'bg-emerald-500/10 border-emerald-500/40 shadow-[0_0_25px_rgba(16,185,129,0.15)]'
-                    : 'bg-dark-950/90 border-slate-800 hover:border-brand-500/40'
-                }`}
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-brand-500/10 text-brand-400 border border-brand-500/20">
+      {/* Drill Cards List */}
+      <div className="space-y-3">
+        {drills.map((drill) => {
+          const isDone = completedDrills[drill.id] || false;
+          return (
+            <div
+              key={drill.id}
+              className={`p-4 rounded-lg border transition ${
+                isDone
+                  ? 'bg-emerald-950/20 border-emerald-800/40 opacity-75'
+                  : 'bg-[#090a0f] border-slate-800 hover:border-slate-700'
+              }`}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-800/60">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-sky-500/20 text-sky-400 border border-sky-500/30">
                       {drill.focusArea}
                     </span>
-                    <span className="text-[11px] text-slate-400 font-mono flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-slate-500" /> {drill.durationMins} Mins
-                    </span>
+                    <span className="text-xs font-mono text-slate-400">{drill.prescribedSets} • {drill.durationMins} min</span>
                   </div>
-
-                  <div>
-                    <h4 className="text-base font-extrabold text-white">{drill.title}</h4>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">{drill.description}</p>
-                  </div>
-
-                  <div className="p-3 rounded-2xl bg-dark-900/80 border border-slate-800 space-y-1.5 text-xs">
-                    <div className="flex justify-between font-bold text-slate-300 text-[11px]">
-                      <span>Prescribed Volume:</span>
-                      <span className="text-brand-400 font-mono">{drill.prescribedSets}</span>
-                    </div>
-                    <div className="flex justify-between font-bold text-slate-300 text-[11px]">
-                      <span>Equipment Needed:</span>
-                      <span className="text-slate-400 font-normal">{drill.equipment}</span>
-                    </div>
-                  </div>
-
-                  {/* Step-by-Step Instructions List */}
-                  <div className="space-y-1.5 pt-1 text-xs">
-                    <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Execution Steps:</span>
-                    <ul className="space-y-1 text-slate-300 text-[11px]">
-                      {drill.instructions.map((inst, idx) => (
-                        <li key={idx} className="flex items-start gap-1.5">
-                          <span className="text-brand-400 font-bold">•</span>
-                          <span>{inst}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Target Metric Score Improvement Bar */}
-                  <div className="space-y-1 pt-2">
-                    <div className="flex justify-between text-xs font-bold text-slate-300">
-                      <span>Target Score Improvement</span>
-                      <span className="text-emerald-400 font-mono">
-                        {drill.currentScore} → {drill.targetScore} / 100
-                      </span>
-                    </div>
-                    <div className="w-full h-2.5 bg-dark-900 rounded-full overflow-hidden border border-slate-800">
-                      <div
-                        className="h-full bg-gradient-to-r from-brand-500 to-emerald-400 rounded-full transition-all duration-500"
-                        style={{ width: `${(drill.targetScore / 100) * 100}%` }}
-                      />
-                    </div>
-                  </div>
+                  <h4 className="text-sm font-bold text-white mt-1">{drill.title}</h4>
                 </div>
 
-                {/* Completion Toggle Button */}
                 <button
                   onClick={() => toggleDrillCompletion(drill.id)}
-                  className={`w-full py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 transition-all duration-300 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition shrink-0 ${
                     isDone
-                      ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25'
-                      : 'bg-dark-900 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:scale-[1.02]'
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
                   }`}
                 >
-                  {isDone ? (
-                    <>
-                      <Check className="w-4 h-4 stroke-[3]" /> Drill Completed!
-                    </>
-                  ) : (
-                    <>
-                      <Dumbbell className="w-4 h-4 text-brand-400" /> Mark Drill as Completed
-                    </>
-                  )}
+                  <CheckCircle2 className="w-4 h-4" />
+                  {isDone ? 'Drill Completed' : 'Mark as Complete'}
                 </button>
               </div>
-            );
-          })}
-        </div>
-      </div>
 
-      {/* SECTION 3: Next Match Opponent Game-Plan Directives */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-dark-950 via-dark-900 to-dark-950 border border-brand-500/30 space-y-4 shadow-xl">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-2">
-            <Target className="w-4 h-4 text-brand-400" /> 3. Next Match Tactical Cheatsheet & Directives
-          </h3>
-          <span className="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-brand-500/10 text-brand-400 border border-brand-500/20">
-            Pre-Match Cheatsheet
-          </span>
-        </div>
+              <p className="text-xs text-slate-300 mt-2">{drill.description}</p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          <div className="p-4 rounded-2xl bg-dark-950/80 border border-slate-800 space-y-1.5">
-            <div className="font-extrabold text-brand-300 text-sm">Directive #1: Pitching Length Discipline</div>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              Maintain consistent good length pitching (6.5m to 7.5m from stumps). Avoid pitching full when batsmen step out.
-            </p>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-dark-950/80 border border-slate-800 space-y-1.5">
-            <div className="font-extrabold text-cyan-300 text-sm">Directive #2: Soft Front-Foot Stance</div>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              Play with a soft front-foot defensive nudging stance when ball moves inward on good length outside off-stump.
-            </p>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-dark-950/80 border border-slate-800 space-y-1.5">
-            <div className="font-extrabold text-emerald-300 text-sm">Directive #3: Defensive Transition Compactness</div>
-            <p className="text-[11px] text-slate-300 leading-relaxed">
-              Compact central defensive spacing to 12m during opponent transition attacks to block central passing corridors.
-            </p>
-          </div>
-        </div>
+              {/* Score Target Bar */}
+              <div className="mt-3 p-2.5 rounded bg-[#12151e] border border-slate-800/80 flex items-center justify-between text-xs">
+                <span className="font-semibold text-slate-400">Target Score Improvement:</span>
+                <span className="font-mono font-bold text-sky-400">
+                  {drill.currentScore.toFixed(1)} → <span className="text-emerald-400">{drill.targetScore.toFixed(1)} / 100</span>
+                </span>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

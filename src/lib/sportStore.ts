@@ -26,45 +26,15 @@ export interface SportConfig {
     tertiaryStatLabel: string;
     tertiaryStatValue: string;
   };
-  heatmapTabs: { id: string; label: string }[];
 }
 
 export const SPORT_CONFIGS: Record<SportType, SportConfig> = {
-  Football: {
-    id: 'Football',
-    name: 'Football',
-    icon: '⚽',
-    badge: 'Primary MVP Active',
-    themeColor: '#ffc700',
-    positions: ['Center Midfielder', 'Striker', 'Winger', 'Center Back', 'Fullback', 'Goalkeeper'],
-    dnaLabels: {
-      technical: 'Technical Precision',
-      tactical: 'Tactical Awareness',
-      physical: 'Physical Peak',
-      decision: 'Decision Making',
-      consistency: 'Consistency Score',
-    },
-    sampleMetrics: {
-      primaryStatLabel: 'Pass Accuracy',
-      primaryStatValue: '85.7%',
-      secondaryStatLabel: 'Peak Sprint Speed',
-      secondaryStatValue: '29.4 km/h',
-      tertiaryStatLabel: 'Distance Covered',
-      tertiaryStatValue: '10.4 km',
-    },
-    heatmapTabs: [
-      { id: 'movement', label: 'Movement Pitch' },
-      { id: 'touch', label: 'Pass & Touch' },
-      { id: 'defensive', label: 'Tackle & Press' },
-      { id: 'mistake', label: 'Turnover Heatmap' },
-    ],
-  },
   Cricket: {
     id: 'Cricket',
     name: 'Cricket',
     icon: '🏏',
-    badge: 'Engine Active',
-    themeColor: '#00f0ff',
+    badge: 'CV Telemetry Active',
+    themeColor: '#38bdf8',
     positions: ['Batsman (Opener)', 'Batsman (Middle-Order)', 'Fast Bowler', 'Spin Bowler', 'All-Rounder', 'Wicketkeeper'],
     dnaLabels: {
       technical: 'Batting Precision',
@@ -81,41 +51,52 @@ export const SPORT_CONFIGS: Record<SportType, SportConfig> = {
       tertiaryStatLabel: 'Good Length Accuracy',
       tertiaryStatValue: '84.0%',
     },
-    heatmapTabs: [
-      { id: 'wagonWheel', label: '360° Wagon Wheel' },
-      { id: 'pitchMap', label: '22-Yard Pitch Map' },
-      { id: 'fielding', label: 'Fielding Coverage' },
-      { id: 'boundary', label: 'Boundary Zones' },
-    ],
+  },
+  Football: {
+    id: 'Football',
+    name: 'Football / Soccer',
+    icon: '⚽',
+    badge: 'CV Telemetry Active',
+    themeColor: '#0ea5e9',
+    positions: ['Center Midfielder', 'Striker', 'Winger', 'Center Back', 'Fullback', 'Goalkeeper'],
+    dnaLabels: {
+      technical: 'Technical Precision',
+      tactical: 'Tactical Awareness',
+      physical: 'Physical Peak',
+      decision: 'Decision Making',
+      consistency: 'Consistency Score',
+    },
+    sampleMetrics: {
+      primaryStatLabel: 'Pass Accuracy',
+      primaryStatValue: '85.7%',
+      secondaryStatLabel: 'Peak Sprint Speed',
+      secondaryStatValue: '32.4 km/h',
+      tertiaryStatLabel: 'Distance Covered',
+      tertiaryStatValue: '10.4 km',
+    },
   },
   Volleyball: {
     id: 'Volleyball',
     name: 'Volleyball',
     icon: '🏐',
-    badge: 'Engine Active',
-    themeColor: '#ff007f',
-    positions: ['Outside Hitter (Spiker)', 'Setter', 'Middle Blocker', 'Opposite Hitter', 'Libero (Defender)'],
+    badge: 'CV Telemetry Active',
+    themeColor: '#ec4899',
+    positions: ['Outside Hitter', 'Setter', 'Middle Blocker', 'Opposite Hitter', 'Libero'],
     dnaLabels: {
-      technical: 'Spiking Power',
-      tactical: 'Setting Precision',
+      technical: 'Spike Power',
+      tactical: 'Setter Distribution',
       physical: 'Vertical Jump',
-      decision: 'Tactical Reading',
-      consistency: 'Defense & Digging',
+      decision: 'Block Reading',
+      consistency: 'Digging Accuracy',
     },
     sampleMetrics: {
       primaryStatLabel: 'Spike Velocity',
       primaryStatValue: '92.4 km/h',
-      secondaryStatLabel: 'Spike Jump Height',
+      secondaryStatLabel: 'Spike Height',
       secondaryStatValue: '78 cm',
       tertiaryStatLabel: 'Dig Efficiency',
       tertiaryStatValue: '86.2%',
     },
-    heatmapTabs: [
-      { id: 'spike', label: 'Spike Attack Zones' },
-      { id: 'serve', label: 'Serve Placement' },
-      { id: 'setter', label: 'Setter Distribution' },
-      { id: 'block', label: 'Block Defense Grid' },
-    ],
   },
 };
 
@@ -125,6 +106,6 @@ interface SportStore {
 }
 
 export const useSportStore = create<SportStore>((set) => ({
-  activeSport: 'Football',
+  activeSport: 'Cricket',
   setSport: (sport) => set({ activeSport: sport }),
 }));

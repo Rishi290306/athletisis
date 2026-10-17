@@ -53,7 +53,7 @@ function ProcessingContent() {
   const stages = [
     { key: 'FRAME_PREPROCESSING', label: 'Frame Preprocessing & Metadata Extraction', pct: 10 },
     { key: 'COMPUTER_VISION', label: 'YOLO Detection & Persistent ByteTrack Player Tracking', pct: 35 },
-    { key: 'EVENT_DETECTION', label: 'Football Engine Standardized Event Extraction', pct: 60 },
+    { key: 'EVENT_DETECTION', label: 'Sport Engine Kinematic & Event Extraction', pct: 60 },
     { key: 'PERFORMANCE_ENGINE', label: 'Performance Engine Scoring & Spatial Heatmaps', pct: 80 },
     { key: 'COMPLETED', label: 'Recommendations, Mistake Clips & Report Generation', pct: 100 },
   ];
@@ -62,17 +62,17 @@ function ProcessingContent() {
 
   return (
     <div className="max-w-xl mx-auto py-12 space-y-8">
-      <div className="bg-dark-900 border border-slate-800 rounded-2xl p-8 shadow-2xl space-y-6 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center mx-auto">
+      <div className="pro-card p-8 shadow-2xl space-y-6 text-center">
+        <div className="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center mx-auto">
           {job?.status === 'COMPLETED' ? (
-            <CheckCircle2 className="w-8 h-8 text-brand-400" />
+            <CheckCircle2 className="w-8 h-8 text-sky-400" />
           ) : (
-            <Loader2 className="w-8 h-8 text-brand-400 animate-spin" />
+            <Loader2 className="w-8 h-8 text-sky-400 animate-spin" />
           )}
         </div>
 
         <div>
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-brand-500">
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-sky-400">
             Asynchronous Background Execution
           </span>
           <h1 className="text-2xl font-black text-white mt-1">AI Video Processing Pipeline</h1>
@@ -83,11 +83,11 @@ function ProcessingContent() {
         <div className="space-y-2">
           <div className="flex justify-between text-xs font-bold text-slate-300">
             <span>Overall Progress</span>
-            <span className="text-brand-400 font-mono">{currentPct}%</span>
+            <span className="text-sky-400 font-mono">{currentPct}%</span>
           </div>
-          <div className="w-full h-3 bg-dark-950 rounded-full overflow-hidden border border-slate-800">
+          <div className="w-full h-3 bg-[#0b1329] rounded-full overflow-hidden border border-slate-800">
             <div
-              className="h-full bg-gradient-to-r from-brand-500 to-emerald-400 rounded-full transition-all duration-500 shadow-lg shadow-brand-500/30"
+              className="h-full bg-gradient-to-r from-sky-500 to-emerald-400 rounded-full transition-all duration-500 shadow-lg shadow-sky-500/30"
               style={{ width: `${currentPct}%` }}
             />
           </div>
@@ -102,14 +102,14 @@ function ProcessingContent() {
                 key={stg.key}
                 className={`p-3 rounded-xl border text-xs flex items-center justify-between transition ${
                   isDone
-                    ? 'bg-brand-500/10 border-brand-500/20 text-slate-200'
-                    : 'bg-dark-950 border-slate-800/60 text-slate-500'
+                    ? 'bg-sky-500/10 border-sky-500/20 text-slate-200'
+                    : 'bg-[#0b1329] border-slate-800/60 text-slate-500'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
                   <div
                     className={`w-2 h-2 rounded-full ${
-                      isDone ? 'bg-brand-400 shadow-md shadow-brand-400' : 'bg-slate-700'
+                      isDone ? 'bg-sky-400 shadow-md shadow-sky-400' : 'bg-slate-700'
                     }`}
                   />
                   <span className="font-medium">{stg.label}</span>
@@ -123,7 +123,7 @@ function ProcessingContent() {
         {job?.status === 'COMPLETED' && (
           <button
             onClick={() => router.push(`/matches/analysis?id=${matchId}`)}
-            className="w-full py-3.5 rounded-xl bg-brand-500 hover:bg-brand-600 font-extrabold text-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20 transition"
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-extrabold text-white text-xs flex items-center justify-center gap-2 shadow-lg shadow-sky-500/25 transition active:scale-95"
           >
             View Completed Match Report <ArrowRight className="w-4 h-4" />
           </button>

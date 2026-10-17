@@ -11,16 +11,16 @@ interface EventTimelineProps {
 export function EventTimeline({ events = [] }: EventTimelineProps) {
   if (events.length === 0) {
     return (
-      <div className="bg-dark-900 border border-slate-800 rounded-xl p-4 text-center text-slate-400 text-xs">
+      <div className="pro-card p-4 text-center text-slate-400 text-xs">
         No event timeline recorded yet.
       </div>
     );
   }
 
   return (
-    <div className="bg-dark-900 border border-slate-800 rounded-xl p-4 shadow-lg">
+    <div className="pro-card p-4 shadow-lg">
       <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider mb-3 flex items-center gap-2">
-        <Zap className="w-4 h-4 text-brand-400" />
+        <Zap className="w-4 h-4 text-sky-400" />
         Standardized Match Event Timeline ({events.length} Events)
       </h3>
 
@@ -37,7 +37,7 @@ export function EventTimeline({ events = [] }: EventTimelineProps) {
                   ? 'bg-red-500/10 border-red-500/20 text-red-200'
                   : isSuccess
                   ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-200'
-                  : 'bg-dark-950 border-slate-800 text-slate-300'
+                  : 'bg-[#0b1329] border-slate-800 text-slate-300'
               }`}
             >
               <div className="flex items-center gap-2.5">

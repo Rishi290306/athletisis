@@ -72,29 +72,29 @@ export default function TeamAnalyticsPage() {
     },
   };
 
-  const teamData = sportTeamData[activeSport] || sportTeamData.Football;
+  const teamData = (sportTeamData as any)[activeSport] || sportTeamData.Football;
 
   return (
     <AuthGuard>
       <div className="space-y-8">
-        <div className="bg-dark-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex items-center justify-between">
+        <div className="pro-card p-6 shadow-xl flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xl">{config.icon}</span>
-              <span className="text-[10px] font-black uppercase text-brand-400 tracking-widest">{config.name} Team Engine</span>
+              <span className="text-[10px] font-black uppercase text-sky-400 tracking-widest">{config.name} Team Engine</span>
             </div>
             <h1 className="text-2xl font-black text-white">{athlete?.teamName || 'My Team'} — {config.name} Team Analytics</h1>
             <p className="text-xs text-slate-400">Tactical positioning networks, player combinations, and team efficiency metrics</p>
           </div>
           <div className="text-right">
             <span className="text-xs text-slate-400 block">Team Rating</span>
-            <span className="text-3xl font-black text-brand-400">{userMatches.length > 0 ? '82.5' : '0.0'}</span>
+            <span className="text-3xl font-black text-sky-400">{userMatches.length > 0 ? '82.5' : '0.0'}</span>
           </div>
         </div>
 
         {userMatches.length === 0 ? (
-          <div className="glass-panel border border-brand-500/30 rounded-3xl p-12 text-center space-y-6 shadow-2xl">
-            <div className="w-16 h-16 rounded-3xl bg-brand-500/10 border border-brand-500/30 text-brand-400 flex items-center justify-center mx-auto shadow-xl">
+          <div className="pro-card p-12 text-center space-y-6 shadow-2xl">
+            <div className="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center mx-auto shadow-xl">
               <FolderPlus className="w-8 h-8" />
             </div>
             <div className="max-w-md mx-auto space-y-2">
@@ -105,7 +105,7 @@ export default function TeamAnalyticsPage() {
             </div>
             <Link
               href="/upload"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brand-500 via-amber-400 to-cyan-400 font-black text-black text-xs uppercase tracking-wider shadow-xl shadow-brand-500/25 transition hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-bold text-white text-xs uppercase tracking-wider shadow-xl shadow-sky-500/25 transition active:scale-95"
             >
               <Upload className="w-4 h-4" /> Upload First Match <ArrowRight className="w-4 h-4" />
             </Link>
@@ -113,9 +113,9 @@ export default function TeamAnalyticsPage() {
         ) : (
           <>
             {/* Network Diagram Visualization */}
-            <div className="bg-dark-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+            <div className="pro-card p-6 shadow-xl space-y-4">
               <h2 className="text-sm font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
-                <Activity className="w-4 h-4 text-brand-400" />
+                <Activity className="w-4 h-4 text-sky-400" />
                 {teamData.networkTitle}
               </h2>
 
@@ -128,23 +128,23 @@ export default function TeamAnalyticsPage() {
 
                 {/* Node Connections */}
                 <svg className="absolute inset-0 w-full h-full">
-                  <line x1="50%" y1="75%" x2="50%" y2="45%" stroke="#22c55e" strokeWidth="4" strokeOpacity="0.7" />
-                  <line x1="50%" y1="45%" x2="25%" y2="25%" stroke="#22c55e" strokeWidth="3" strokeOpacity="0.7" />
-                  <line x1="50%" y1="45%" x2="70%" y2="25%" stroke="#22c55e" strokeWidth="3" strokeOpacity="0.7" />
-                  <line x1="50%" y1="45%" x2="50%" y2="15%" stroke="#22c55e" strokeWidth="2" strokeOpacity="0.7" />
+                  <line x1="50%" y1="75%" x2="50%" y2="45%" stroke="#38bdf8" strokeWidth="4" strokeOpacity="0.8" />
+                  <line x1="50%" y1="45%" x2="25%" y2="25%" stroke="#38bdf8" strokeWidth="3" strokeOpacity="0.8" />
+                  <line x1="50%" y1="45%" x2="70%" y2="25%" stroke="#38bdf8" strokeWidth="3" strokeOpacity="0.8" />
+                  <line x1="50%" y1="45%" x2="50%" y2="15%" stroke="#38bdf8" strokeWidth="2" strokeOpacity="0.8" />
                 </svg>
 
                 {/* Player Nodes */}
-                {teamData.nodes.map((n) => (
+                {teamData.nodes.map((n: any) => (
                   <div
                     key={n.id}
                     className="absolute -translate-x-1/2 -translate-y-1/2 group cursor-pointer z-10"
                     style={{ left: `${n.x}%`, top: `${100 - n.y}%` }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-brand-500 text-black font-extrabold text-xs flex items-center justify-center shadow-lg shadow-brand-500/40 group-hover:scale-110 transition-transform">
+                    <div className="w-10 h-10 rounded-full bg-sky-500 text-white font-extrabold text-xs flex items-center justify-center shadow-lg shadow-sky-500/40 group-hover:scale-110 transition-transform">
                       {n.id}
                     </div>
-                    <span className="block text-[10px] font-bold text-white bg-black/90 px-2 py-0.5 rounded mt-1 shadow text-center whitespace-nowrap border border-slate-700">
+                    <span className="block text-[10px] font-bold text-white bg-[#0b1329]/95 px-2 py-0.5 rounded mt-1 shadow text-center whitespace-nowrap border border-slate-700">
                       {n.name}
                     </span>
                   </div>
@@ -154,19 +154,19 @@ export default function TeamAnalyticsPage() {
 
             {/* Team Strengths & Most Improved */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-5 rounded-2xl bg-dark-900 border border-slate-800 space-y-3">
+              <div className="p-5 rounded-2xl pro-card space-y-3">
                 <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">{config.name} Team Strengths</h3>
                 <ul className="space-y-2 text-xs text-slate-300">
-                  {teamData.strengths.map((s, idx) => (
+                  {teamData.strengths.map((s: string, idx: number) => (
                     <li key={idx} className="flex items-center gap-2">{s}</li>
                   ))}
                 </ul>
               </div>
 
-              <div className="p-5 rounded-2xl bg-dark-900 border border-slate-800 space-y-3">
+              <div className="p-5 rounded-2xl pro-card space-y-3">
                 <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Most Improved Player</h3>
-                <div className="p-3 rounded-xl bg-brand-500/10 border border-brand-500/30 text-xs">
-                  <span className="font-bold text-brand-400 block text-sm">{teamData.improved}</span>
+                <div className="p-3 rounded-xl bg-sky-500/10 border border-sky-500/30 text-xs">
+                  <span className="font-bold text-sky-400 block text-sm">{teamData.improved}</span>
                   <p className="text-slate-300 mt-1">{teamData.improvedDesc}</p>
                 </div>
               </div>

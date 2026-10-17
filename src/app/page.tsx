@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
-import { ArrowRight, Video, Cpu, Activity, Dumbbell, TrendingUp, Zap, Sparkles, Play, LogIn, UserCheck, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Video, Activity, Dumbbell, Play, LogIn, UserCheck, ShieldCheck, Compass, ShieldAlert } from 'lucide-react';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -16,42 +16,39 @@ export default function LandingPage() {
   };
 
   const tickerItems = [
-    '⚽ 94% PASSING ACCURACY',
-    '⚡ 29.4 KM/H PEAK SPRINT SPEED',
-    '📈 +29.5% POSITIONING IMPROVEMENT',
-    '🎯 87% CV CONFIDENCE SCORE',
-    '🧠 EXPLAINABLE AI DECISION BREAKDOWN',
-    '🛡️ PRE-MATCH AI OPPONENT STRATEGY',
+    '🏏 CRICKET CREASE DELIVERY TRAJECTORY & SEAM METRICS',
+    '⚽ FOOTBALL PASSING NETWORK & SPRINT VELOCITY',
+    '🏐 VOLLEYBALL SPIKE ATTACK & NET JUMP HEIGHT',
+    '🎯 17-POINT POSE SKELETON TRACKING',
+    '🩺 BIOMECHANICAL INJURY STRAIN RADAR',
+    '📄 PRINTABLE EXECUTIVE COACH REPORTS',
   ];
 
   return (
-    <div className="space-y-16 py-6 relative overflow-hidden">
-      {/* Ambient Background Orbs */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-500/15 rounded-full blur-[150px] pointer-events-none animate-pulse-gold" />
-      <div className="absolute top-1/3 right-5 w-96 h-96 bg-cyan-500/15 rounded-full blur-[130px] pointer-events-none animate-pulse-glow" />
-
-      {/* Ticker */}
-      <div className="w-full bg-dark-900/90 border-y border-brand-500/30 py-2.5 overflow-hidden backdrop-blur-xl shadow-lg">
-        <div className="animate-marquee whitespace-nowrap flex gap-8 items-center text-xs font-black tracking-widest text-brand-400">
+    <div className="space-y-12 py-6 relative">
+      
+      {/* Telemetry Live Ticker Bar */}
+      <div className="w-full bg-[#152037] border-y border-slate-700/80 py-2.5 overflow-hidden shadow-inner">
+        <div className="animate-marquee whitespace-nowrap flex gap-8 items-center text-xs font-mono font-bold tracking-wider text-sky-400">
           {tickerItems.concat(tickerItems).map((item, idx) => (
             <span key={idx} className="flex items-center gap-3">
-              {item} <span className="text-slate-700 font-normal">•</span>
+              {item} <span className="text-slate-600 font-normal">•</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* STARTUP LOGIN GATE IF NOT AUTHENTICATED */}
+      {/* SIGN IN GATE IF NOT AUTHENTICATED */}
       {!token ? (
-        <section className="max-w-lg mx-auto pt-4 relative z-10">
-          <div className="glass-panel border border-brand-500/40 rounded-3xl p-8 shadow-2xl space-y-6">
+        <section className="max-w-lg mx-auto pt-4 px-4">
+          <div className="pro-card p-8 space-y-6 shadow-2xl">
             <div className="text-center space-y-2">
-              <div className="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/30 text-brand-400 flex items-center justify-center mx-auto mb-2 shadow-[0_0_25px_rgba(255,199,0,0.3)] animate-float">
-                <LogIn className="w-7 h-7" />
+              <div className="w-12 h-12 rounded-xl bg-sky-600/20 border border-sky-500/40 text-sky-400 flex items-center justify-center mx-auto mb-2 font-bold text-xl shadow-sm">
+                A
               </div>
-              <h1 className="text-2xl font-black text-white tracking-tight">Sign In to Athletisis</h1>
+              <h1 className="text-2xl font-extrabold text-white tracking-tight">Sign In to Athletisis Workstation</h1>
               <p className="text-xs text-slate-300">
-                Log in to your account to view your sports performance analytics, heatmaps, and AI coaching.
+                Enter your credentials or click instant demo login below to access sports telemetry & pose tracking.
               </p>
             </div>
 
@@ -66,128 +63,107 @@ export default function LandingPage() {
                   router.push('/dashboard');
                 }
               }}
-              className="space-y-4"
+              className="space-y-4 text-xs"
             >
               <div>
-                <label className="block text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-1">Email Address</label>
+                <label className="block font-bold text-slate-200 uppercase tracking-wider mb-1">Email Address</label>
                 <input
                   name="email"
                   type="email"
                   required
-                  placeholder="name@example.com"
-                  className="w-full px-4 py-3.5 rounded-xl bg-dark-950/90 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500 transition"
+                  defaultValue="rishi.tiwari@athletisis.ai"
+                  className="w-full px-4 py-3 rounded-xl bg-[#0b1329] border border-slate-700 text-white focus:outline-none focus:border-sky-400 transition"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-extrabold text-slate-300 uppercase tracking-wider mb-1">Password</label>
+                <label className="block font-bold text-slate-200 uppercase tracking-wider mb-1">Password</label>
                 <input
                   name="password"
                   type="password"
                   required
-                  placeholder="••••••••"
-                  className="w-full px-4 py-3.5 rounded-xl bg-dark-950/90 border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500 transition"
+                  defaultValue="demo123"
+                  className="w-full px-4 py-3 rounded-xl bg-[#0b1329] border border-slate-700 text-white focus:outline-none focus:border-sky-400 transition"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-4 rounded-xl bg-gradient-to-r from-brand-500 via-amber-400 to-cyan-400 hover:from-brand-400 hover:to-cyan-300 font-black text-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-brand-500/25 transition hover:scale-[1.01]"
+                className="w-full py-3.5 rounded-xl bg-sky-600 hover:bg-sky-500 font-extrabold text-white uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-sky-600/30 transition"
               >
                 Sign In to Account <ArrowRight className="w-4 h-4" />
               </button>
             </form>
 
-            <div className="pt-4 border-t border-slate-800/80 space-y-3 text-center">
+            <div className="pt-4 border-t border-slate-700/80 space-y-3">
+              <div className="text-[11px] font-bold text-slate-400 text-center uppercase tracking-wider">
+                Instant Demo Access
+              </div>
               <button
-                type="button"
                 onClick={() => handleDemoLogin('rishi.tiwari@athletisis.ai')}
-                className="w-full py-3.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-brand-400 font-extrabold text-xs flex items-center justify-center gap-2 border border-brand-500/30 shadow-md transition hover:scale-[1.01]"
+                className="w-full py-3 rounded-xl bg-[#0b1329] hover:bg-slate-800 border border-slate-700 text-sky-400 font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm"
               >
-                ⚡ Instant Demo One-Click Login (Rishi Tiwari)
+                <UserCheck className="w-4 h-4 text-sky-400" />
+                Launch Demo Workstation (rishi.tiwari@athletisis.ai)
               </button>
-
-              <p className="text-xs text-slate-400">
-                Don't have an account yet?{' '}
-                <Link href="/register" className="text-brand-400 font-bold hover:underline">
-                  Register New Account →
-                </Link>
-              </p>
             </div>
           </div>
         </section>
       ) : (
-        /* HERO SECTION WHEN LOGGED IN */
-        <section className="text-center space-y-8 max-w-4xl mx-auto pt-4 relative z-10">
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass-panel border border-brand-500/40 text-brand-300 text-xs font-extrabold shadow-[0_0_30px_rgba(255,199,0,0.25)] animate-float">
-            <Sparkles className="w-4 h-4 text-brand-400" />
-            <span>Authenticated as {user?.fullName} ({user?.role})</span>
+        /* HERO SECTION FOR AUTHENTICATED USERS */
+        <section className="max-w-5xl mx-auto text-center space-y-6 pt-4 px-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-600/20 border border-sky-500/40 text-sky-300 text-xs font-bold shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            PRO SPORTS PERFORMANCE WORKSTATION ACTIVE
           </div>
 
-          <h1 className="text-5xl sm:text-7xl font-black tracking-tight text-white leading-[1.1]">
-            Understand Your Game.{' '}
-            <span className="text-gradient-gold block mt-2 drop-shadow-[0_0_40px_rgba(255,199,0,0.35)]">
-              Improve Your Performance.
-            </span>
+          <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+            Computer Vision Sports Analytics <br />
+            <span className="text-sky-400">& Biomechanical Pose Intelligence</span>
           </h1>
 
-          <p className="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
-            Upload game video and let Athletisis transform raw footage into computer-vision metrics, spatial heatmaps, decision analysis, and personalized coaching plans.
+          <p className="max-w-2xl mx-auto text-sm text-slate-300 leading-relaxed">
+            High-density match video telemetry, 2D tactical field maps, biomechanical strain radars, split-screen video comparison, and printable coach reports for Cricket 🏏, Football ⚽, and Volleyball 🏐.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-5 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <Link
-              href="/dashboard"
-              className="px-9 py-4 rounded-2xl bg-gradient-to-r from-brand-500 via-amber-400 to-cyan-400 hover:from-brand-400 hover:to-cyan-300 text-slate-950 font-black text-sm flex items-center gap-2.5 shadow-[0_0_40px_rgba(255,199,0,0.45)] hover:scale-105 transition-all duration-300 relative overflow-hidden group"
+              href="/matches/analysis?id=101"
+              className="px-6 py-3.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-sky-600/30 transition"
             >
-              <Zap className="w-4 h-4 fill-slate-950" /> Go to My Dashboard <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              Open Match #101 Workbench <ArrowRight className="w-4 h-4" />
             </Link>
+
             <Link
               href="/upload"
-              className="px-8 py-4 rounded-2xl glass-panel glass-panel-hover text-slate-200 font-bold text-sm border border-slate-700/80 transition-all duration-300"
+              className="px-6 py-3.5 rounded-xl bg-[#152037] hover:bg-slate-800 text-slate-200 font-bold text-xs uppercase tracking-wider border border-slate-700 flex items-center gap-2 transition shadow-sm"
             >
               Upload Match Footage
             </Link>
           </div>
+
+          {/* Feature Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 text-left">
+            <div className="pro-card p-5 space-y-2">
+              <Compass className="w-5 h-5 text-sky-400" />
+              <h3 className="text-sm font-bold text-white">2D Interactive Tactical Field Map</h3>
+              <p className="text-xs text-slate-300 leading-relaxed">Authentic vector surfaces for Cricket, Football, and Volleyball with synchronized timestamp video scrubbing.</p>
+            </div>
+
+            <div className="pro-card p-5 space-y-2">
+              <ShieldAlert className="w-5 h-5 text-amber-400" />
+              <h3 className="text-sm font-bold text-white">Biomechanical Injury Risk Radar</h3>
+              <p className="text-xs text-slate-300 leading-relaxed">Monitors joint strain, sprint deceleration load, and muscle fatigue (Hamstrings, ACL risk, Quadriceps).</p>
+            </div>
+
+            <div className="pro-card p-5 space-y-2">
+              <Dumbbell className="w-5 h-5 text-emerald-400" />
+              <h3 className="text-sm font-bold text-white">AI Strategy & Training Drill Hub</h3>
+              <p className="text-xs text-slate-300 leading-relaxed">Actionable drills with prescribed sets/reps, target score targets, and drill completion toggles.</p>
+            </div>
+          </div>
         </section>
       )}
-
-      {/* Core Feedback Loop Pipeline */}
-      <section className="glass-panel border border-slate-800/80 rounded-3xl p-8 sm:p-10 shadow-2xl relative">
-        <div className="text-center max-w-xl mx-auto mb-12">
-          <span className="text-xs font-black text-brand-400 uppercase tracking-widest flex items-center justify-center gap-2">
-            <Activity className="w-4 h-4" /> The Core Feedback Loop
-          </span>
-          <h2 className="text-3xl font-black text-white mt-1">From Match Footage to Measured Progress</h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-          {[
-            { step: '01', title: 'MATCH VIDEO', desc: 'Upload game footage with automated quality check', icon: Video },
-            { step: '02', title: 'AI ANALYSIS', desc: 'ByteTrack player tracking & event detection', icon: Cpu },
-            { step: '03', title: 'PERFORMANCE', desc: 'Score breakdown & grounded insights', icon: Activity },
-            { step: '04', title: 'COACHING', desc: 'Personalized drills & "What Should I Have Done?"', icon: Dumbbell },
-            { step: '05', title: 'IMPROVEMENT', desc: 'Track progress match-over-match (+29.5%)', icon: TrendingUp },
-          ].map((item, idx) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={idx}
-                className="bg-dark-950/80 border border-slate-800/80 rounded-2xl p-5 relative group glass-panel-gold-hover"
-              >
-                <span className="text-3xl font-black text-slate-800 group-hover:text-brand-400/40 transition-colors">
-                  {item.step}
-                </span>
-                <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/30 text-brand-400 flex items-center justify-center my-3 group-hover:scale-110 group-hover:bg-brand-500/20 transition-all duration-300 shadow-[0_0_15px_rgba(255,199,0,0.2)]">
-                  <Icon className="w-5 h-5" />
-                </div>
-                <h3 className="text-xs font-extrabold text-white uppercase tracking-wider mb-1">{item.title}</h3>
-                <p className="text-[11px] text-slate-400 leading-normal">{item.desc}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
     </div>
   );
 }

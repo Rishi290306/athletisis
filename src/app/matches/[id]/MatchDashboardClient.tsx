@@ -4,17 +4,18 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { MatchStrategyTrainingHub } from '@/components/MatchStrategyTrainingHub';
 import { VideoPlayer } from '@/components/VideoPlayer';
-import { EventTimeline } from '@/components/EventTimeline';
-import { MetricCard } from '@/components/MetricCard';
-import { Activity, Award, TrendingUp, ShieldCheck, CheckCircle2, Info, Users, User, ArrowUpRight } from 'lucide-react';
+import { TacticalPitchMap } from '@/components/TacticalPitchMap';
+import { InjuryRiskRadar } from '@/components/InjuryRiskRadar';
+import { ComparisonWorkbench } from '@/components/ComparisonWorkbench';
+import { MatchReportExporter } from '@/components/MatchReportExporter';
+import { ClipTagger } from '@/components/ClipTagger';
+import { AICoachChatbot } from '@/components/AICoachChatbot';
+import { Compass, ShieldAlert, Dumbbell, FileText, Columns, Bot } from 'lucide-react';
 import { Match, PerformanceScore, VideoClip, StandardizedEvent, Recommendation } from '@/types';
 import { AuthGuard } from '@/components/AuthGuard';
 import { useAuthStore, useMatchStore, DEFAULT_DEMO_MATCHES } from '@/lib/store';
 import { useSportStore, SportType } from '@/lib/sportStore';
 import { getVideoObjectUrl, getLatestVideoObjectUrl } from '@/lib/videoStore';
-import { AICoachChatbot } from '@/components/AICoachChatbot';
-import { detectSportFromVideo, SportDetectionResult } from '@/lib/sportDetector';
-
 import { generateDynamicAIAnalysis } from '@/lib/aiAnalysisEngine';
 
 interface SportAnalysisData {
@@ -31,12 +32,6 @@ interface SportAnalysisData {
   clips: VideoClip[];
   events: StandardizedEvent[];
   recommendations: Recommendation[];
-  tacticalFactors: { label: string; points: string; isNegative?: boolean }[];
-  technicalFactors: { label: string; points: string; isNegative?: boolean }[];
-  strengthTitle: string;
-  strengthDesc: string;
-  weaknessTitle: string;
-  weaknessDesc: string;
 }
 
 export function MatchDashboardClient() {
@@ -45,293 +40,231 @@ export function MatchDashboardClient() {
   const paramId = Array.isArray(params?.id) ? params.id[0] : (params?.id as string);
   const rawId = paramId || searchParams?.get('id') || searchParams?.get('matchId') || '101';
   const matchId: number = isNaN(Number(rawId)) ? 101 : Number(rawId);
+  
   const { user } = useAuthStore();
-  const { matches, getMatchesForUser } = useMatchStore();
+  const { matches } = useMatchStore();
   const { setSport } = useSportStore();
 
   const [match, setMatch] = useState<Match | null>(null);
   const [analysis, setAnalysis] = useState<SportAnalysisData | null>(null);
-  const [confidenceThreshold, setConfidenceThreshold] = useState<number>(70);
-  const [snippetDuration, setSnippetDuration] = useState<number>(3.5);
-  const [autoCalibratedNotice, setAutoCalibratedNotice] = useState<SportDetectionResult | null>(null);
-
-  const manuallySwitchSport = (targetSport: SportType) => {
-    if (!match) return;
-    setSport(targetSport);
-    const isTeamFocus = match.analysisFocus === 'TEAM';
-    const updatedMatch = { ...match, sport: targetSport };
-    setMatch(updatedMatch);
-
-    const dynamicResult = generateDynamicAIAnalysis(
-      matchId,
-      targetSport,
-      updatedMatch.athleteName,
-      isTeamFocus ? 'TEAM' : 'PLAYER',
-      updatedMatch.matchName,
-      15.0,
-      confidenceThreshold / 100,
-      snippetDuration
-    );
-
-    dynamicResult.clips = dynamicResult.clips.map(c => ({ ...c, clipUrl: updatedMatch.videoUrl || '/sample-match.mp4' }));
-
-    setAnalysis({
-      score: dynamicResult.score,
-      metricCards: dynamicResult.metricCards,
-      clips: dynamicResult.clips,
-      events: dynamicResult.events,
-      recommendations: dynamicResult.recommendations,
-      tacticalFactors: dynamicResult.tacticalFactors,
-      technicalFactors: dynamicResult.technicalFactors,
-      strengthTitle: dynamicResult.strengthTitle,
-      strengthDesc: dynamicResult.strengthDesc,
-      weaknessTitle: dynamicResult.weaknessTitle,
-      weaknessDesc: dynamicResult.weaknessDesc,
-    });
-    setAutoCalibratedNotice(null);
-  };
-
-  const handleThresholdChange = (conf: number, dur: number) => {
-    setConfidenceThreshold(conf);
-    setSnippetDuration(dur);
-    if (match) {
-      const isTeamFocus = match.analysisFocus === 'TEAM';
-      const activeSport = match.sport as SportType;
-      const dynamicResult = generateDynamicAIAnalysis(
-        matchId,
-        activeSport,
-        match.athleteName,
-        isTeamFocus ? 'TEAM' : 'PLAYER',
-        match.matchName,
-        15.0,
-        conf / 100,
-        dur
-      );
-      dynamicResult.clips = dynamicResult.clips.map(c => ({ ...c, clipUrl: match.videoUrl || '/sample-match.mp4' }));
-      setAnalysis({
-        score: dynamicResult.score,
-        metricCards: dynamicResult.metricCards,
-        clips: dynamicResult.clips,
-        events: dynamicResult.events,
-        recommendations: dynamicResult.recommendations,
-        tacticalFactors: dynamicResult.tacticalFactors,
-        technicalFactors: dynamicResult.technicalFactors,
-        strengthTitle: dynamicResult.strengthTitle,
-        strengthDesc: dynamicResult.strengthDesc,
-        weaknessTitle: dynamicResult.weaknessTitle,
-        weaknessDesc: dynamicResult.weaknessDesc,
-      });
-    }
-  };
+  const [activeTab, setActiveTab] = useState<'tactical' | 'drills' | 'injury' | 'report' | 'chat'>('tactical');
+  const [showComparison, setShowComparison] = useState(false);
+  const [activeSeekTimestamp, setActiveSeekTimestamp] = useState<number>(0);
 
   useEffect(() => {
-    let isMounted = true;
-
-    async function loadMatchAndAnalysis() {
-      const email = user?.email || '';
-      const storedMatches = getMatchesForUser(email);
-      const foundMatch = storedMatches.find(m => String(m.id) === String(matchId))
-        || matches.find(m => String(m.id) === String(matchId))
-        || DEFAULT_DEMO_MATCHES.find(m => String(m.id) === String(matchId))
-        || (storedMatches.length > 0 ? storedMatches[0] : DEFAULT_DEMO_MATCHES[0]);
-
-      const rawSport: SportType = (foundMatch?.sport as SportType) || 'Cricket';
-
-      let actualVideoUrl = foundMatch?.videoUrl || '/sample-match.mp4';
-      try {
-        const indexedDbVideoUrl = foundMatch ? await Promise.race([
-          getVideoObjectUrl(foundMatch.id),
-          new Promise<null>((r) => setTimeout(() => r(null), 150))
-        ]) : null;
-        if (indexedDbVideoUrl) actualVideoUrl = indexedDbVideoUrl;
-      } catch (e) {
-        // Fallback to sample match video
-      }
-
-      // AI Sport Mismatch Detection & Auto-Calibration
-      const searchString = `${foundMatch?.matchName || ''} ${foundMatch?.notes || ''} ${actualVideoUrl}`;
-      const detection = detectSportFromVideo(searchString, rawSport);
-
-      let effectiveSport = rawSport;
-      if (detection.isMismatch) {
-        effectiveSport = detection.detectedSport;
-        setAutoCalibratedNotice(detection);
-      }
-
-      setSport(effectiveSport);
-
-      const isTeamFocus = foundMatch?.analysisFocus === 'TEAM';
-
-      const currentMatch: Match = foundMatch ? { ...foundMatch, sport: effectiveSport, videoUrl: actualVideoUrl } : {
-        id: matchId,
-        matchName: `${effectiveSport} ${isTeamFocus ? 'Team Highlight' : 'Player'} Analysis`,
-        sport: effectiveSport,
-        matchDate: '2026-09-01',
-        teamName: user?.fullName ? `${user.fullName}'s Team` : 'FC Thunder',
-        opponentName: 'Opponents',
-        venue: 'National Sports Arena',
-        matchType: 'Competitive',
-        athleteId: user?.id || 1,
-        athleteName: user?.fullName || 'Rishi Tiwari',
-        notes: 'AI computer vision biomechanics analysis',
-        videoUrl: actualVideoUrl,
-        analysisFocus: isTeamFocus ? 'TEAM' : 'PLAYER',
-        status: 'COMPLETED',
-      };
-
-      const dynamicResult = generateDynamicAIAnalysis(
-        matchId,
-        effectiveSport,
-        currentMatch.athleteName,
-        isTeamFocus ? 'TEAM' : 'PLAYER',
-        currentMatch.matchName,
-        15.0,
-        confidenceThreshold / 100,
-        snippetDuration
-      );
-
-      // Ensure clips use actualVideoUrl
-      dynamicResult.clips = dynamicResult.clips.map(c => ({ ...c, clipUrl: actualVideoUrl }));
-
-      const sportData: SportAnalysisData = {
-        score: dynamicResult.score,
-        metricCards: dynamicResult.metricCards || [
-          { title: 'Technical Score', value: dynamicResult.score.technicalScore, unit: '/ 100', subtitle: 'Technical Precision', icon: Activity },
-          { title: 'Tactical Score', value: dynamicResult.score.tacticalScore, unit: '/ 100', subtitle: 'Tactical Awareness', icon: Award, badge: 'Needs Work', badgeColor: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
-          { title: 'Physical Score', value: dynamicResult.score.physicalScore, unit: '/ 100', subtitle: 'Physical Peak', icon: TrendingUp },
-          { title: 'Decision Score', value: dynamicResult.score.decisionMakingScore, unit: '/ 100', subtitle: 'Decision Quality', icon: ShieldCheck },
-        ],
-        clips: dynamicResult.clips,
-        events: dynamicResult.events,
-        recommendations: dynamicResult.recommendations,
-        tacticalFactors: dynamicResult.tacticalFactors,
-        technicalFactors: dynamicResult.technicalFactors,
-        strengthTitle: dynamicResult.strengthTitle,
-        strengthDesc: dynamicResult.strengthDesc,
-        weaknessTitle: dynamicResult.weaknessTitle,
-        weaknessDesc: dynamicResult.weaknessDesc,
-      };
-
-      if (isMounted) {
-        setMatch(currentMatch);
-        setAnalysis(sportData);
-      }
+    let foundMatch = matches.find((m) => m.id === matchId);
+    if (!foundMatch) {
+      foundMatch = DEFAULT_DEMO_MATCHES.find((m) => m.id === matchId) || DEFAULT_DEMO_MATCHES[0];
     }
 
-    loadMatchAndAnalysis();
+    if (foundMatch) {
+      const activeSport = (foundMatch.sport as SportType) || 'Cricket';
+      setMatch(foundMatch);
+      setSport(activeSport);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [matchId, user, matches, getMatchesForUser, setSport, confidenceThreshold, snippetDuration]);
+      const resolveVideo = async () => {
+        let videoUrlToUse = foundMatch.videoUrl || '/sample-match.mp4';
+        if ((foundMatch as any).videoKey) {
+          const storedUrl = await getVideoObjectUrl((foundMatch as any).videoKey);
+          if (storedUrl) videoUrlToUse = storedUrl;
+        } else {
+          const latestBlob = await getLatestVideoObjectUrl();
+          if (latestBlob) videoUrlToUse = latestBlob;
+        }
 
-  if (!match || !analysis) return null;
+        const dynamicResult = generateDynamicAIAnalysis(
+          matchId,
+          activeSport,
+          foundMatch.athleteName,
+          foundMatch.analysisFocus === 'TEAM' ? 'TEAM' : 'PLAYER',
+          foundMatch.matchName,
+          15.0,
+          0.7,
+          3.5
+        );
 
-  const isTeam = match.analysisFocus === 'TEAM';
+        dynamicResult.clips = dynamicResult.clips.map(c => ({ ...c, clipUrl: videoUrlToUse }));
+
+        setAnalysis({
+          score: dynamicResult.score,
+          metricCards: dynamicResult.metricCards,
+          clips: dynamicResult.clips,
+          events: dynamicResult.events,
+          recommendations: dynamicResult.recommendations,
+        });
+      };
+
+      resolveVideo();
+    }
+  }, [matchId, matches]);
+
+  const handleSeek = (secs: number) => {
+    setActiveSeekTimestamp(secs);
+  };
+
+  if (!match || !analysis) {
+    return (
+      <AuthGuard>
+        <div className="max-w-7xl mx-auto px-4 py-16 text-center text-slate-300 font-bold">
+          Loading Pro Match Telemetry Workbench...
+        </div>
+      </AuthGuard>
+    );
+  }
+
+  const activeSportName = (match.sport || 'Cricket') as SportType;
 
   return (
     <AuthGuard>
-      <div className="space-y-8 pb-12">
-        {/* Header Banner */}
-        <div className="bg-dark-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-brand-500/10 text-brand-400 border border-brand-500/20">
-                  {match.sport} Analysis
-                </span>
-
-                {isTeam ? (
-                  <span className="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center gap-1">
-                    <Users className="w-3 h-3" /> Team Highlight Mode
-                  </span>
-                ) : (
-                  <span className="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
-                    <User className="w-3 h-3" /> Player Biomechanics Mode
-                  </span>
-                )}
-
-                <span className="text-xs text-slate-400 font-mono">{match.matchDate}</span>
-              </div>
-              <h1 className="text-2xl font-black text-white">{match.matchName}</h1>
-              <p className="text-xs text-slate-400">{match.teamName} vs {match.opponentName} • {match.venue}</p>
-            </div>
-
-            <div className="text-right">
-              <span className="text-[10px] uppercase font-bold text-slate-400">
-                {isTeam ? 'Team Performance Rating' : 'Match Overall Performance'}
-              </span>
-              <div className="text-4xl font-black text-brand-400">{analysis.score.overallScore}</div>
-            </div>
-          </div>
-
-          {/* Quick Sport Engine Selector */}
-          <div className="pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs">
-            <span className="text-slate-400 font-medium">Switch AI Analysis Engine:</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+        
+        {/* Top Workstation Header Bar */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-[#152037] border border-slate-700 shadow-xl">
+          <div>
             <div className="flex items-center gap-2">
-              {(['Football', 'Cricket', 'Volleyball'] as SportType[]).map((s) => (
-                <button
-                  key={s}
-                  onClick={() => manuallySwitchSport(s)}
-                  className={`px-3 py-1 rounded-xl font-bold transition text-xs ${
-                    match.sport === s
-                      ? 'bg-brand-500 text-black shadow-md'
-                      : 'bg-dark-950 text-slate-300 hover:text-white border border-slate-800'
-                  }`}
-                >
-                  {s === 'Football' ? '⚽ Football' : s === 'Cricket' ? '🏏 Cricket' : '🏐 Volleyball'}
-                </button>
-              ))}
+              <span className="px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-600/20 text-sky-300 border border-sky-500/40 shadow-sm">
+                {activeSportName} • MATCH #{match.id}
+              </span>
+              <span className="text-xs font-mono text-slate-300">{match.matchDate}</span>
             </div>
+            <h1 className="text-2xl font-extrabold text-white mt-1.5 tracking-tight">{match.matchName}</h1>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Athlete: <span className="text-white font-bold">{match.athleteName}</span> • Team: <span className="text-slate-200 font-semibold">{match.teamName}</span>
+            </p>
           </div>
 
-          {autoCalibratedNotice && (
-            <div className="p-3 rounded-xl bg-gradient-to-r from-amber-500/15 via-brand-500/15 to-cyan-500/15 border border-brand-500/40 text-slate-200 text-xs font-medium space-y-1">
-              <div className="flex items-center gap-2 text-brand-400 font-extrabold uppercase tracking-wider text-[11px]">
-                <ShieldCheck className="w-4 h-4 text-brand-400" />
-                AI Multimodal Sport Detection Active
-              </div>
-              <p className="text-slate-300">
-                {autoCalibratedNotice.reason}
-              </p>
-            </div>
-          )}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowComparison(!showComparison)}
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition shadow-sm ${
+                showComparison
+                  ? 'bg-sky-600 text-white border border-sky-400'
+                  : 'bg-[#0b1329] text-slate-200 border border-slate-700 hover:border-slate-500 hover:text-white'
+              }`}
+            >
+              <Columns className="w-4 h-4" />
+              {showComparison ? 'Close Dual View' : 'Split-Screen Pro Form Comparison'}
+            </button>
+          </div>
         </div>
 
-        {/* Dynamic Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {analysis.metricCards.map((card, idx) => (
-            <MetricCard
-              key={idx}
-              title={card.title}
-              value={card.value}
-              unit={card.unit}
-              subtitle={card.subtitle}
-              icon={card.icon}
-              badge={card.badge}
-              badgeColor={card.badgeColor}
+        {/* Split Screen Workbench Option */}
+        {showComparison && (
+          <ComparisonWorkbench sport={activeSportName} primaryVideoUrl={match.videoUrl} />
+        )}
+
+        {/* Main Workstation Dual Pane Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          {/* LEFT PANE (Video Workbench & Tagging) */}
+          <div className="lg:col-span-7 space-y-6">
+            <VideoPlayer
+              videoUrl={match.videoUrl}
+              clips={analysis.clips}
+              sport={activeSportName}
+              matchId={match.id}
+              seekTimestamp={activeSeekTimestamp}
+              onCurrentTimeChange={setActiveSeekTimestamp}
+              onSeekTimestamp={handleSeek}
             />
-          ))}
+
+            <ClipTagger
+              activeTimestamp={activeSeekTimestamp}
+              onSeekTimestamp={handleSeek}
+            />
+          </div>
+
+          {/* RIGHT PANE (Multi-Tab Intelligence Suite) */}
+          <div className="lg:col-span-5 space-y-4">
+            
+            {/* Tab Navigation Controls */}
+            <div className="flex items-center gap-1.5 p-1.5 rounded-xl bg-[#152037] border border-slate-700 overflow-x-auto text-xs font-bold shadow-md">
+              <button
+                onClick={() => setActiveTab('tactical')}
+                className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
+                  activeTab === 'tactical' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                <Compass className="w-3.5 h-3.5" /> 2D Map
+              </button>
+              <button
+                onClick={() => setActiveTab('drills')}
+                className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
+                  activeTab === 'drills' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                <Dumbbell className="w-3.5 h-3.5" /> Drills
+              </button>
+              <button
+                onClick={() => setActiveTab('injury')}
+                className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
+                  activeTab === 'injury' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                <ShieldAlert className="w-3.5 h-3.5" /> Strain
+              </button>
+              <button
+                onClick={() => setActiveTab('report')}
+                className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
+                  activeTab === 'report' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5" /> Report
+              </button>
+              <button
+                onClick={() => setActiveTab('chat')}
+                className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
+                  activeTab === 'chat' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                <Bot className="w-3.5 h-3.5" /> AI Coach
+              </button>
+            </div>
+
+            {/* Active Tab Component Render */}
+            {activeTab === 'tactical' && (
+              <div className="space-y-4">
+                <TacticalPitchMap
+                  sport={activeSportName}
+                  activeTimestamp={activeSeekTimestamp}
+                  onSeekTimestamp={handleSeek}
+                />
+                
+                {/* Metric Summary Cards */}
+                <div className="grid grid-cols-2 gap-3">
+                  {analysis.metricCards.slice(0, 4).map((card, idx) => (
+                    <div key={idx} className="p-3.5 rounded-xl bg-[#152037] border border-slate-700 shadow-sm">
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-slate-300">{card.title}</div>
+                      <div className="text-lg font-black text-white font-mono mt-1">
+                        {card.value} <span className="text-xs font-semibold text-slate-400">{card.unit}</span>
+                      </div>
+                      <div className="text-[11px] text-sky-400 font-medium mt-0.5">{card.subtitle}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'drills' && (
+              <MatchStrategyTrainingHub sport={activeSportName} athleteName={match.athleteName} matchName={match.matchName} />
+            )}
+
+            {activeTab === 'injury' && (
+              <InjuryRiskRadar sport={activeSportName} fatigueIndex={(match as any).staminaDrainIndex || 62} />
+            )}
+
+            {activeTab === 'report' && (
+              <MatchReportExporter sport={activeSportName} athleteName={match.athleteName} matchId={match.id.toString()} />
+            )}
+
+            {activeTab === 'chat' && (
+              <AICoachChatbot sport={activeSportName} athleteName={match.athleteName} />
+            )}
+
+          </div>
+
         </div>
 
-        {/* Video Player & Moments */}
-        <VideoPlayer
-          videoUrl={match.videoUrl}
-          clips={analysis.clips}
-          onThresholdChange={handleThresholdChange}
-          sport={match.sport as SportType}
-          matchId={match.id}
-          fileName={match.matchName}
-        />
-
-        {/* AI Strategy & Custom Training Drills */}
-        <MatchStrategyTrainingHub sport={match.sport as SportType} athleteName={match.athleteName} matchName={match.matchName} />
-
-        {/* Event Timeline */}
-        <EventTimeline events={analysis.events} />
-
-        {/* AI Coach Chatbot */}
-        <AICoachChatbot sport={match.sport as SportType} athleteName={match.athleteName} matchName={match.matchName} />
       </div>
     </AuthGuard>
   );

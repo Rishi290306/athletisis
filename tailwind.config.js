@@ -10,22 +10,22 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          50: '#fffbe6',
-          100: '#fff3b3',
-          400: '#ffdb4d',
-          500: '#ffc700', // Solar Gold
-          600: '#ff9100', // Fire Amber
-          700: '#e67e00',
-          900: '#78350f',
-        },
-        cyanBrand: {
-          400: '#38bdf8',
-          500: '#00f0ff',
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8', // Electric Sky Blue
+          500: '#0284c7', // Velocity Pro Blue
+          600: '#0369a1',
+          700: '#075985',
+          800: '#0c4a6e',
+          900: '#082f49',
         },
         dark: {
-          800: '#1a1813',
-          900: '#120f0a',
-          950: '#0a0805',
+          700: '#243454',
+          800: '#1b2742',
+          900: '#152037', // Midnight Navy Card
+          950: '#0b1329', // Deep Stadium Midnight Background
         }
       },
     },

@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen bg-dark-950 text-slate-100 flex flex-col antialiased selection:bg-brand-500 selection:text-black">
+      <body className="min-h-screen bg-dark-950 text-slate-100 flex flex-col antialiased selection:bg-sky-500 selection:text-white">
         <CursorTracer />
         <Navbar />
         <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
