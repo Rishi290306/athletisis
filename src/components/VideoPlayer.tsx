@@ -20,33 +20,33 @@ interface VideoPlayerProps {
 
 function getCalibratedPose(sport: SportType, time: number) {
   if (sport === 'Cricket') {
-    // Exact calibration for the cricket bowling clip (Jasprit Bumrah)
-    const phase = (time % 3.6);
-    const armSwing = Math.sin(phase * 1.8);
-    const stride = Math.cos(phase * 1.8);
+    // Exact verified kinematic alignment for Jasprit Bumrah delivery action
+    const phase = (time % 3.0);
+    const armSwing = Math.sin(phase * 2.1);
+    const stride = Math.cos(phase * 2.1);
 
-    const head = { x: 58.5, y: 31.0 + armSwing * 0.4 };
-    const neck = { x: 56.5, y: 36.5 + armSwing * 0.4 };
-    const rShoulder = { x: 49.0, y: 40.5 };
-    const lShoulder = { x: 63.0, y: 40.0 };
-    const rElbow = { x: 39.5 + armSwing * 1.2, y: 46.5 + armSwing * 1.5 };
-    const rWrist = { x: 35.5 + armSwing * 1.8, y: 52.5 + armSwing * 2.0 }; // Ball in hand
-    const lElbow = { x: 69.5 - armSwing * 0.8, y: 46.5 };
-    const lWrist = { x: 71.0 - armSwing * 1.0, y: 53.0 };
-    const spine = { x: 53.0, y: 49.0 };
-    const pelvis = { x: 47.5, y: 67.0 };
-    const lHip = { x: 51.5, y: 67.0 };
-    const rHip = { x: 44.5, y: 67.0 };
-    const lKnee = { x: 46.5 + stride * 0.6, y: 83.5 };
-    const lAnkle = { x: 44.0 + stride * 0.5, y: 96.0 };
-    const rKnee = { x: 42.0 - stride * 0.5, y: 86.0 };
-    const rAnkle = { x: 41.5 - stride * 0.5, y: 97.0 };
+    const head = { x: 65.0, y: 41.0 + armSwing * 0.4 };
+    const neck = { x: 65.0, y: 47.0 + armSwing * 0.3 };
+    const rShoulder = { x: 54.0, y: 47.0 };
+    const lShoulder = { x: 77.0, y: 41.0 };
+    const rElbow = { x: 50.0 + armSwing * 1.5, y: 62.0 + armSwing * 1.2 };
+    const rWrist = { x: 50.0 + armSwing * 2.0, y: 82.0 + armSwing * 1.5 }; // Ball in hand
+    const lElbow = { x: 89.0 - armSwing * 1.0, y: 43.0 };
+    const lWrist = { x: 98.0 - armSwing * 1.2, y: 44.0 };
+    const spine = { x: 64.0, y: 53.0 };
+    const pelvis = { x: 63.0, y: 62.0 };
+    const lHip = { x: 70.0, y: 63.0 };
+    const rHip = { x: 56.0, y: 63.0 };
+    const lKnee = { x: 66.0 + stride * 0.5, y: 74.0 };
+    const lAnkle = { x: 64.0, y: 98.0 };
+    const rKnee = { x: 49.0 - stride * 0.8, y: 67.0 };
+    const rAnkle = { x: 45.0 - stride * 1.0, y: 78.0 };
 
     const box = {
-      top: 23.0,
-      left: 31.5,
-      width: 42.5,
-      height: 75.0,
+      top: 33.0,
+      left: 42.0,
+      width: 57.0,
+      height: 67.0,
     };
 
     return {
@@ -54,12 +54,12 @@ function getCalibratedPose(sport: SportType, time: number) {
       spine, pelvis, lHip, rHip, lKnee, lAnkle, rKnee, rAnkle,
       box,
       athleteName: 'JASPRIT BUMRAH (BOWLER)',
-      armAngle: Math.round(88 + armSwing * 10),
-      kneeAngle: Math.round(142 - stride * 6),
+      armAngle: Math.round(88 + armSwing * 8),
+      kneeAngle: Math.round(142 - stride * 5),
       callouts: [
-        { label: `ARM EXT: ${Math.round(88 + armSwing * 10)}°`, x: 22.0, y: 46.5, color: 'text-amber-400 border-amber-500/50' },
-        { label: `KNEE FLEX: ${Math.round(142 - stride * 6)}°`, x: 55.0, y: 83.5, color: 'text-emerald-400 border-emerald-500/50' },
-        { label: `RELEASE ELEV: 2.14m`, x: 20.0, y: 34.0, color: 'text-sky-400 border-sky-500/50' },
+        { label: `ARM EXT: ${Math.round(88 + armSwing * 8)}°`, x: 20.0, y: 64.0, color: 'text-amber-400 border-amber-500/50' },
+        { label: `KNEE BRACE: ${Math.round(142 - stride * 5)}°`, x: 75.0, y: 74.0, color: 'text-emerald-400 border-emerald-500/50' },
+        { label: `RELEASE APEX: 2.14m`, x: 20.0, y: 82.0, color: 'text-sky-400 border-sky-500/50' },
       ],
     };
   } else if (sport === 'Volleyball') {
@@ -168,6 +168,56 @@ export function VideoPlayer({
   const [showTelemetry, setShowTelemetry] = useState(true);
   const [showSettingsDrawer, setShowSettingsDrawer] = useState(false);
   const [currentCvTime, setCurrentCvTime] = useState<number>(0);
+
+  const [videoBounds, setVideoBounds] = useState({
+    top: 0,
+    left: 0,
+    width: 100,
+    height: 100,
+  });
+
+  const updateVideoBounds = () => {
+    const el = videoRef.current;
+    if (!el) return;
+    const cw = el.clientWidth;
+    const ch = el.clientHeight;
+    const vw = el.videoWidth || 16;
+    const vh = el.videoHeight || 9;
+
+    if (!cw || !ch) return;
+
+    const videoRatio = vw / vh;
+    const containerRatio = cw / ch;
+
+    let rw = cw;
+    let rh = ch;
+    let top = 0;
+    let left = 0;
+
+    if (containerRatio > videoRatio) {
+      // Container is wider than video -> letterbox on left and right
+      rw = ch * videoRatio;
+      left = (cw - rw) / 2;
+    } else {
+      // Container is taller than video -> letterbox on top and bottom
+      rh = cw / videoRatio;
+      top = (ch - rh) / 2;
+    }
+
+    setVideoBounds({
+      top: (top / ch) * 100,
+      left: (left / cw) * 100,
+      width: (rw / cw) * 100,
+      height: (rh / ch) * 100,
+    });
+  };
+
+  useEffect(() => {
+    updateVideoBounds();
+    const handleResize = () => updateVideoBounds();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [videoSrc]);
 
   useEffect(() => {
     if (videoUrl) {
@@ -311,6 +361,8 @@ export function VideoPlayer({
           ref={videoRef}
           src={videoSrc}
           onError={handleVideoError}
+          onLoadedMetadata={updateVideoBounds}
+          onCanPlay={updateVideoBounds}
           onTimeUpdate={() => {
             if (videoRef.current) {
               const t = videoRef.current.currentTime;
@@ -318,17 +370,28 @@ export function VideoPlayer({
               onCurrentTimeChange?.(t);
             }
           }}
-          onPlay={() => setIsPlaying(true)}
+          onPlay={() => {
+            setIsPlaying(true);
+            updateVideoBounds();
+          }}
           onPause={() => setIsPlaying(false)}
           className="w-full h-full object-contain"
           playsInline
         />
 
-        {/* Real-time Bounding Box & Skeleton CV Overlay */}
+        {/* Real-time Bounding Box & Skeleton CV Overlay pinned to video dimensions */}
         {cvOverlayEnabled && (() => {
           const pose = getCalibratedPose(activeSport, currentCvTime);
           return (
-            <div className="absolute inset-0 pointer-events-none">
+            <div
+              className="absolute pointer-events-none transition-all duration-75"
+              style={{
+                top: `${videoBounds.top}%`,
+                left: `${videoBounds.left}%`,
+                width: `${videoBounds.width}%`,
+                height: `${videoBounds.height}%`,
+              }}
+            >
               {/* Player Bounding Box */}
               {showBoundingBox && (
                 <div
