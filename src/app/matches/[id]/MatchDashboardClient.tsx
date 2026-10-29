@@ -66,9 +66,14 @@ export function MatchDashboardClient() {
         if ((foundMatch as any).videoKey) {
           const storedUrl = await getVideoObjectUrl((foundMatch as any).videoKey);
           if (storedUrl) videoUrlToUse = storedUrl;
-        } else {
-          const latestBlob = await getLatestVideoObjectUrl();
-          if (latestBlob) videoUrlToUse = latestBlob;
+        } else if (foundMatch.id > 1000) {
+          const matchBlob = await getVideoObjectUrl(foundMatch.id);
+          if (matchBlob) {
+            videoUrlToUse = matchBlob;
+          } else {
+            const latestBlob = await getLatestVideoObjectUrl();
+            if (latestBlob) videoUrlToUse = latestBlob;
+          }
         }
 
         const dynamicResult = generateDynamicAIAnalysis(

@@ -65,6 +65,7 @@ export function VideoPlayer({
   // Load ground-truth pose track for the current active video
   useEffect(() => {
     let isMounted = true;
+    setPoseDataset(null); // Immediate clean reset to prevent stale overlay across videos
     const fetchDataset = async () => {
       const data = await loadVideoPoseDataset(videoSrc, activeSport);
       if (isMounted && data) {
