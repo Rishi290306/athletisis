@@ -28,3 +28,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Python virtual environment & bytecode
+venv/
+**/venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Java/Maven build output
+target/
+**/target/
+.mvn/mvn-bin/
+**/.mvn/mvn-bin/

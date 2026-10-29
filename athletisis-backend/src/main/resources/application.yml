@@ -1,0 +1,52 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: athletisis-backend
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:athletisisdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER:org.h2.Driver}
+    username: ${SPRING_DATASOURCE_USERNAME:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+  jpa:
+    database-platform: ${SPRING_JPA_DIALECT:org.hibernate.dialect.H2Dialect}
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 500MB
+      max-request-size: 500MB
+
+  task:
+    execution:
+      pool:
+        core-size: 4
+        max-size: 16
+        queue-capacity: 100
+
+jwt:
+  secret: ${JWT_SECRET:athletisis_super_secret_jwt_key_that_is_at_least_256_bits_long_for_security_2026}
+  expiration-ms: 86400000 # 24 hours
+
+athletisis:
+  upload:
+    dir: ${UPLOAD_DIR:./storage/uploads}
+    clips-dir: ${CLIPS_DIR:./storage/clips}

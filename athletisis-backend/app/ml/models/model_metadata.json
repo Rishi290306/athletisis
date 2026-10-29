@@ -1,0 +1,188 @@
+{
+  "best_classifier": "Hist_Gradient_Boosting",
+  "best_regressor": "Random_Forest_Regressor",
+  "class_names": [
+    "Cover_Drive",
+    "Defensive_Transition",
+    "High_Intensity_Sprint",
+    "Normal_Movement",
+    "Shot_Attack",
+    "Spike_Attack"
+  ],
+  "feature_names": [
+    "x_pos",
+    "y_pos",
+    "speed_kmh",
+    "speed_in",
+    "speed_out",
+    "accel_mag",
+    "jerk_mag",
+    "heading_change",
+    "angular_velocity",
+    "disp_5frame",
+    "disp_10frame",
+    "rolling_mean_speed",
+    "rolling_std_speed",
+    "rolling_max_speed",
+    "pitch_zone_dist_goal",
+    "kinetic_power_idx",
+    "turn_severity_idx",
+    "zone_ratio",
+    "sport_Cricket",
+    "sport_Football",
+    "sport_Volleyball"
+  ],
+  "numeric_features": [
+    "x_pos",
+    "y_pos",
+    "speed_kmh",
+    "speed_in",
+    "speed_out",
+    "accel_mag",
+    "jerk_mag",
+    "heading_change",
+    "angular_velocity",
+    "disp_5frame",
+    "disp_10frame",
+    "rolling_mean_speed",
+    "rolling_std_speed",
+    "rolling_max_speed",
+    "pitch_zone_dist_goal",
+    "kinetic_power_idx",
+    "turn_severity_idx",
+    "zone_ratio"
+  ],
+  "sports": [
+    "Football",
+    "Cricket",
+    "Volleyball"
+  ],
+  "baseline_classification_test": {
+    "accuracy": 0.7056,
+    "precision_macro": 0.5521,
+    "recall_macro": 0.5887,
+    "f1_macro": 0.5375,
+    "f1_weighted": 0.6338
+  },
+  "baseline_regression_test": {
+    "mae": 24.9533,
+    "rmse": 26.3754,
+    "r2": -0.0
+  },
+  "improved_classification_test": {
+    "accuracy": 0.9917,
+    "precision_macro": 0.9925,
+    "recall_macro": 0.9717,
+    "f1_macro": 0.9813,
+    "f1_weighted": 0.9915
+  },
+  "improved_regression_test": {
+    "mae": 4.9054,
+    "rmse": 6.8588,
+    "r2": 0.9324
+  },
+  "confusion_matrix": [
+    [
+      16,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      48,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      56,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      200,
+      0,
+      0
+    ],
+    [
+      0,
+      2,
+      0,
+      0,
+      16,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      21
+    ]
+  ],
+  "classification_report": {
+    "Cover_Drive": {
+      "precision": 1.0,
+      "recall": 0.9411764705882353,
+      "f1-score": 0.9696969696969697,
+      "support": 17.0
+    },
+    "Defensive_Transition": {
+      "precision": 0.96,
+      "recall": 1.0,
+      "f1-score": 0.9795918367346939,
+      "support": 48.0
+    },
+    "High_Intensity_Sprint": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 56.0
+    },
+    "Normal_Movement": {
+      "precision": 0.9950248756218906,
+      "recall": 1.0,
+      "f1-score": 0.9975062344139651,
+      "support": 200.0
+    },
+    "Shot_Attack": {
+      "precision": 1.0,
+      "recall": 0.8888888888888888,
+      "f1-score": 0.9411764705882353,
+      "support": 18.0
+    },
+    "Spike_Attack": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 21.0
+    },
+    "accuracy": 0.9916666666666667,
+    "macro avg": {
+      "precision": 0.9925041459369818,
+      "recall": 0.9716775599128541,
+      "f1-score": 0.9813285852389774,
+      "support": 360.0
+    },
+    "weighted avg": {
+      "precision": 0.991902708678828,
+      "recall": 0.9916666666666667,
+      "f1-score": 0.9915213333374862,
+      "support": 360.0
+    }
+  },
+  "train_samples": 1680,
+  "val_samples": 360,
+  "test_samples": 360
+}
