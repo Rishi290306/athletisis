@@ -69,6 +69,16 @@ def test_api_routes():
         radar_json = res_radar.json()
         print(f"  [+] GET /api/v1/analytics/radar?sport={sp} -> Overall Index: {radar_json['overallIndex']}, Categories: {len(radar_json['radarData'])}")
 
+    # 6. Pose Estimation Endpoint
+    print("\n[6] Testing Video Pose Tracking Endpoint...")
+    for vid_id in ["bumrah2", "volleyball"]:
+        res_pose = client.get(f"/api/v1/video/poses/{vid_id}")
+        assert res_pose.status_code == 200
+        pose_data = res_pose.json()
+        print(f"  [+] GET /api/v1/video/poses/{vid_id} -> Resolution: {pose_data['videoInfo']['width']}x{pose_data['videoInfo']['height']}, Frames: {len(pose_data['timeline'])}, Connections: {len(pose_data['skeletonConnections'])}")
+        assert len(pose_data['skeletonConnections']) == 16
+        assert len(pose_data['timeline']) > 0
+
     print("\n" + "=" * 60)
     print("[OK] ALL FASTAPI ENDPOINTS & ML INTEGRATIONS VERIFIED!")
     print("=" * 60)

@@ -1,7 +1,11 @@
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException, BackgroundTasks
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException, BackgroundTasks, Query
 import uuid
 import time
-from typing import Dict, Any
+import os
+import json
+from typing import Dict, Any, Optional
+import cv2
+import numpy as np
 
 router = APIRouter()
 
@@ -67,3 +71,70 @@ def get_job_status(job_id: str):
         raise HTTPException(status_code=404, detail="Processing job not found")
         
     return JOBS_DB[job_id]
+
+
+@router.get("/poses/{video_id}")
+def get_video_pose_track(video_id: str):
+    """
+    Returns precomputed MediaPipe 17-point pose track for the specified video.
+    Supports 'bumrah2', 'volleyball', 'match2', and 'football'.
+    """
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    candidates = [
+        os.path.abspath(os.path.join(base_dir, "..", "..", "..", "..", "..", "athletisis-frontend", "public")),
+        os.path.abspath(os.path.join(base_dir, "..", "..", "..", "..", "athletisis-frontend", "public")),
+        os.path.abspath(os.path.join(base_dir, "..", "..", "data", "poses")),
+    ]
+    public_dir = None
+    for cand in candidates:
+        if os.path.exists(cand):
+            public_dir = cand
+            break
+
+    if not public_dir:
+        raise HTTPException(status_code=500, detail="Public directory not located")
+    
+    filename_map = {
+        "bumrah2": "bumrah2_poses.json",
+        "cricket": "bumrah2_poses.json",
+        "101": "sample-match_poses.json",
+        "football": "sample-match_poses.json",
+        "201": "bumrah2_poses.json",
+        "301": "sample-volleyball_poses.json",
+        "volleyball": "sample-volleyball_poses.json",
+    }
+    
+    target_filename = filename_map.get(video_id.lower(), f"{video_id}_poses.json")
+    target_path = os.path.join(public_dir, target_filename)
+
+    if not os.path.exists(target_path):
+        raise HTTPException(status_code=404, detail=f"Pose track not found for {video_id}")
+
+    with open(target_path, "r") as f:
+        data = json.load(f)
+
+    return data
+
+
+@router.post("/pose-estimate-frame")
+async def estimate_frame_pose(file: UploadFile = File(...)):
+    """
+    Runs MediaPipe PoseLandmarker inference directly on an uploaded single image frame
+    and returns detected anatomical keypoints, person bounding boxes, and confidence.
+    """
+    from app.ml.pose_engine import PoseEstimationEngine
+    contents = await file.read()
+    nparr = np.frombuffer(contents, np.uint8)
+    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+    if frame is None:
+        raise HTTPException(status_code=400, detail="Invalid image frame encoding")
+
+    engine = PoseEstimationEngine(model_variant="lite", min_confidence=0.3)
+    persons = engine.extract_frame_poses(frame)
+
+    return {
+        "personsCount": len(persons),
+        "persons": persons,
+        "frameResolution": [frame.shape[1], frame.shape[0]]
+    }
