@@ -76,36 +76,35 @@ export default function TeamAnalyticsPage() {
 
   return (
     <AuthGuard>
-      <div className="space-y-8">
-        <div className="pro-card p-6 shadow-xl flex items-center justify-between">
+      <div className="space-y-6">
+        <div className="pro-card p-6 flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xl">{config.icon}</span>
-              <span className="text-[10px] font-black uppercase text-sky-400 tracking-widest">{config.name} Team Engine</span>
+              <span className="text-[11px] font-semibold uppercase text-brand-400 tracking-wider">{config.name} Team Engine</span>
             </div>
-            <h1 className="text-2xl font-black text-white">{athlete?.teamName || 'My Team'} — {config.name} Team Analytics</h1>
+            <h1 className="text-2xl font-bold text-white">{athlete?.teamName || 'My Team'} — {config.name} Team Analytics</h1>
             <p className="text-xs text-slate-400">Tactical positioning networks, player combinations, and team efficiency metrics</p>
           </div>
           <div className="text-right">
-            <span className="text-xs text-slate-400 block">Team Rating</span>
-            <span className="text-3xl font-black text-sky-400">{userMatches.length > 0 ? '82.5' : '0.0'}</span>
+            <span className="text-xs text-slate-400 block font-medium">Team Rating</span>
+            <span className="text-2xl font-bold text-brand-400">{userMatches.length > 0 ? '82.5' : '0.0'}</span>
           </div>
         </div>
 
         {userMatches.length === 0 ? (
-          <div className="pro-card p-12 text-center space-y-6 shadow-2xl">
-            <div className="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center mx-auto shadow-xl">
-              <FolderPlus className="w-8 h-8" />
+          <div className="pro-card p-12 text-center space-y-6">
+            <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center mx-auto">
+              <FolderPlus className="w-6 h-6" />
             </div>
             <div className="max-w-md mx-auto space-y-2">
-              <h3 className="text-xl font-black text-white">No Team Match Video Analyzed Yet</h3>
+              <h3 className="text-lg font-bold text-white">No Team Match Video Analyzed Yet</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Upload your first {config.name} match video to calculate tactical passing networks, team combination nodes, and player chemistry ratings!
+                Upload your first {config.name} match video to calculate tactical passing networks, team combination nodes, and player chemistry ratings.
               </p>
             </div>
             <Link
               href="/upload"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-bold text-white text-xs uppercase tracking-wider shadow-xl shadow-sky-500/25 transition active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 font-semibold text-white text-xs uppercase tracking-wider transition"
             >
               <Upload className="w-4 h-4" /> Upload First Match <ArrowRight className="w-4 h-4" />
             </Link>
@@ -113,22 +112,22 @@ export default function TeamAnalyticsPage() {
         ) : (
           <>
             {/* Network Diagram Visualization */}
-            <div className="pro-card p-6 shadow-xl space-y-4">
-              <h2 className="text-sm font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
-                <Activity className="w-4 h-4 text-sky-400" />
+            <div className="pro-card p-6 space-y-4">
+              <h2 className="text-xs font-semibold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                <Activity className="w-4 h-4 text-brand-400" />
                 {teamData.networkTitle}
               </h2>
 
-              <div className="relative aspect-video max-h-96 bg-[#070d1e] rounded-xl border border-slate-800 flex items-center justify-center overflow-hidden">
+              <div className="relative aspect-video max-h-96 bg-[#090D16] rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden">
                 {/* Tactical Formation Grid */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#152037_1px,transparent_1px),linear-gradient(to_bottom,#152037_1px,transparent_1px)] bg-[size:32px_32px] opacity-40" />
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:32px_32px] opacity-25" />
 
                 {/* Node Connections */}
                 <svg className="absolute inset-0 w-full h-full">
-                  <line x1="50%" y1="75%" x2="50%" y2="45%" stroke="#38bdf8" strokeWidth="4" strokeOpacity="0.8" />
-                  <line x1="50%" y1="45%" x2="25%" y2="25%" stroke="#38bdf8" strokeWidth="3" strokeOpacity="0.8" />
-                  <line x1="50%" y1="45%" x2="70%" y2="25%" stroke="#38bdf8" strokeWidth="3" strokeOpacity="0.8" />
-                  <line x1="50%" y1="45%" x2="50%" y2="15%" stroke="#38bdf8" strokeWidth="2" strokeOpacity="0.8" />
+                  <line x1="50%" y1="75%" x2="50%" y2="45%" stroke="#0ea5e9" strokeWidth="2" strokeOpacity="0.7" />
+                  <line x1="50%" y1="45%" x2="25%" y2="25%" stroke="#0ea5e9" strokeWidth="2" strokeOpacity="0.7" />
+                  <line x1="50%" y1="45%" x2="70%" y2="25%" stroke="#0ea5e9" strokeWidth="2" strokeOpacity="0.7" />
+                  <line x1="50%" y1="45%" x2="50%" y2="15%" stroke="#0ea5e9" strokeWidth="1.5" strokeOpacity="0.7" />
                 </svg>
 
                 {/* Player Nodes */}
@@ -138,10 +137,10 @@ export default function TeamAnalyticsPage() {
                     className="absolute -translate-x-1/2 -translate-y-1/2 group cursor-pointer z-10"
                     style={{ left: `${n.x}%`, top: `${100 - n.y}%` }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-sky-500 text-white font-extrabold text-xs flex items-center justify-center shadow-lg shadow-sky-500/40 group-hover:scale-110 transition-transform">
+                    <div className="w-9 h-9 rounded-full bg-brand-600 text-white font-bold text-xs flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
                       {n.id}
                     </div>
-                    <span className="block text-[10px] font-bold text-white bg-[#0b1329]/95 px-2 py-0.5 rounded mt-1 shadow text-center whitespace-nowrap border border-slate-700">
+                    <span className="block text-[10px] font-medium text-slate-200 bg-[#0E1424]/95 px-2 py-0.5 rounded mt-1 shadow text-center whitespace-nowrap border border-slate-800">
                       {n.name}
                     </span>
                   </div>
@@ -150,21 +149,21 @@ export default function TeamAnalyticsPage() {
             </div>
 
             {/* Team Strengths & Most Improved */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-5 rounded-2xl pro-card space-y-3">
-                <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">{config.name} Team Strengths</h3>
-                <ul className="space-y-2 text-xs text-slate-300">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-5 rounded-lg pro-card space-y-3">
+                <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">{config.name} Team Strengths</h3>
+                <ul className="space-y-2 text-xs text-slate-400">
                   {teamData.strengths.map((s: string, idx: number) => (
                     <li key={idx} className="flex items-center gap-2">{s}</li>
                   ))}
                 </ul>
               </div>
 
-              <div className="p-5 rounded-2xl pro-card space-y-3">
-                <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Most Improved Player</h3>
-                <div className="p-3 rounded-xl bg-sky-500/10 border border-sky-500/30 text-xs">
-                  <span className="font-bold text-sky-400 block text-sm">{teamData.improved}</span>
-                  <p className="text-slate-300 mt-1">{teamData.improvedDesc}</p>
+              <div className="p-5 rounded-lg pro-card space-y-3">
+                <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">Most Improved Player</h3>
+                <div className="p-3.5 rounded-lg bg-brand-500/10 border border-brand-500/20 text-xs">
+                  <span className="font-semibold text-brand-400 block text-xs">{teamData.improved}</span>
+                  <p className="text-slate-300 mt-1 text-xs">{teamData.improvedDesc}</p>
                 </div>
               </div>
             </div>

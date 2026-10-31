@@ -9,7 +9,7 @@ export function SportSelector() {
   const sports: SportType[] = ['Cricket', 'Football', 'Volleyball'];
 
   return (
-    <div className="flex items-center gap-1.5 bg-[#0b1329] p-1.5 rounded-xl border border-slate-700/80 shadow-md">
+    <div className="flex items-center gap-1 bg-[#0E1424] p-1 rounded-lg border border-slate-800/80">
       {sports.map((sportId) => {
         const config = SPORT_CONFIGS[sportId];
         const isActive = activeSport === sportId;
@@ -18,13 +18,13 @@ export function SportSelector() {
           <button
             key={sportId}
             onClick={() => setSport(sportId)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all ${
+            className={`px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-all ${
               isActive
-                ? 'bg-sky-600 text-white shadow-sm ring-2 ring-sky-400/50 scale-[1.02]'
-                : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                ? 'bg-sky-600 text-white shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >
-            <span className="text-sm">{config?.icon || '🏏'}</span>
+            <span className="text-xs">{config?.icon || '•'}</span>
             <span>{config?.name.split('/')[0].trim() || sportId}</span>
           </button>
         );

@@ -42,41 +42,43 @@ export function AthleteScore({ dna, athleteName = 'Athlete', position }: Athlete
   const activePosition = position || config.positions[0];
 
   return (
-    <div className="pro-card p-6 sm:p-8 shadow-xl relative overflow-hidden">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-700/80">
+    <div className="pro-card p-5 sm:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-4 border-b border-slate-800/80">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-sky-400 bg-sky-600/20 px-2.5 py-1 rounded-full border border-sky-500/40">
-            {config.icon} {config.name} DNA Profile
-          </span>
-          <h2 className="text-2xl font-black text-white mt-1.5">{athleteName} — Athlete DNA</h2>
-          <p className="text-xs text-slate-300">Position: <strong className="text-white">{activePosition}</strong></p>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-semibold text-sky-400 bg-sky-500/10 px-2.5 py-0.5 rounded border border-sky-500/20">
+              {config.icon} {config.name} DNA Profile
+            </span>
+            <span className="text-xs text-slate-400">Position: <strong className="text-slate-200">{activePosition}</strong></span>
+          </div>
+          <h2 className="text-xl font-bold text-white mt-1.5 tracking-tight">{athleteName} — Performance Radar</h2>
         </div>
 
-        <div className="text-right p-3 rounded-xl bg-[#0b1329] border border-slate-700 shadow-sm shrink-0">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Overall Rating</span>
-          <div className="text-3xl font-black text-sky-400">{current.overallScore}</div>
+        <div className="text-right px-3.5 py-2 rounded-lg bg-[#141D30] border border-slate-800 shrink-0">
+          <span className="text-[10px] font-medium text-slate-400 block uppercase tracking-wider">Overall Rating</span>
+          <div className="text-2xl font-bold font-mono text-sky-400">{current.overallScore}</div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
         {/* Radar Chart */}
-        <div className="w-full h-72 flex items-center justify-center min-h-[280px]">
+        <div className="w-full h-64 flex items-center justify-center min-h-[250px]">
           {isMounted ? (
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="75%" data={chartData}>
-                <PolarGrid stroke="#334155" />
-                <PolarAngleAxis dataKey="subject" stroke="#94a3b8" tick={{ fill: '#e2e8f0', fontSize: 11, fontWeight: 700 }} />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#1e293b" />
-                <Radar name="Athlete DNA" dataKey="value" stroke="#38bdf8" fill="#0284c7" fillOpacity={0.4} />
+              <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
+                <PolarGrid stroke="#1E293B" />
+                <PolarAngleAxis dataKey="subject" stroke="#64748B" tick={{ fill: '#94A3B8', fontSize: 11, fontWeight: 600 }} />
+                <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#1E293B" tick={false} />
+                <Radar name="Athlete DNA" dataKey="value" stroke="#38BDF8" fill="#0284C7" fillOpacity={0.3} />
               </RadarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="text-xs text-slate-400 font-bold animate-pulse">Loading Radar Visualization...</div>
+            <div className="text-xs text-slate-500 font-medium">Loading Radar Visualization...</div>
           )}
         </div>
 
         {/* Dimension Breakdown Bars */}
-        <div className="space-y-3.5">
+        <div className="space-y-3">
           {[
             { label: config.dnaLabels.technical, score: current.technicalScore, color: 'bg-sky-500' },
             { label: config.dnaLabels.tactical, score: current.tacticalScore, color: 'bg-indigo-500' },
@@ -85,11 +87,11 @@ export function AthleteScore({ dna, athleteName = 'Athlete', position }: Athlete
             { label: config.dnaLabels.consistency, score: current.consistencyScore, color: 'bg-amber-500' },
           ].map((item) => (
             <div key={item.label}>
-              <div className="flex justify-between text-xs font-bold mb-1">
-                <span className="text-slate-300">{item.label}</span>
-                <span className="text-white font-mono">{item.score} / 100</span>
+              <div className="flex justify-between text-xs mb-1">
+                <span className="text-slate-300 font-medium">{item.label}</span>
+                <span className="text-slate-200 font-mono font-semibold">{item.score} / 100</span>
               </div>
-              <div className="w-full h-2.5 bg-[#0b1329] rounded-full overflow-hidden border border-slate-700/80 p-0.5">
+              <div className="w-full h-1.5 bg-[#141D30] rounded-full overflow-hidden border border-slate-800">
                 <div
                   className={`h-full ${item.color} rounded-full transition-all duration-700 ease-out`}
                   style={{ width: `${item.score}%` }}

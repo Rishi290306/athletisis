@@ -39,103 +39,103 @@ export default function RegisterPage() {
 
   return (
     <div className="max-w-md mx-auto py-10 px-4">
-      <div className="pro-card p-8 shadow-2xl space-y-6">
+      <div className="pro-card p-8 space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-sky-600/20 border border-sky-500/40 text-sky-400 flex items-center justify-center mx-auto mb-2 font-bold text-xl shadow-sm">
-            <UserPlus className="w-6 h-6" />
+          <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center mx-auto mb-2 font-bold text-xl">
+            <UserPlus className="w-5 h-5" />
           </div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">Create Athletisis Profile</h1>
-          <p className="text-xs text-slate-300">Set up your sports performance workstation account</p>
+          <h1 className="text-2xl font-bold text-white tracking-tight">Create Athletisis Profile</h1>
+          <p className="text-xs text-slate-400">Set up your sports performance workstation account</p>
         </div>
 
         {error && (
-          <div className="p-3 rounded-xl bg-red-950/50 border border-red-700 text-red-300 text-xs font-semibold">
+          <div className="p-3 rounded-lg bg-red-950/40 border border-red-700/60 text-red-300 text-xs font-medium">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-1.5">Full Name</label>
+            <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Full Name</label>
             <div className="relative">
-              <UserIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+              <UserIcon className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
               <input
                 type="text"
                 required
                 placeholder="e.g. Rishi Tiwari"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0b1329] border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-400 transition"
+                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-1.5">Email Address</label>
+            <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Email Address</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+              <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
               <input
                 type="email"
                 required
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0b1329] border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-400 transition"
+                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-1.5">Password</label>
+            <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Password</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+              <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
               <input
                 type="password"
                 required
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0b1329] border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-400 transition"
+                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-1.5">Primary Sport</label>
+              <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Primary Sport</label>
               <select
                 value={sport}
                 onChange={(e) => setSport(e.target.value)}
-                className="w-full px-3 py-3 rounded-xl bg-[#0b1329] border border-slate-700 text-xs text-white focus:outline-none focus:border-sky-400 transition font-bold"
+                className="w-full px-3 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500 transition font-medium"
               >
-                <option value="Cricket">🏏 Cricket</option>
-                <option value="Football">⚽ Football</option>
-                <option value="Volleyball">🏐 Volleyball</option>
+                <option value="Cricket">Cricket</option>
+                <option value="Football">Football</option>
+                <option value="Volleyball">Volleyball</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-1.5">Team Name</label>
+              <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Team Name</label>
               <input
                 type="text"
                 placeholder="e.g. Apex Warriors"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
-                className="w-full px-3 py-3 rounded-xl bg-[#0b1329] border border-slate-700 text-xs text-white focus:outline-none focus:border-sky-400 transition"
+                className="w-full px-3 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-1.5">Select Role</label>
+            <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Select Role</label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setRole('ATHLETE')}
-                className={`py-3 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition border ${
+                className={`py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition border ${
                   role === 'ATHLETE'
-                    ? 'bg-sky-600 text-white border-sky-400 shadow-md'
-                    : 'bg-[#0b1329] text-slate-300 border-slate-700 hover:text-white'
+                    ? 'bg-brand-600 text-white border-brand-500 shadow-sm'
+                    : 'bg-[#090D16] text-slate-300 border-slate-800 hover:text-white'
                 }`}
               >
                 <Trophy className="w-4 h-4" /> Athlete Profile
@@ -144,10 +144,10 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setRole('COACH')}
-                className={`py-3 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition border ${
+                className={`py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition border ${
                   role === 'COACH'
-                    ? 'bg-sky-600 text-white border-sky-400 shadow-md'
-                    : 'bg-[#0b1329] text-slate-300 border-slate-700 hover:text-white'
+                    ? 'bg-brand-600 text-white border-brand-500 shadow-sm'
+                    : 'bg-[#090D16] text-slate-300 border-slate-800 hover:text-white'
                 }`}
               >
                 <Shield className="w-4 h-4" /> Coach Profile
@@ -158,15 +158,15 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 rounded-xl bg-sky-600 hover:bg-sky-500 font-extrabold text-white text-xs uppercase tracking-wider shadow-lg shadow-sky-600/30 transition disabled:opacity-50"
+            className="w-full py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 font-semibold text-white text-xs uppercase tracking-wider shadow-sm transition disabled:opacity-50"
           >
             {loading ? 'Creating Account...' : 'Complete Registration'}
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-400 pt-2 border-t border-slate-700/80">
+        <p className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800">
           Already registered?{' '}
-          <Link href="/login" className="text-sky-400 font-bold hover:underline">
+          <Link href="/login" className="text-brand-400 font-medium hover:underline">
             Sign in here
           </Link>
         </p>

@@ -70,13 +70,13 @@ export function InjuryRiskRadar({ sport = 'soccer', fatigueIndex = 62 }: InjuryR
       {/* Muscle Group Strain Breakdown */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {riskData.map((item, idx) => (
-          <div key={idx} className="p-3 rounded-lg bg-[#090a0f] border border-slate-800/80 space-y-2">
+          <div key={idx} className="p-3.5 rounded-lg bg-[#090D16] border border-slate-800 space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-white">{item.muscleGroup}</span>
-              <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                item.riskLevel === 'high' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                item.riskLevel === 'moderate' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
-                'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+              <span className="text-xs font-semibold text-white">{item.muscleGroup}</span>
+              <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider ${
+                item.riskLevel === 'high' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
+                item.riskLevel === 'moderate' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+                'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
               }`}>
                 {item.riskLevel} Risk ({item.stressScore}%)
               </span>
@@ -93,13 +93,13 @@ export function InjuryRiskRadar({ sport = 'soccer', fatigueIndex = 62 }: InjuryR
               />
             </div>
 
-            <div className="text-[11px] text-slate-400 flex items-center gap-1">
-              <Activity className="w-3 h-3 text-slate-500" />
+            <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
+              <Activity className="w-3.5 h-3.5 text-slate-500 shrink-0" />
               <span>Cause: <span className="text-slate-300 font-medium">{item.cause}</span></span>
             </div>
 
-            <div className="text-[11px] text-sky-400/90 font-medium bg-sky-950/30 p-1.5 rounded border border-sky-900/40">
-              💡 {item.recommendation}
+            <div className="text-[11px] text-brand-400/90 font-medium bg-brand-500/10 p-2 rounded-lg border border-brand-500/20">
+              {item.recommendation}
             </div>
           </div>
         ))}

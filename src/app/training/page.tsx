@@ -51,32 +51,31 @@ export default function TrainingPage() {
 
   return (
     <AuthGuard>
-      <div className="space-y-8">
-        <div className="pro-card p-6 shadow-xl flex items-center justify-between">
+      <div className="space-y-6">
+        <div className="pro-card p-6 flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xl">{config.icon}</span>
-              <span className="text-[10px] font-black uppercase text-sky-400 tracking-widest">{config.name} Training Engine</span>
+              <span className="text-[11px] font-semibold uppercase text-brand-400 tracking-wider">{config.name} Training Engine</span>
             </div>
-            <h1 className="text-2xl font-black text-white">Personalized Training & Feedback Loop</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight">Personalized Training & Feedback Loop</h1>
             <p className="text-xs text-slate-400">Targeted drills derived from detected {config.name} weaknesses with measurable performance goals</p>
           </div>
         </div>
 
         {userMatches.length === 0 ? (
-          <div className="pro-card p-12 text-center space-y-6 shadow-2xl">
-            <div className="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center mx-auto shadow-xl">
-              <FolderPlus className="w-8 h-8" />
+          <div className="pro-card p-12 text-center space-y-6">
+            <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center mx-auto">
+              <FolderPlus className="w-6 h-6" />
             </div>
             <div className="max-w-md mx-auto space-y-2">
-              <h3 className="text-xl font-black text-white">No {config.name} Video Analyzed Yet</h3>
+              <h3 className="text-lg font-bold text-white">No {config.name} Video Analyzed Yet</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                You haven't uploaded any match video footage yet. Upload your first {config.name} game to calculate your technique weaknesses, performance goals, and personalized drills!
+                Upload your first {config.name} game to calculate technique weaknesses, performance goals, and personalized drills.
               </p>
             </div>
             <Link
               href="/upload"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-bold text-white text-xs uppercase tracking-wider shadow-xl shadow-sky-500/25 transition active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 font-semibold text-white text-xs uppercase tracking-wider transition"
             >
               <Upload className="w-4 h-4" /> Upload First Match <ArrowRight className="w-4 h-4" />
             </Link>
@@ -84,71 +83,71 @@ export default function TrainingPage() {
         ) : (
           <>
             {/* Progress Feedback Loop Component */}
-            <div className="pro-card p-6 shadow-xl space-y-4">
+            <div className="pro-card p-6 space-y-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                 <div>
-                  <span className="text-[10px] font-extrabold uppercase text-sky-400 tracking-wider">
+                  <span className="text-[10px] font-semibold uppercase text-brand-400 tracking-wider">
                     {config.name} Feedback Loop
                   </span>
-                  <h2 className="text-lg font-bold text-white">{data.feedbackTitle}</h2>
+                  <h2 className="text-base font-bold text-white">{data.feedbackTitle}</h2>
                 </div>
-                <span className="px-3 py-1 rounded-full text-xs font-black bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">
                   +29.5% Improvement
                 </span>
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-400 leading-relaxed">
                 {data.feedbackText}
               </p>
 
               <div className="grid grid-cols-4 gap-2 text-center pt-2">
-                <div className="p-3 rounded-xl bg-[#0b1329] border border-slate-800"><span className="text-[10px] text-slate-500 block">Match 1</span><span className="font-bold text-slate-300 text-xs">61.0</span></div>
-                <div className="p-3 rounded-xl bg-[#0b1329] border border-slate-800"><span className="text-[10px] text-slate-500 block">Match 2</span><span className="font-bold text-slate-300 text-xs">68.0</span></div>
-                <div className="p-3 rounded-xl bg-[#0b1329] border border-slate-800"><span className="text-[10px] text-slate-500 block">Match 3</span><span className="font-bold text-slate-300 text-xs">74.0</span></div>
-                <div className="p-3 rounded-xl bg-sky-500/10 border border-sky-500/30"><span className="text-[10px] text-sky-400 block font-bold">Match 4</span><span className="font-black text-sky-400 text-sm">79.0</span></div>
+                <div className="p-3 rounded-lg bg-[#090D16] border border-slate-800"><span className="text-[10px] text-slate-500 block">Match 1</span><span className="font-semibold text-slate-300 text-xs">61.0</span></div>
+                <div className="p-3 rounded-lg bg-[#090D16] border border-slate-800"><span className="text-[10px] text-slate-500 block">Match 2</span><span className="font-semibold text-slate-300 text-xs">68.0</span></div>
+                <div className="p-3 rounded-lg bg-[#090D16] border border-slate-800"><span className="text-[10px] text-slate-500 block">Match 3</span><span className="font-semibold text-slate-300 text-xs">74.0</span></div>
+                <div className="p-3 rounded-lg bg-brand-500/10 border border-brand-500/30"><span className="text-[10px] text-brand-400 block font-semibold">Match 4</span><span className="font-bold text-brand-400 text-sm">79.0</span></div>
               </div>
             </div>
 
             {/* Active Priority Drills */}
             <div className="space-y-4">
-              <h2 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Active {config.name} Training Drills</h2>
+              <h2 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">Active {config.name} Training Drills</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-5 rounded-2xl pro-card space-y-3 shadow-lg">
+                <div className="p-5 rounded-lg pro-card space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-red-500/10 text-red-400 border border-red-500/20">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase bg-red-500/10 text-red-400 border border-red-500/20">
                       Priority: HIGH
                     </span>
-                    <span className="text-xs font-bold text-slate-400">Target: 85.0</span>
+                    <span className="text-xs font-medium text-slate-400">Target: 85.0</span>
                   </div>
 
-                  <h3 className="text-base font-bold text-white">{data.drill1Title}</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <h3 className="text-sm font-bold text-white">{data.drill1Title}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
                     {data.drill1Desc}
                   </p>
 
-                  <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs font-semibold text-slate-400">
+                  <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs font-medium text-slate-400">
                     <span>Frequency: 3 sessions/week</span>
-                    <span className="text-sky-400">Status: Active</span>
+                    <span className="text-brand-400">Status: Active</span>
                   </div>
                 </div>
 
-                <div className="p-5 rounded-2xl pro-card space-y-3 shadow-lg">
+                <div className="p-5 rounded-lg pro-card space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase bg-amber-500/10 text-amber-400 border border-amber-500/20">
                       Priority: MEDIUM
                     </span>
-                    <span className="text-xs font-bold text-slate-400">Target: 88.0</span>
+                    <span className="text-xs font-medium text-slate-400">Target: 88.0</span>
                   </div>
 
-                  <h3 className="text-base font-bold text-white">{data.drill2Title}</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <h3 className="text-sm font-bold text-white">{data.drill2Title}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
                     {data.drill2Desc}
                   </p>
 
-                  <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs font-semibold text-slate-400">
+                  <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs font-medium text-slate-400">
                     <span>Frequency: 2 sessions/week</span>
-                    <span className="text-sky-400">Status: Active</span>
+                    <span className="text-brand-400">Status: Active</span>
                   </div>
                 </div>
               </div>

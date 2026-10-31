@@ -66,19 +66,19 @@ export function ComparisonWorkbench({ sport = 'soccer', primaryVideoUrl, seconda
 
         <div className="flex items-center gap-2">
           {/* Preset comparison mode toggle */}
-          <div className="flex items-center gap-1 bg-[#090a0f] p-1 rounded-lg border border-slate-800 text-xs">
+          <div className="flex items-center gap-1 bg-[#090D16] p-1 rounded-lg border border-slate-800 text-xs">
             <button
               onClick={() => setActiveTab('pro')}
-              className={`px-2.5 py-1 rounded font-semibold transition ${
-                activeTab === 'pro' ? 'bg-sky-600 text-white' : 'text-slate-400 hover:text-slate-200'
+              className={`px-2.5 py-1 rounded font-medium transition ${
+                activeTab === 'pro' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
               }`}
             >
               vs Pro Reference
             </button>
             <button
               onClick={() => setActiveTab('previous')}
-              className={`px-2.5 py-1 rounded font-semibold transition ${
-                activeTab === 'previous' ? 'bg-sky-600 text-white' : 'text-slate-400 hover:text-slate-200'
+              className={`px-2.5 py-1 rounded font-medium transition ${
+                activeTab === 'previous' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
               }`}
             >
               vs Previous Attempt
@@ -86,13 +86,13 @@ export function ComparisonWorkbench({ sport = 'soccer', primaryVideoUrl, seconda
           </div>
 
           {/* Speed selector */}
-          <div className="flex items-center gap-1 bg-[#090a0f] px-2 py-1 rounded-lg border border-slate-800 text-xs font-mono">
+          <div className="flex items-center gap-1 bg-[#090D16] px-2 py-1 rounded-lg border border-slate-800 text-xs font-mono">
             {[0.25, 0.5, 1].map((s) => (
               <button
                 key={s}
                 onClick={() => setPlaybackSpeed(s)}
-                className={`px-2 py-0.5 rounded font-bold transition ${
-                  playbackSpeed === s ? 'bg-sky-600 text-white' : 'text-slate-400 hover:text-slate-200'
+                className={`px-2 py-0.5 rounded font-medium transition ${
+                  playbackSpeed === s ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 {s}x
@@ -107,24 +107,24 @@ export function ComparisonWorkbench({ sport = 'soccer', primaryVideoUrl, seconda
         {/* Clip A: Athlete Current */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-bold text-white flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-sky-500" /> {compData.clipA}
+            <span className="font-semibold text-white flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-brand-500" /> {compData.clipA}
             </span>
-            <span className="text-slate-400 font-mono">CLIP A • YOUR ATTEMPT</span>
+            <span className="text-slate-400 font-mono text-[10px]">CLIP A • ATTEMPT</span>
           </div>
-          <div className="relative aspect-video bg-[#0c1017] rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden">
+          <div className="relative aspect-video bg-[#090D16] rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden">
             {primaryVideoUrl ? (
               <video src={primaryVideoUrl} className="w-full h-full object-contain" />
             ) : (
               <div className="text-center p-4 space-y-2">
-                <div className="w-10 h-10 rounded-full bg-sky-950/60 border border-sky-800/40 text-sky-400 flex items-center justify-center mx-auto font-bold">
+                <div className="w-9 h-9 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center mx-auto font-bold text-xs">
                   A
                 </div>
-                <div className="text-xs font-bold text-slate-300">Athlete Video Stream</div>
+                <div className="text-xs font-semibold text-slate-300">Athlete Video Stream</div>
                 <div className="text-[10px] text-slate-500">Pose Skeleton Analyzed</div>
               </div>
             )}
-            <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-[#090a0f]/80 text-[10px] font-mono text-sky-400 border border-slate-700">
+            <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-[#090D16]/90 text-[10px] font-mono text-brand-400 border border-slate-800">
               SPEED: {playbackSpeed}x
             </div>
           </div>
@@ -133,24 +133,24 @@ export function ComparisonWorkbench({ sport = 'soccer', primaryVideoUrl, seconda
         {/* Clip B: Pro Benchmark Reference */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-bold text-white flex items-center gap-1.5">
+            <span className="font-semibold text-white flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500" /> {activeTab === 'pro' ? compData.clipB : 'Previous Match Attempt'}
             </span>
-            <span className="text-slate-400 font-mono">CLIP B • BENCHMARK</span>
+            <span className="text-slate-400 font-mono text-[10px]">CLIP B • BENCHMARK</span>
           </div>
-          <div className="relative aspect-video bg-[#0c1017] rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden">
+          <div className="relative aspect-video bg-[#090D16] rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden">
             {secondaryVideoUrl ? (
               <video src={secondaryVideoUrl} className="w-full h-full object-contain" />
             ) : (
               <div className="text-center p-4 space-y-2">
-                <div className="w-10 h-10 rounded-full bg-emerald-950/60 border border-emerald-800/40 text-emerald-400 flex items-center justify-center mx-auto font-bold">
+                <div className="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto font-bold text-xs">
                   B
                 </div>
-                <div className="text-xs font-bold text-slate-300">{activeTab === 'pro' ? 'Elite Pro Benchmark Stream' : 'Previous Best Clip'}</div>
+                <div className="text-xs font-semibold text-slate-300">{activeTab === 'pro' ? 'Elite Pro Benchmark Stream' : 'Previous Best Clip'}</div>
                 <div className="text-[10px] text-slate-500">Gold Standard Pose Reference</div>
               </div>
             )}
-            <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-[#090a0f]/80 text-[10px] font-mono text-emerald-400 border border-slate-700">
+            <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-[#090D16]/90 text-[10px] font-mono text-emerald-400 border border-slate-800">
               TARGET SPEC
             </div>
           </div>
@@ -158,19 +158,19 @@ export function ComparisonWorkbench({ sport = 'soccer', primaryVideoUrl, seconda
       </div>
 
       {/* Synchronized Biomechanical Metrics Differential Table */}
-      <div className="p-3 rounded-lg bg-[#090a0f] border border-slate-800 space-y-2">
-        <div className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-          <Activity className="w-3.5 h-3.5 text-sky-400" />
+      <div className="p-3.5 rounded-lg bg-[#090D16] border border-slate-800 space-y-2">
+        <div className="text-xs font-semibold text-white uppercase tracking-wider flex items-center gap-2">
+          <Activity className="w-3.5 h-3.5 text-brand-400" />
           Synchronized Kinematic Differential Analysis
         </div>
 
         <div className="space-y-2 divide-y divide-slate-800/60">
           {compData.metrics.map((m, idx) => (
             <div key={idx} className="pt-2 flex items-center justify-between text-xs gap-3">
-              <div className="font-semibold text-slate-300 w-1/3">{m.label}</div>
-              <div className="font-mono font-bold text-sky-400">{m.athlete}</div>
-              <div className="font-mono font-bold text-emerald-400">{m.pro}</div>
-              <div className="font-mono text-[11px] text-amber-400 bg-amber-950/30 px-2 py-0.5 rounded border border-amber-900/40">
+              <div className="font-medium text-slate-300 w-1/3">{m.label}</div>
+              <div className="font-mono font-semibold text-brand-400">{m.athlete}</div>
+              <div className="font-mono font-semibold text-emerald-400">{m.pro}</div>
+              <div className="font-mono text-[11px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                 {m.diff}
               </div>
             </div>

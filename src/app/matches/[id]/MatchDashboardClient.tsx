@@ -135,32 +135,32 @@ export function MatchDashboardClient() {
 
   return (
     <AuthGuard>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+      <div className="space-y-5">
         
         {/* Breadcrumb & Instant Back Navigation Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1 border-b border-slate-800">
-          <div className="flex items-center gap-2 text-xs text-slate-300 font-medium overflow-x-auto py-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-1 border-b border-slate-800/80">
+          <div className="flex items-center gap-2 text-xs text-slate-400 font-medium overflow-x-auto py-0.5">
             <Link
               href="/dashboard"
-              className="flex items-center gap-1.5 text-slate-300 hover:text-sky-400 transition font-bold shrink-0"
+              className="flex items-center gap-1.5 text-slate-400 hover:text-sky-400 transition font-medium shrink-0"
             >
               <LayoutDashboard className="w-3.5 h-3.5 text-sky-400" />
-              Dashboard
+              <span>Dashboard</span>
             </Link>
-            <span className="text-slate-600">/</span>
+            <span className="text-slate-700">/</span>
             <Link
               href="/matches"
-              className="text-slate-300 hover:text-sky-400 transition font-bold shrink-0"
+              className="text-slate-400 hover:text-sky-400 transition font-medium shrink-0"
             >
               Matches
             </Link>
-            <span className="text-slate-600">/</span>
-            <span className="text-white font-bold truncate max-w-[200px] sm:max-w-md">{match.matchName}</span>
+            <span className="text-slate-700">/</span>
+            <span className="text-slate-200 font-semibold truncate max-w-[200px] sm:max-w-md">{match.matchName}</span>
           </div>
 
           <Link
             href="/dashboard"
-            className="px-3.5 py-1.5 rounded-xl bg-sky-600/20 hover:bg-sky-600 border border-sky-500/40 text-sky-300 hover:text-white text-xs font-bold flex items-center gap-2 transition shadow-sm w-fit"
+            className="px-3 py-1.5 rounded-lg bg-[#0E1424] hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition shadow-sm w-fit"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Return to Dashboard</span>
@@ -168,50 +168,50 @@ export function MatchDashboardClient() {
         </div>
 
         {/* Top Workstation Header Bar */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-[#152037] border border-slate-700 shadow-xl">
-          <div>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 sm:p-6 pro-card">
+          <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-600/20 text-sky-300 border border-sky-500/40 shadow-sm">
+              <span className="px-2.5 py-0.5 rounded text-[11px] font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
                 {activeSportName} • MATCH #{match.id}
               </span>
-              <span className="text-xs font-mono text-slate-300">{match.matchDate}</span>
+              <span className="text-xs font-mono text-slate-400">{match.matchDate}</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-white mt-1.5 tracking-tight">{match.matchName}</h1>
-            <p className="text-xs text-slate-300 mt-0.5">
-              Athlete: <span className="text-white font-bold">{match.athleteName}</span> • Team: <span className="text-slate-200 font-semibold">{match.teamName}</span>
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">{match.matchName}</h1>
+            <p className="text-xs text-slate-400">
+              Athlete: <span className="text-slate-200 font-semibold">{match.athleteName}</span> • Team: <span className="text-slate-300 font-medium">{match.teamName}</span> • Venue: <span className="text-slate-400">{match.venue}</span>
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap shrink-0">
             {/* Primary Back to Dashboard Button */}
             <Link
               href="/dashboard"
-              className="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white shadow-md shadow-sky-600/30 transition active:scale-95"
+              className="px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white shadow-sm transition active:scale-95"
             >
               <LayoutDashboard className="w-4 h-4" />
-              Back to Dashboard
+              <span>Back to Dashboard</span>
             </Link>
 
             {/* All Matches list button */}
             <Link
               href="/matches"
-              className="px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 bg-[#0b1329] text-slate-200 border border-slate-700 hover:border-slate-500 hover:text-white transition"
+              className="px-3 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 bg-[#141D30] text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition"
             >
-              <VideoIcon className="w-4 h-4 text-sky-400" />
-              All Matches
+              <VideoIcon className="w-3.5 h-3.5 text-sky-400" />
+              <span>All Matches</span>
             </Link>
 
             {/* Split Screen Workbench Option */}
             <button
               onClick={() => setShowComparison(!showComparison)}
-              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition shadow-sm ${
+              className={`px-3 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition border ${
                 showComparison
-                  ? 'bg-sky-600 text-white border border-sky-400'
-                  : 'bg-[#0b1329] text-slate-200 border border-slate-700 hover:border-slate-500 hover:text-white'
+                  ? 'bg-sky-600 text-white border-sky-400 shadow-sm'
+                  : 'bg-[#141D30] text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
               }`}
             >
-              <Columns className="w-4 h-4" />
-              {showComparison ? 'Close Dual View' : 'Split-Screen Comparison'}
+              <Columns className="w-3.5 h-3.5" />
+              <span>{showComparison ? 'Close Dual View' : 'Pro Benchmark Comparison'}</span>
             </button>
           </div>
         </div>
@@ -221,11 +221,11 @@ export function MatchDashboardClient() {
           <ComparisonWorkbench sport={activeSportName} primaryVideoUrl={match.videoUrl} />
         )}
 
-        {/* Main Workstation Dual Pane Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Main Workstation Dual Pane Grid - 8 cols for Hero Video Workbench, 4 cols for Analytics */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
           
-          {/* LEFT PANE (Video Workbench & Tagging) */}
-          <div className="lg:col-span-7 space-y-6">
+          {/* LEFT HERO PANE (Video Workbench & Tagging) */}
+          <div className="lg:col-span-8 space-y-4">
             <VideoPlayer
               videoUrl={match.videoUrl}
               clips={analysis.clips}
@@ -242,47 +242,47 @@ export function MatchDashboardClient() {
             />
           </div>
 
-          {/* RIGHT PANE (Multi-Tab Intelligence Suite) */}
-          <div className="lg:col-span-5 space-y-4">
+          {/* RIGHT SUPPORTING PANE (Multi-Tab Intelligence Suite) */}
+          <div className="lg:col-span-4 space-y-3.5">
             
-            {/* Tab Navigation Controls */}
-            <div className="flex items-center gap-1.5 p-1.5 rounded-xl bg-[#152037] border border-slate-700 overflow-x-auto text-xs font-bold shadow-md">
+            {/* Segmented Tab Navigation Controls */}
+            <div className="flex items-center gap-1 p-1 rounded-lg bg-[#0E1424] border border-slate-800/90 overflow-x-auto text-xs font-medium">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'overview' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                className={`px-2.5 py-1.5 rounded-md flex items-center gap-1.5 transition shrink-0 ${
+                  activeTab === 'overview' ? 'bg-sky-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
-                <Activity className="w-3.5 h-3.5" /> Biometrics & Clips
+                <Activity className="w-3.5 h-3.5" /> Telemetry
               </button>
               <button
                 onClick={() => setActiveTab('drills')}
-                className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'drills' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                className={`px-2.5 py-1.5 rounded-md flex items-center gap-1.5 transition shrink-0 ${
+                  activeTab === 'drills' ? 'bg-sky-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 <Dumbbell className="w-3.5 h-3.5" /> Drills
               </button>
               <button
                 onClick={() => setActiveTab('injury')}
-                className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'injury' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                className={`px-2.5 py-1.5 rounded-md flex items-center gap-1.5 transition shrink-0 ${
+                  activeTab === 'injury' ? 'bg-sky-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 <ShieldAlert className="w-3.5 h-3.5" /> Strain
               </button>
               <button
                 onClick={() => setActiveTab('report')}
-                className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'report' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                className={`px-2.5 py-1.5 rounded-md flex items-center gap-1.5 transition shrink-0 ${
+                  activeTab === 'report' ? 'bg-sky-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 <FileText className="w-3.5 h-3.5" /> Report
               </button>
               <button
                 onClick={() => setActiveTab('chat')}
-                className={`px-3 py-2 rounded-lg flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'chat' ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-300 hover:text-white'
+                className={`px-2.5 py-1.5 rounded-md flex items-center gap-1.5 transition shrink-0 ${
+                  activeTab === 'chat' ? 'bg-sky-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 <Bot className="w-3.5 h-3.5" /> AI Coach
@@ -291,85 +291,85 @@ export function MatchDashboardClient() {
 
             {/* Active Tab Component Render */}
             {activeTab === 'overview' && (
-              <div className="space-y-4">
-                {/* Metric Summary Cards */}
-                <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-3.5">
+                {/* Metric Summary Cards Grid */}
+                <div className="grid grid-cols-2 gap-2.5">
                   {analysis.metricCards.slice(0, 4).map((card, idx) => (
-                    <div key={idx} className="p-3.5 rounded-xl bg-[#152037] border border-slate-700 shadow-sm">
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-slate-300">{card.title}</div>
-                      <div className="text-lg font-black text-white font-mono mt-1">
-                        {card.value} <span className="text-xs font-semibold text-slate-400">{card.unit}</span>
+                    <div key={idx} className="p-3 rounded-lg bg-[#0E1424] border border-slate-800">
+                      <div className="text-[10px] font-medium text-slate-400">{card.title}</div>
+                      <div className="text-base font-bold text-white font-mono mt-0.5">
+                        {card.value} <span className="text-[11px] font-normal text-slate-500">{card.unit}</span>
                       </div>
-                      <div className="text-[11px] text-sky-400 font-medium mt-0.5">{card.subtitle}</div>
+                      <div className="text-[10px] text-sky-400 font-medium truncate mt-0.5">{card.subtitle}</div>
                     </div>
                   ))}
                 </div>
 
                 {/* Biomechanical Angle Calibrations */}
-                <div className="p-4 rounded-xl bg-[#152037] border border-slate-700 shadow-sm space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-xs font-bold text-white uppercase tracking-wider">
-                      <Zap className="w-4 h-4 text-amber-400" />
-                      <span>Pose Skeleton Telemetry</span>
+                <div className="p-3.5 rounded-xl bg-[#0E1424] border border-slate-800 space-y-2.5">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-white">
+                      <Zap className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Live Joint Angles</span>
                     </div>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                      LIVE CALIBRATED
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      COCO-17
                     </span>
                   </div>
 
-                  <div className="space-y-2 text-xs font-mono">
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-[#0b1329] border border-slate-800">
-                      <span className="text-slate-300">Bowling Arm Angle</span>
-                      <span className="text-amber-400 font-bold">88° (Optimal: 85°-95°)</span>
+                  <div className="space-y-1.5 text-xs font-mono">
+                    <div className="flex items-center justify-between p-2 rounded bg-[#141D30] border border-slate-800/80">
+                      <span className="text-slate-400">Arm Extension Angle</span>
+                      <span className="text-amber-400 font-semibold">88° (Target: 85°-95°)</span>
                     </div>
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-[#0b1329] border border-slate-800">
-                      <span className="text-slate-300">Front Knee Brace Angle</span>
-                      <span className="text-emerald-400 font-bold">142° (Strong Leverage)</span>
+                    <div className="flex items-center justify-between p-2 rounded bg-[#141D30] border border-slate-800/80">
+                      <span className="text-slate-400">Front Knee Brace</span>
+                      <span className="text-emerald-400 font-semibold">142° (Strong Leverage)</span>
                     </div>
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-[#0b1329] border border-slate-800">
-                      <span className="text-slate-300">Release Height Apex</span>
-                      <span className="text-sky-400 font-bold">2.14 m</span>
+                    <div className="flex items-center justify-between p-2 rounded bg-[#141D30] border border-slate-800/80">
+                      <span className="text-slate-400">Release Apex</span>
+                      <span className="text-sky-400 font-semibold">2.14 m</span>
                     </div>
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-[#0b1329] border border-slate-800">
-                      <span className="text-slate-300">Trunk Forward Flexion</span>
-                      <span className="text-white font-bold">18° Body Lean</span>
+                    <div className="flex items-center justify-between p-2 rounded bg-[#141D30] border border-slate-800/80">
+                      <span className="text-slate-400">Trunk Flexion</span>
+                      <span className="text-slate-200 font-semibold">18° Forward Lean</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Key Delivery Clips & Breakdown */}
-                <div className="p-4 rounded-xl bg-[#152037] border border-slate-700 shadow-sm space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-white uppercase tracking-wider">
+                <div className="p-3.5 rounded-xl bg-[#0E1424] border border-slate-800 space-y-2.5">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
+                    <span className="text-xs font-semibold text-white">
                       Action Phase Highlights
                     </span>
-                    <span className="text-[10px] text-slate-300">Click to jump frame</span>
+                    <span className="text-[10px] text-slate-500">1-click jump</span>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {[
-                      { label: 'Run-up & Accelerating Approach', time: 1.0, badge: 'APPROACH', color: 'bg-sky-500/20 text-sky-300 border-sky-500/30' },
-                      { label: 'Back Foot Impact & Coil', time: 2.0, badge: 'COIL', color: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
-                      { label: 'Front Foot Brace & Release Point', time: 2.8, badge: 'RELEASE', color: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
-                      { label: 'Follow-Through & Momentum Decay', time: 3.5, badge: 'FINISH', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
+                      { label: 'Run-up & Acceleration Approach', time: 1.0, badge: 'APPROACH', color: 'bg-sky-500/10 text-sky-400 border-sky-500/20' },
+                      { label: 'Foot Plant & Loading Coil', time: 2.0, badge: 'COIL', color: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' },
+                      { label: 'Kinematic Release Apex Point', time: 2.8, badge: 'RELEASE', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
+                      { label: 'Deceleration Follow-Through', time: 3.5, badge: 'FINISH', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
                     ].map((phase, idx) => (
                       <button
                         key={idx}
                         onClick={() => handleSeek(phase.time)}
-                        className="w-full flex items-center justify-between p-2.5 rounded-lg bg-[#0b1329] border border-slate-800 hover:border-sky-500/50 hover:bg-[#101b33] transition group text-left"
+                        className="w-full flex items-center justify-between p-2 rounded-lg bg-[#141D30] border border-slate-800 hover:border-sky-500/50 hover:bg-[#18233C] transition group text-left"
                       >
-                        <div className="flex items-center gap-2.5">
-                          <div className="p-1 rounded bg-slate-800 group-hover:bg-sky-600 transition text-slate-300 group-hover:text-white">
-                            <Play className="w-3 h-3 fill-current" />
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 rounded bg-slate-800 group-hover:bg-sky-600 transition text-slate-400 group-hover:text-white">
+                            <Play className="w-2.5 h-2.5 fill-current" />
                           </div>
                           <div>
-                            <div className="text-xs font-bold text-white group-hover:text-sky-300 transition">
+                            <div className="text-xs font-medium text-slate-200 group-hover:text-sky-300 transition">
                               {phase.label}
                             </div>
-                            <div className="text-[10px] font-mono text-slate-300">Timestamp: 00:0{Math.floor(phase.time)}s</div>
+                            <div className="text-[10px] font-mono text-slate-500">00:0{Math.floor(phase.time)}s</div>
                           </div>
                         </div>
-                        <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border ${phase.color}`}>
+                        <span className={`text-[9px] font-mono font-semibold px-2 py-0.5 rounded border ${phase.color}`}>
                           {phase.badge}
                         </span>
                       </button>
@@ -400,34 +400,34 @@ export function MatchDashboardClient() {
         </div>
 
         {/* Bottom Session Completion & Action Bar */}
-        <div className="p-5 rounded-2xl bg-[#152037] border border-slate-700 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 rounded-xl bg-[#0E1424] border border-slate-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 text-center sm:text-left">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 mx-auto sm:mx-0">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+            <div className="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 mx-auto sm:mx-0">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             </div>
             <div>
-              <div className="text-sm font-bold text-white">Analysis Session Successfully Completed</div>
-              <div className="text-xs text-slate-300">
-                MediaPipe biomechanics keypoints, sprint kinematics, and drill recommendations are fully generated.
+              <div className="text-xs font-semibold text-white">Analysis Session Active & Calibrated</div>
+              <div className="text-[11px] text-slate-400">
+                17-point anatomical skeleton keypoints, sprint velocities, and drill recommendations are active.
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+          <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
             <Link
               href="/dashboard"
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-sky-600/30 transition active:scale-95 w-full sm:w-auto"
+              className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition active:scale-95 w-full sm:w-auto"
             >
-              <LayoutDashboard className="w-4 h-4" />
-              Return to Dashboard
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              <span>Return to Dashboard</span>
             </Link>
 
             <Link
               href="/upload"
-              className="px-4 py-2.5 rounded-xl bg-[#0b1329] hover:bg-slate-800 text-slate-200 border border-slate-700 hover:text-white text-xs font-bold flex items-center justify-center gap-2 transition w-full sm:w-auto"
+              className="px-3.5 py-2 rounded-lg bg-[#141D30] hover:bg-slate-800 text-slate-300 border border-slate-800 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition w-full sm:w-auto"
             >
-              <Upload className="w-4 h-4 text-sky-400" />
-              Upload New Video
+              <Upload className="w-3.5 h-3.5 text-sky-400" />
+              <span>Upload New Video</span>
             </Link>
           </div>
         </div>

@@ -69,58 +69,58 @@ export function MatchReportExporter({
       </div>
 
       {/* Printable Report Summary Sheet Preview */}
-      <div className="p-5 rounded-lg bg-[#090a0f] border border-slate-800 space-y-4 text-slate-100">
+      <div className="p-5 rounded-lg bg-[#090D16] border border-slate-800 space-y-4 text-slate-100">
         
         {/* Report Header */}
         <div className="flex items-start justify-between pb-4 border-b border-slate-800">
           <div>
-            <div className="text-xs font-bold uppercase tracking-widest text-sky-400">
+            <div className="text-xs font-semibold uppercase tracking-wider text-brand-400">
               Athletisis Pro Telemetry Report
             </div>
-            <h2 className="text-lg font-bold text-white mt-0.5">{athleteName} • Match Performance Assessment</h2>
+            <h2 className="text-base font-bold text-white mt-0.5">{athleteName} • Match Performance Assessment</h2>
             <div className="text-xs text-slate-400 mt-0.5">
-              Sport: <span className="text-slate-200 font-semibold capitalize">{sport}</span> • Match ID: #{matchId} • Date: {new Date().toLocaleDateString()}
+              Sport: <span className="text-slate-200 font-medium capitalize">{sport}</span> • Match ID: #{matchId} • Date: {new Date().toLocaleDateString()}
             </div>
           </div>
-          <div className="p-2 bg-[#12151e] rounded-lg border border-slate-800 text-center shrink-0">
-            <QrCode className="w-8 h-8 text-sky-400 mx-auto" />
+          <div className="p-2 bg-[#0E1424] rounded-lg border border-slate-800 text-center shrink-0">
+            <QrCode className="w-7 h-7 text-brand-400 mx-auto" />
             <span className="text-[9px] font-mono text-slate-400 block mt-1">SCAN FOR MOBILE</span>
           </div>
         </div>
 
         {/* Telemetry Summary Cards Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="p-3 rounded-lg bg-[#12151e] border border-slate-800">
-            <div className="text-[10px] font-bold uppercase text-slate-400">Top Sprint Velocity</div>
+          <div className="p-3 rounded-lg bg-[#0E1424] border border-slate-800">
+            <div className="text-[10px] font-medium uppercase text-slate-400">Top Sprint Velocity</div>
             <div className="text-lg font-bold text-white font-mono mt-1">{metrics.topSpeed}</div>
             <div className="text-[10px] text-emerald-400 mt-0.5">Top 5% League Avg</div>
           </div>
 
-          <div className="p-3 rounded-lg bg-[#12151e] border border-slate-800">
-            <div className="text-[10px] font-bold uppercase text-slate-400">Total Distance Covered</div>
+          <div className="p-3 rounded-lg bg-[#0E1424] border border-slate-800">
+            <div className="text-[10px] font-medium uppercase text-slate-400">Total Distance Covered</div>
             <div className="text-lg font-bold text-white font-mono mt-1">{metrics.distance}</div>
-            <div className="text-[10px] text-sky-400 mt-0.5">High Workrate</div>
+            <div className="text-[10px] text-brand-400 mt-0.5">High Workrate</div>
           </div>
 
-          <div className="p-3 rounded-lg bg-[#12151e] border border-slate-800">
-            <div className="text-[10px] font-bold uppercase text-slate-400">Stamina Recovery Index</div>
+          <div className="p-3 rounded-lg bg-[#0E1424] border border-slate-800">
+            <div className="text-[10px] font-medium uppercase text-slate-400">Stamina Recovery Index</div>
             <div className="text-lg font-bold text-white font-mono mt-1">{metrics.stamina}</div>
             <div className="text-[10px] text-amber-400 mt-0.5">Moderate Fatigue</div>
           </div>
 
-          <div className="p-3 rounded-lg bg-[#12151e] border border-slate-800">
-            <div className="text-[10px] font-bold uppercase text-slate-400">Tactical Strategy Score</div>
+          <div className="p-3 rounded-lg bg-[#0E1424] border border-slate-800">
+            <div className="text-[10px] font-medium uppercase text-slate-400">Tactical Strategy Score</div>
             <div className="text-lg font-bold text-white font-mono mt-1">{metrics.tacticalScore}</div>
-            <div className="text-[10px] text-purple-400 mt-0.5">Excellent Alignment</div>
+            <div className="text-[10px] text-brand-400 mt-0.5">Excellent Alignment</div>
           </div>
         </div>
 
         {/* Executive Coaching Notes & Training Assignments */}
         <div className="space-y-2 pt-2">
-          <div className="text-xs font-bold text-white uppercase tracking-wider">
+          <div className="text-xs font-semibold text-white uppercase tracking-wider">
             Coach's Tactical Directives & Assigned Drills
           </div>
-          <div className="p-3 rounded-lg bg-[#12151e] border border-slate-800 text-xs space-y-2">
+          <div className="p-3 rounded-lg bg-[#0E1424] border border-slate-800 text-xs space-y-2">
             <div className="flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
               <div>

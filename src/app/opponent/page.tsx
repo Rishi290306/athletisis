@@ -54,54 +54,53 @@ export default function OpponentAnalysisPage() {
 
   return (
     <AuthGuard>
-      <div className="space-y-8">
-        <div className="pro-card p-6 shadow-xl">
+      <div className="space-y-6">
+        <div className="pro-card p-6">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xl">{config.icon}</span>
-            <span className="text-[10px] font-black uppercase text-sky-400 tracking-widest">{config.name} Scouting Engine</span>
+            <span className="text-[11px] font-semibold uppercase text-brand-400 tracking-wider">{config.name} Scouting Engine</span>
           </div>
-          <h1 className="text-2xl font-black text-white">Opponent Analysis & Pre-Match AI Strategy</h1>
+          <h1 className="text-2xl font-bold text-white tracking-tight">Opponent Analysis & Pre-Match Strategy</h1>
           <p className="text-xs text-slate-400">Analyze opponent video footage to uncover attack patterns, defensive gaps, and tactical tendencies for {config.name}</p>
         </div>
 
         {userMatches.length === 0 ? (
-          <div className="pro-card p-12 text-center space-y-6 shadow-2xl">
-            <div className="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center mx-auto shadow-xl">
-              <FolderPlus className="w-8 h-8" />
+          <div className="pro-card p-12 text-center space-y-6">
+            <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center mx-auto">
+              <FolderPlus className="w-6 h-6" />
             </div>
             <div className="max-w-md mx-auto space-y-2">
-              <h3 className="text-xl font-black text-white">No Opponent Video Analyzed Yet</h3>
+              <h3 className="text-lg font-bold text-white">No Opponent Video Analyzed Yet</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Upload your opponent's {config.name} game video to generate automated pre-match AI strategies, weakness observations, and defensive tactical recommendations!
+                Upload your opponent's {config.name} match video to generate automated pre-match strategies, weakness observations, and defensive tactical recommendations.
               </p>
             </div>
             <Link
               href="/upload"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-bold text-white text-xs uppercase tracking-wider shadow-xl shadow-sky-500/25 transition active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 font-semibold text-white text-xs uppercase tracking-wider transition"
             >
               <Upload className="w-4 h-4" /> Upload Opponent Video <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         ) : (
-          <div className="pro-card p-6 shadow-xl space-y-4">
-            <div className="flex items-center gap-2 text-sky-400 font-extrabold text-xs uppercase tracking-wider">
+          <div className="pro-card p-6 space-y-4">
+            <div className="flex items-center gap-2 text-brand-400 font-semibold text-xs uppercase tracking-wider">
               <ShieldAlert className="w-4 h-4" />
               Pre-Match AI Game Plan vs {oppData.opponent} ({config.name})
             </div>
 
             <div className="space-y-3">
-              <div className="p-3.5 rounded-xl bg-[#0b1329] border border-slate-800 text-xs text-slate-200">
-                <strong className="text-sky-400 font-bold block mb-1">{oppData.obs1Title}</strong>
+              <div className="p-4 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-slate-300">
+                <strong className="text-brand-400 font-semibold block mb-1">{oppData.obs1Title}</strong>
                 {oppData.obs1Desc}
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#0b1329] border border-slate-800 text-xs text-slate-200">
-                <strong className="text-amber-400 font-bold block mb-1">{oppData.obs2Title}</strong>
+              <div className="p-4 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-slate-300">
+                <strong className="text-amber-400 font-semibold block mb-1">{oppData.obs2Title}</strong>
                 {oppData.obs2Desc}
               </div>
 
-              <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-slate-200">
-                <strong className="text-emerald-400 font-bold block mb-1">{oppData.recTitle}</strong>
+              <div className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-slate-200">
+                <strong className="text-emerald-400 font-semibold block mb-1">{oppData.recTitle}</strong>
                 {oppData.recDesc}
               </div>
             </div>

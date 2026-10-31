@@ -54,40 +54,45 @@ export default function DashboardPage() {
 
   return (
     <AuthGuard>
-      <div className="space-y-8">
-        {/* Header Banner Card */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 pro-card p-6 sm:p-8 shadow-xl relative overflow-hidden">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2.5">
-              <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-sky-600/20 text-sky-300 border border-sky-500/40 shadow-sm flex items-center gap-1.5">
-                <UserCheck className="w-3.5 h-3.5" /> Account: {user?.email} ({user?.role})
+      <div className="space-y-6">
+        
+        {/* Modern Clean Header Banner */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pro-card p-5 sm:p-6">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded text-[11px] font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                {config.icon} {config.name} Workstation
               </span>
-              <span className="text-xs font-semibold text-slate-300">Team: <strong className="text-white">{storeAthlete?.teamName || 'My Team'}</strong></span>
+              <span className="text-xs text-slate-400">Team: <strong className="text-slate-200">{storeAthlete?.teamName || 'My Team'}</strong></span>
             </div>
-            <h1 className="text-3xl font-extrabold text-white tracking-tight">Welcome, {user?.fullName || 'Athlete'}</h1>
-            <p className="text-xs text-slate-300">AI-analyzed {config.name} performance dashboard & telemetry.</p>
+            <h1 className="text-2xl font-bold tracking-tight text-white">
+              Welcome, {user?.fullName || 'Athlete'}
+            </h1>
+            <p className="text-xs text-slate-400">
+              Overview of your recent performance telemetry, computer vision pose evaluations, and tactical drills.
+            </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 shrink-0">
             <Link
               href="/upload"
-              className="px-5 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-sky-600/30 transition-all hover:scale-105"
+              className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs flex items-center gap-2 shadow-sm transition active:scale-95"
             >
-              <Upload className="w-4 h-4" /> Upload {config.name} Match
+              <Upload className="w-4 h-4" /> Upload {config.name} Video
             </Link>
           </div>
         </div>
 
-        {/* Dynamic Sport Metrics Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* Dynamic Sport Metrics KPI Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <MetricCard
             title="Overall Rating"
             value={userMatches.length > 0 ? (athlete?.dna.overallScore || 84.0) : '0.0'}
             unit="/ 100"
-            subtitle={userMatches.length > 0 ? 'Verified Match Evaluation' : 'Pending First Match Upload'}
+            subtitle={userMatches.length > 0 ? 'Verified Match Evaluation' : 'Pending First Upload'}
             icon={Award}
-            badge={userMatches.length > 0 ? 'Evaluated' : 'Raw Account'}
-            badgeColor={userMatches.length > 0 ? 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40' : 'bg-slate-800 text-slate-400 border-slate-700'}
+            badge={userMatches.length > 0 ? 'Evaluated' : 'New'}
+            badgeColor={userMatches.length > 0 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-slate-800 text-slate-400 border-slate-700'}
           />
           <MetricCard
             title={config.sampleMetrics.primaryStatLabel}
@@ -98,7 +103,7 @@ export default function DashboardPage() {
           <MetricCard
             title={config.sampleMetrics.secondaryStatLabel}
             value={userMatches.length > 0 ? config.sampleMetrics.secondaryStatValue : '—'}
-            subtitle="Speed & Acceleration Peak"
+            subtitle="Peak Kinematic Speed"
             icon={TrendingUp}
           />
           <MetricCard
@@ -112,58 +117,59 @@ export default function DashboardPage() {
 
         {/* Empty State Banner or Athlete DNA Radar */}
         {userMatches.length === 0 ? (
-          <div className="pro-card p-10 shadow-2xl text-center space-y-6">
-            <div className="w-16 h-16 rounded-2xl bg-sky-600/20 border border-sky-500/40 text-sky-400 flex items-center justify-center mx-auto shadow-md">
-              <FolderPlus className="w-8 h-8" />
+          <div className="pro-card p-8 sm:p-12 text-center space-y-4">
+            <div className="w-14 h-14 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center mx-auto shadow-sm">
+              <FolderPlus className="w-7 h-7" />
             </div>
-            <div className="max-w-xl mx-auto space-y-2">
-              <h2 className="text-2xl font-extrabold text-white">No Match Video Analyzed Yet</h2>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Upload your first game footage to generate your personalized 5-Dimensional Athlete DNA radar, 2D tactical maps, speed telemetry, and tactical coaching drills!
+            <div className="max-w-md mx-auto space-y-1.5">
+              <h2 className="text-xl font-bold text-white">No Match Video Analyzed Yet</h2>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Upload your game video to generate your 5-Dimensional Athlete DNA radar, 2D tactical maps, speed telemetry, and coaching drills.
               </p>
             </div>
             <Link
               href="/upload"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-sky-600/30 transition hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs transition active:scale-95 shadow-sm"
             >
-              <Upload className="w-4 h-4" /> Upload First Match Footage <ArrowRight className="w-4 h-4" />
+              <Upload className="w-4 h-4" /> Upload First Match <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
             <div className="lg:col-span-2">
               <AthleteScore dna={athlete?.dna} athleteName={athlete?.name} position={athlete?.position} />
             </div>
 
             {/* Strengths & Weaknesses Panel */}
-            <div className="pro-card p-6 shadow-xl space-y-5">
-              <div>
-                <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Grounded Strengths
+            <div className="pro-card p-5 space-y-4">
+              <div className="border-b border-slate-800/80 pb-3">
+                <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-sky-400" /> Key Biomechanical Insights
                 </h3>
-                <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-xs space-y-1.5 shadow-sm">
-                  <div className="font-bold text-emerald-300 text-sm">
-                    {user?.role === 'COACH' ? 'Tactical System Design' : activeSport === 'Cricket' ? 'Cover Drive & Good Length Execution' : activeSport === 'Football' ? 'Passing Precision & Distribution' : 'Spike Elevation & Net Reading'}
+                <p className="text-[11px] text-slate-400 mt-0.5">Automated kinematic recommendations</p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="p-3.5 rounded-lg bg-[#141D30] border border-slate-800 border-l-2 border-l-emerald-500 text-xs space-y-1">
+                  <div className="font-semibold text-emerald-300 text-xs flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>{user?.role === 'COACH' ? 'Tactical System Design' : activeSport === 'Cricket' ? 'Cover Drive & Good Length Execution' : activeSport === 'Football' ? 'Passing Precision & Distribution' : 'Spike Elevation & Net Reading'}</span>
                   </div>
-                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
                     High consistency score with 85%+ execution in primary game moments.
                   </p>
                 </div>
-              </div>
 
-              <div>
-                <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-amber-400" /> Improvement Target
-                </h3>
-                <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-800/60 text-xs space-y-1.5 shadow-sm">
-                  <div className="font-bold text-amber-300 text-sm">
-                    {activeSport === 'Football'
+                <div className="p-3.5 rounded-lg bg-[#141D30] border border-slate-800 border-l-2 border-l-amber-500 text-xs space-y-1">
+                  <div className="font-semibold text-amber-300 text-xs flex items-center gap-1.5">
+                    <AlertTriangle className="w-3.5 h-3.5" />
+                    <span>{activeSport === 'Football'
                       ? 'Defensive Transition Positioning'
                       : activeSport === 'Cricket'
                       ? 'Bowling Good-Length Control'
-                      : 'Spike Approach Jump Timing'}
+                      : 'Spike Approach Jump Timing'}</span>
                   </div>
-                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
                     {activeSport === 'Football'
                       ? 'Over-commitments during fast defensive transitions.'
                       : activeSport === 'Cricket'
@@ -176,7 +182,7 @@ export default function DashboardPage() {
               <div className="pt-2">
                 <Link
                   href="/training"
-                  className="w-full py-3 rounded-xl bg-[#0b1329] hover:bg-slate-800 text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition border border-slate-700 hover:border-slate-500"
+                  className="w-full py-2.5 rounded-lg bg-[#141D30] hover:bg-slate-800 text-slate-200 text-xs font-semibold flex items-center justify-center gap-2 transition border border-slate-800 hover:border-slate-700"
                 >
                   <Dumbbell className="w-4 h-4 text-sky-400" /> View Personalized Drills
                 </Link>
@@ -185,38 +191,38 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Account Matches */}
+        {/* Account Matches Grid */}
         {userMatches.length > 0 && (
-          <div className="pro-card p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-5 pb-3 border-b border-slate-700/80">
+          <div className="pro-card p-5 sm:p-6">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800/80">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
                 <Video className="w-4 h-4 text-sky-400" /> Account Matches — {storeAthlete?.teamName || 'My Team'}
               </h3>
-              <Link href="/matches" className="text-xs font-bold text-sky-400 hover:text-sky-300 hover:underline flex items-center gap-1.5">
-                View All <ArrowRight className="w-3.5 h-3.5" />
+              <Link href="/matches" className="text-xs font-semibold text-sky-400 hover:text-sky-300 flex items-center gap-1">
+                View All Matches <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
               {userMatches.map((m) => (
                 <Link
                   key={m.id}
                   href={`/matches/analysis?id=${m.id}`}
-                  className="p-5 rounded-xl bg-[#0b1329] border border-slate-700 hover:border-sky-400 transition group block shadow-sm"
+                  className="p-4 rounded-xl bg-[#141D30] border border-slate-800 hover:border-sky-500/50 transition group block"
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-sky-600/20 text-sky-300 border border-sky-500/40">
-                      {m.matchType}
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                      {m.matchType || 'Competitive'}
                     </span>
                     <span className="text-[11px] text-slate-400 font-mono">{m.matchDate}</span>
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-sky-300 transition-colors">{m.matchName}</h4>
-                  <p className="text-xs text-slate-400 mt-1">{m.teamName} vs {m.opponentName} • {m.venue}</p>
+                  <h4 className="text-sm font-semibold text-white group-hover:text-sky-300 transition-colors">{m.matchName}</h4>
+                  <p className="text-xs text-slate-400 mt-0.5">{m.teamName} vs {m.opponentName} • {m.venue}</p>
 
-                  <div className="mt-4 pt-3 border-t border-slate-700/80 flex items-center justify-between text-xs">
-                    <span className="text-slate-400">Match Status: <strong className="text-emerald-400 font-bold">{m.status}</strong></span>
-                    <span className="text-sky-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                      View Full Report →
+                  <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs">
+                    <span className="text-slate-400">Status: <strong className="text-emerald-400 font-semibold">{m.status}</strong></span>
+                    <span className="text-sky-400 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                      Open Workstation →
                     </span>
                   </div>
                 </Link>

@@ -9,44 +9,42 @@
   }
 
   body {
-    @apply bg-[#0b1329] text-slate-100 font-sans antialiased selection:bg-sky-500 selection:text-white;
-    background-color: #0b1329;
+    @apply bg-[#090D16] text-slate-200 font-sans antialiased selection:bg-sky-500 selection:text-white;
+    background-color: #090D16;
     background-image: 
-      radial-gradient(circle at 20% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 80% 85%, rgba(16, 185, 129, 0.05) 0%, transparent 45%);
+      radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.04) 0%, transparent 60%);
     background-attachment: fixed;
+    letter-spacing: -0.011em;
   }
 }
 
-/* Professional Sports Analytics Card Styles */
+/* Professional Sports Analytics Card Styles (Linear / Stripe Inspired) */
 .pro-card,
 .glass-panel {
-  background-color: #152037;
-  border: 1px solid #243454;
-  border-radius: 1rem;
-  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.4);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  background-color: #0E1424;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.875rem; /* 14px */
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .pro-card:hover,
-.glass-panel:hover,
-.glass-panel-hover:hover,
-.glass-panel-gold-hover:hover {
-  border-color: #38bdf8;
-  box-shadow: 0 10px 30px -5px rgba(14, 165, 233, 0.2);
+.glass-panel:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.45);
 }
 
 .pro-card-active {
-  background-color: #152037;
-  border: 1px solid #38bdf8;
-  box-shadow: 0 0 20px -3px rgba(56, 189, 248, 0.3);
+  background-color: #0E1424;
+  border: 1px solid #0EA5E9;
+  box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.3);
 }
 
 .pro-pill {
-  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border transition-colors;
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors;
 }
 
-/* Tabular Telemetry Typography */
+/* Tabular Telemetry Numbers */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
@@ -58,16 +56,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0b1329;
+  background: #090D16;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #243454;
+  background: #1E293B;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #38bdf8;
+  background: #334155;
 }
 
 /* Print Styles for Executive Match Report */

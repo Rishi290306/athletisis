@@ -8,24 +8,27 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+      },
       colors: {
         brand: {
           50: '#f0f9ff',
           100: '#e0f2fe',
           200: '#bae6fd',
           300: '#7dd3fc',
-          400: '#38bdf8', // Electric Sky Blue
-          500: '#0284c7', // Velocity Pro Blue
-          600: '#0369a1',
-          700: '#075985',
-          800: '#0c4a6e',
-          900: '#082f49',
+          400: '#38bdf8',
+          500: '#0ea5e9', // Clean Pro Azure
+          600: '#0284c7', // Primary Accent
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
         },
         dark: {
-          700: '#243454',
-          800: '#1b2742',
-          900: '#152037', // Midnight Navy Card
-          950: '#0b1329', // Deep Stadium Midnight Background
+          700: '#1E293B', // Subtle slate border
+          800: '#172238', // Elevated surface / hover
+          900: '#0E1424', // Card & Panel Surface
+          950: '#090D16', // Deep Neutral Canvas
         }
       },
     },
