@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { Play, Pause, Eye, Sliders, Activity, Bug, Users, RefreshCw } from 'lucide-react';
+import { Play, Pause, Eye, Sliders, Activity, Bug, Users, RefreshCw, Volume2, VolumeX, Volume1 } from 'lucide-react';
 import { VideoClip } from '@/types';
 import { computeFrameTelemetry } from '@/lib/cvTelemetryEngine';
 import { SportType } from '@/lib/sportStore';
@@ -55,6 +55,11 @@ export function VideoPlayer({
   const [minConfidence, setMinConfidence] = useState<number>(0.35);
   const [showSettingsDrawer, setShowSettingsDrawer] = useState(false);
   const [currentCvTime, setCurrentCvTime] = useState<number>(0);
+
+  // Audio & Voice Controls State (Cancel / Reduce Voice in uploaded video)
+  const [volume, setVolume] = useState<number>(1.0);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [prevVolume, setPrevVolume] = useState<number>(1.0);
 
   // Ground-Truth MediaPipe Pose Dataset State
   const [poseDataset, setPoseDataset] = useState<VideoPoseDataset | null>(null);
@@ -237,6 +242,60 @@ export function VideoPlayer({
     }
   };
 
+  // Toggle Cancel Voice / Mute Audio
+  const toggleCancelVoice = () => {
+    if (videoRef.current) {
+      if (isMuted || volume === 0) {
+        const restored = prevVolume > 0 ? prevVolume : 1.0;
+        videoRef.current.muted = false;
+        videoRef.current.volume = restored;
+        setIsMuted(false);
+        setVolume(restored);
+      } else {
+        setPrevVolume(volume);
+        videoRef.current.muted = true;
+        videoRef.current.volume = 0;
+        setIsMuted(true);
+        setVolume(0);
+      }
+    }
+  };
+
+  // Reduce Voice Level to target percentage (e.g. 20% or 50%)
+  const reduceVoiceLevel = (target = 0.2) => {
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.volume = target;
+      setIsMuted(false);
+      setVolume(target);
+      setPrevVolume(target);
+    }
+  };
+
+  // Slider Volume Change
+  const handleVolumeChange = (newVol: number) => {
+    if (videoRef.current) {
+      videoRef.current.volume = newVol;
+      setVolume(newVol);
+      if (newVol === 0) {
+        videoRef.current.muted = true;
+        setIsMuted(true);
+      } else {
+        videoRef.current.muted = false;
+        setIsMuted(false);
+        setPrevVolume(newVol);
+      }
+    }
+  };
+
+  // Keep volume & mute synced when video loads or source changes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.volume = isMuted ? 0 : volume;
+      videoRef.current.muted = isMuted;
+    }
+  }, [volume, isMuted, videoSrc]);
+
   const videoSig = `${fileName || ''}_${matchId || ''}_${videoSrc}`;
   const liveTelemetry = computeFrameTelemetry(currentCvTime, activeSport, selectedClip?.id, videoSig);
 
@@ -313,6 +372,43 @@ export function VideoPlayer({
             <Sliders className="w-3.5 h-3.5" />
             CV Controls
           </button>
+
+          {/* Cancel / Reduce Voice Pill */}
+          <div className="flex items-center gap-1.5 bg-[#0b1329] px-2.5 py-1 rounded-lg border border-slate-700 text-xs shadow-sm">
+            <button
+              onClick={toggleCancelVoice}
+              className={`flex items-center gap-1.5 font-bold transition ${
+                isMuted || volume === 0
+                  ? 'text-rose-400 hover:text-rose-300'
+                  : 'text-sky-400 hover:text-sky-300'
+              }`}
+              title={isMuted || volume === 0 ? 'Voice Cancelled / Muted — Click to Restore Audio' : 'Cancel Voice / Mute Video'}
+            >
+              {isMuted || volume === 0 ? (
+                <>
+                  <VolumeX className="w-3.5 h-3.5 text-rose-400 animate-pulse" />
+                  <span className="text-rose-300">Voice: MUTED</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="w-3.5 h-3.5 text-sky-400" />
+                  <span className="text-slate-200">Voice: {(volume * 100).toFixed(0)}%</span>
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={() => reduceVoiceLevel(0.2)}
+              className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold transition border ${
+                !isMuted && Math.abs(volume - 0.2) < 0.05
+                  ? 'bg-sky-600 text-white border-sky-400'
+                  : 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border-slate-700'
+              }`}
+              title="Reduce voice / audio level to 20%"
+            >
+              Reduce (20%)
+            </button>
+          </div>
         </div>
       </div>
 
@@ -366,6 +462,29 @@ export function VideoPlayer({
               />
               <span className="font-mono text-sky-400">{(minConfidence * 100).toFixed(0)}%</span>
             </div>
+
+            {/* Audio Voice Control Drawer Section */}
+            <div className="flex items-center gap-2.5 pl-4 border-l border-slate-700">
+              <span className="text-slate-400 font-mono">Voice Audio:</span>
+              <button
+                onClick={toggleCancelVoice}
+                className={`px-2 py-1 rounded text-[11px] font-bold border transition flex items-center gap-1 ${
+                  isMuted || volume === 0
+                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                    : 'bg-slate-800 text-slate-300 border-slate-700 hover:text-white'
+                }`}
+              >
+                {isMuted || volume === 0 ? <VolumeX className="w-3 h-3 text-rose-400" /> : <Volume2 className="w-3 h-3 text-sky-400" />}
+                {isMuted || volume === 0 ? 'Voice Cancelled' : 'Cancel Voice'}
+              </button>
+              <button
+                onClick={() => reduceVoiceLevel(0.2)}
+                className="px-2 py-1 rounded text-[11px] font-bold bg-slate-800 text-slate-300 border border-slate-700 hover:text-white"
+                title="Reduce voice to 20%"
+              >
+                Reduce (20%)
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -378,6 +497,7 @@ export function VideoPlayer({
         <video
           ref={videoRef}
           src={videoSrc}
+          muted={isMuted}
           onError={handleVideoError}
           onLoadedMetadata={drawFrame}
           onCanPlay={drawFrame}
@@ -421,10 +541,10 @@ export function VideoPlayer({
         )}
       </div>
 
-      {/* Scrubber & Speed Controls */}
-      <div className="p-3.5 rounded-xl bg-[#0b1329] border border-slate-700 space-y-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+      {/* Scrubber & Speed Controls + Dedicated Voice Cancellation Unit */}
+      <div className="p-3.5 rounded-xl bg-[#0b1329] border border-slate-700 space-y-3">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={togglePlayPause}
               className="p-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition shadow-sm"
@@ -443,9 +563,74 @@ export function VideoPlayer({
             >
               +0.1s
             </button>
+
+            {/* DEDICATED CANCEL / REDUCE VOICE CONTROLS */}
+            <div className="flex items-center gap-2 pl-2 sm:border-l border-slate-700 flex-wrap">
+              <button
+                onClick={toggleCancelVoice}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border shadow-sm ${
+                  isMuted || volume === 0
+                    ? 'bg-rose-500/25 text-rose-300 border-rose-500/50 hover:bg-rose-500/35 ring-1 ring-rose-500/40'
+                    : 'bg-[#152037] text-slate-200 border-slate-700 hover:text-white hover:border-slate-500'
+                }`}
+                title={isMuted || volume === 0 ? 'Voice Cancelled / Muted — Click to Restore Audio' : 'Cancel Voice / Mute Video'}
+              >
+                {isMuted || volume === 0 ? (
+                  <>
+                    <VolumeX className="w-4 h-4 text-rose-400" />
+                    <span>Voice Cancelled</span>
+                  </>
+                ) : (
+                  <>
+                    {volume < 0.5 ? <Volume1 className="w-4 h-4 text-sky-400" /> : <Volume2 className="w-4 h-4 text-sky-400" />}
+                    <span>Cancel Voice</span>
+                  </>
+                )}
+              </button>
+
+              {/* Reduce Voice Presets & Slider */}
+              <div className="flex items-center gap-1.5 bg-[#152037] px-2.5 py-1 rounded-lg border border-slate-700">
+                <span className="text-[11px] font-mono text-slate-300 font-semibold hidden sm:inline">Reduce:</span>
+                <button
+                  onClick={() => reduceVoiceLevel(0.2)}
+                  className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold transition border ${
+                    !isMuted && Math.abs(volume - 0.2) < 0.05
+                      ? 'bg-sky-600 text-white border-sky-400 shadow-sm'
+                      : 'bg-slate-800 text-slate-300 hover:text-white border-slate-700'
+                  }`}
+                  title="Reduce Voice to 20%"
+                >
+                  20%
+                </button>
+                <button
+                  onClick={() => reduceVoiceLevel(0.5)}
+                  className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold transition border ${
+                    !isMuted && Math.abs(volume - 0.5) < 0.05
+                      ? 'bg-sky-600 text-white border-sky-400 shadow-sm'
+                      : 'bg-slate-800 text-slate-300 hover:text-white border-slate-700'
+                  }`}
+                  title="Reduce Voice to 50%"
+                >
+                  50%
+                </button>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={isMuted ? 0 : volume}
+                  onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+                  className="w-16 sm:w-20 accent-sky-500 cursor-pointer"
+                  title={`Voice Volume: ${(isMuted ? 0 : volume * 100).toFixed(0)}%`}
+                />
+                <span className="font-mono text-[10px] text-sky-400 min-w-[28px] text-right font-bold">
+                  {(isMuted ? 0 : volume * 100).toFixed(0)}%
+                </span>
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-end sm:self-auto">
             <span className="text-xs font-mono text-slate-300 font-semibold">Speed:</span>
             <div className="flex items-center gap-1 bg-[#152037] p-1 rounded-lg border border-slate-700 text-xs font-mono">
               {[0.25, 0.5, 1, 1.5, 2].map((r) => (

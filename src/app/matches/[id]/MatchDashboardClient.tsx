@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { MatchStrategyTrainingHub } from '@/components/MatchStrategyTrainingHub';
 import { VideoPlayer } from '@/components/VideoPlayer';
 import { InjuryRiskRadar } from '@/components/InjuryRiskRadar';
@@ -9,7 +10,21 @@ import { ComparisonWorkbench } from '@/components/ComparisonWorkbench';
 import { MatchReportExporter } from '@/components/MatchReportExporter';
 import { ClipTagger } from '@/components/ClipTagger';
 import { AICoachChatbot } from '@/components/AICoachChatbot';
-import { Activity, Play, ShieldAlert, Dumbbell, FileText, Columns, Bot, Zap, CheckCircle2 } from 'lucide-react';
+import {
+  Activity,
+  Play,
+  ShieldAlert,
+  Dumbbell,
+  FileText,
+  Columns,
+  Bot,
+  Zap,
+  CheckCircle2,
+  LayoutDashboard,
+  ArrowLeft,
+  Upload,
+  Video as VideoIcon,
+} from 'lucide-react';
 import { Match, PerformanceScore, VideoClip, StandardizedEvent, Recommendation } from '@/types';
 import { AuthGuard } from '@/components/AuthGuard';
 import { useAuthStore, useMatchStore, DEFAULT_DEMO_MATCHES } from '@/lib/store';
@@ -122,6 +137,36 @@ export function MatchDashboardClient() {
     <AuthGuard>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         
+        {/* Breadcrumb & Instant Back Navigation Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1 border-b border-slate-800">
+          <div className="flex items-center gap-2 text-xs text-slate-300 font-medium overflow-x-auto py-1">
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-1.5 text-slate-300 hover:text-sky-400 transition font-bold shrink-0"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5 text-sky-400" />
+              Dashboard
+            </Link>
+            <span className="text-slate-600">/</span>
+            <Link
+              href="/matches"
+              className="text-slate-300 hover:text-sky-400 transition font-bold shrink-0"
+            >
+              Matches
+            </Link>
+            <span className="text-slate-600">/</span>
+            <span className="text-white font-bold truncate max-w-[200px] sm:max-w-md">{match.matchName}</span>
+          </div>
+
+          <Link
+            href="/dashboard"
+            className="px-3.5 py-1.5 rounded-xl bg-sky-600/20 hover:bg-sky-600 border border-sky-500/40 text-sky-300 hover:text-white text-xs font-bold flex items-center gap-2 transition shadow-sm w-fit"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Return to Dashboard</span>
+          </Link>
+        </div>
+
         {/* Top Workstation Header Bar */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-[#152037] border border-slate-700 shadow-xl">
           <div>
@@ -137,17 +182,36 @@ export function MatchDashboardClient() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            {/* Primary Back to Dashboard Button */}
+            <Link
+              href="/dashboard"
+              className="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white shadow-md shadow-sky-600/30 transition active:scale-95"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              Back to Dashboard
+            </Link>
+
+            {/* All Matches list button */}
+            <Link
+              href="/matches"
+              className="px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 bg-[#0b1329] text-slate-200 border border-slate-700 hover:border-slate-500 hover:text-white transition"
+            >
+              <VideoIcon className="w-4 h-4 text-sky-400" />
+              All Matches
+            </Link>
+
+            {/* Split Screen Workbench Option */}
             <button
               onClick={() => setShowComparison(!showComparison)}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition shadow-sm ${
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition shadow-sm ${
                 showComparison
                   ? 'bg-sky-600 text-white border border-sky-400'
                   : 'bg-[#0b1329] text-slate-200 border border-slate-700 hover:border-slate-500 hover:text-white'
               }`}
             >
               <Columns className="w-4 h-4" />
-              {showComparison ? 'Close Dual View' : 'Split-Screen Pro Form Comparison'}
+              {showComparison ? 'Close Dual View' : 'Split-Screen Comparison'}
             </button>
           </div>
         </div>
@@ -333,6 +397,39 @@ export function MatchDashboardClient() {
 
           </div>
 
+        </div>
+
+        {/* Bottom Session Completion & Action Bar */}
+        <div className="p-5 rounded-2xl bg-[#152037] border border-slate-700 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3 text-center sm:text-left">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 mx-auto sm:mx-0">
+              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+            </div>
+            <div>
+              <div className="text-sm font-bold text-white">Analysis Session Successfully Completed</div>
+              <div className="text-xs text-slate-300">
+                MediaPipe biomechanics keypoints, sprint kinematics, and drill recommendations are fully generated.
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+            <Link
+              href="/dashboard"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-sky-600/30 transition active:scale-95 w-full sm:w-auto"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              Return to Dashboard
+            </Link>
+
+            <Link
+              href="/upload"
+              className="px-4 py-2.5 rounded-xl bg-[#0b1329] hover:bg-slate-800 text-slate-200 border border-slate-700 hover:text-white text-xs font-bold flex items-center justify-center gap-2 transition w-full sm:w-auto"
+            >
+              <Upload className="w-4 h-4 text-sky-400" />
+              Upload New Video
+            </Link>
+          </div>
         </div>
 
       </div>

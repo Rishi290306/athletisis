@@ -2,7 +2,8 @@
 
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Cpu, CheckCircle2, Loader2, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { Cpu, CheckCircle2, Loader2, ArrowRight, LayoutDashboard } from 'lucide-react';
 import { api } from '@/lib/api';
 import { AnalysisJobStatus } from '@/types';
 
@@ -120,13 +121,30 @@ function ProcessingContent() {
           })}
         </div>
 
-        {job?.status === 'COMPLETED' && (
-          <button
-            onClick={() => router.push(`/matches/analysis?id=${matchId}`)}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-extrabold text-white text-xs flex items-center justify-center gap-2 shadow-lg shadow-sky-500/25 transition active:scale-95"
-          >
-            View Completed Match Report <ArrowRight className="w-4 h-4" />
-          </button>
+        {job?.status === 'COMPLETED' ? (
+          <div className="space-y-2.5">
+            <button
+              onClick={() => router.push(`/matches/analysis?id=${matchId}`)}
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-extrabold text-white text-xs flex items-center justify-center gap-2 shadow-lg shadow-sky-500/25 transition active:scale-95"
+            >
+              View Completed Match Report <ArrowRight className="w-4 h-4" />
+            </button>
+            <Link
+              href="/dashboard"
+              className="w-full py-2.5 rounded-xl bg-[#0b1329] hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold flex items-center justify-center gap-2 transition"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5 text-sky-400" /> Return to Dashboard
+            </Link>
+          </div>
+        ) : (
+          <div className="pt-2">
+            <Link
+              href="/dashboard"
+              className="text-xs text-slate-400 hover:text-sky-400 font-semibold flex items-center justify-center gap-1.5 transition"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5" /> Return to Dashboard while processing runs in background
+            </Link>
+          </div>
         )}
       </div>
     </div>

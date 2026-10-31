@@ -64,155 +64,167 @@ export function Navbar() {
           </div>
 
           {/* Integrated Navigation Hub */}
-          {token ? (
-            <nav className="hidden lg:flex items-center space-x-1.5">
-              {/* Dashboard */}
-              <Link
-                href="/dashboard"
-                prefetch={true}
-                onClick={() => {
-                  setActivePath('/dashboard');
-                  setOpenDropdown(null);
-                }}
+          <nav className="flex items-center space-x-1 sm:space-x-1.5">
+            {/* Dashboard - Always Accessible */}
+            <Link
+              href="/dashboard"
+              prefetch={true}
+              onClick={() => {
+                setActivePath('/dashboard');
+                setOpenDropdown(null);
+              }}
+              className={`px-2.5 sm:px-3.5 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all ${
+                activePath === '/dashboard'
+                  ? 'bg-sky-600 text-white shadow-sm'
+                  : 'text-slate-200 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <Activity className="w-3.5 h-3.5 text-sky-400" />
+              <span>Dashboard</span>
+            </Link>
+
+            {/* Analyzed Matches Direct Link */}
+            <Link
+              href="/matches"
+              prefetch={true}
+              onClick={() => {
+                setActivePath('/matches');
+                setOpenDropdown(null);
+              }}
+              className={`px-2.5 sm:px-3.5 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all ${
+                activePath === '/matches' || activePath?.startsWith('/matches')
+                  ? 'bg-sky-600/30 text-white border border-sky-500/40'
+                  : 'text-slate-200 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <Video className="w-3.5 h-3.5 text-sky-400" />
+              <span className="hidden sm:inline">Matches</span>
+            </Link>
+
+            {/* Analytics Hub Dropdown (Desktop) */}
+            <div
+              className="hidden lg:block relative group"
+              onMouseEnter={() => setOpenDropdown('analytics')}
+              onMouseLeave={() => setOpenDropdown(null)}
+            >
+              <button
+                onClick={() => setOpenDropdown(openDropdown === 'analytics' ? null : 'analytics')}
                 className={`px-3.5 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all ${
-                  activePath === '/dashboard'
+                  isAnalyticsActive && activePath !== '/matches'
                     ? 'bg-sky-600 text-white shadow-sm'
                     : 'text-slate-200 hover:text-white hover:bg-slate-800'
                 }`}
               >
-                <Activity className="w-3.5 h-3.5" />
-                Dashboard
-              </Link>
+                <BarChart2 className="w-3.5 h-3.5" />
+                Analytics & Reports
+                <ChevronDown className={`w-3 h-3 transition-transform ${openDropdown === 'analytics' ? 'rotate-180 text-white' : 'text-slate-400'}`} />
+              </button>
 
-              {/* Analytics Hub Dropdown */}
-              <div
-                className="relative group"
-                onMouseEnter={() => setOpenDropdown('analytics')}
-                onMouseLeave={() => setOpenDropdown(null)}
-              >
-                <button
-                  onClick={() => setOpenDropdown(openDropdown === 'analytics' ? null : 'analytics')}
-                  className={`px-3.5 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all ${
-                    isAnalyticsActive
-                      ? 'bg-sky-600 text-white shadow-sm'
-                      : 'text-slate-200 hover:text-white hover:bg-slate-800'
-                  }`}
-                >
-                  <BarChart2 className="w-3.5 h-3.5" />
-                  Analytics & Reports
-                  <ChevronDown className={`w-3 h-3 transition-transform ${openDropdown === 'analytics' ? 'rotate-180 text-white' : 'text-slate-400'}`} />
-                </button>
-
-                {openDropdown === 'analytics' && (
-                  <div className="absolute top-full left-0 pt-2 w-64 z-50">
-                    <div className="rounded-xl bg-[#152037] border border-slate-700 shadow-2xl p-2 space-y-1">
-                      {analyticsLinks.map((item) => {
-                        const Icon = item.icon;
-                        const isSubActive = activePath === item.href;
-                        return (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            prefetch={true}
-                            onClick={() => {
-                              setActivePath(item.href);
-                              setOpenDropdown(null);
-                            }}
-                            className={`p-2.5 rounded-lg block transition ${
-                              isSubActive ? 'bg-sky-600/20 border border-sky-500/40' : 'hover:bg-slate-800'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2.5">
-                              <div className="p-1.5 rounded-md bg-[#0b1329] border border-slate-700 text-sky-400">
-                                <Icon className="w-3.5 h-3.5" />
-                              </div>
-                              <div>
-                                <div className="text-xs font-bold text-white">{item.label}</div>
-                                <div className="text-[10px] text-slate-300 leading-tight">{item.desc}</div>
-                              </div>
+              {openDropdown === 'analytics' && (
+                <div className="absolute top-full left-0 pt-2 w-64 z-50">
+                  <div className="rounded-xl bg-[#152037] border border-slate-700 shadow-2xl p-2 space-y-1">
+                    {analyticsLinks.map((item) => {
+                      const Icon = item.icon;
+                      const isSubActive = activePath === item.href;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          prefetch={true}
+                          onClick={() => {
+                            setActivePath(item.href);
+                            setOpenDropdown(null);
+                          }}
+                          className={`p-2.5 rounded-lg block transition ${
+                            isSubActive ? 'bg-sky-600/20 border border-sky-500/40' : 'hover:bg-slate-800'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <div className="p-1.5 rounded-md bg-[#0b1329] border border-slate-700 text-sky-400">
+                              <Icon className="w-3.5 h-3.5" />
                             </div>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* AI & Coaching Dropdown */}
-              <div
-                className="relative group"
-                onMouseEnter={() => setOpenDropdown('ai')}
-                onMouseLeave={() => setOpenDropdown(null)}
-              >
-                <button
-                  onClick={() => setOpenDropdown(openDropdown === 'ai' ? null : 'ai')}
-                  className={`px-3.5 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all ${
-                    isAIActive
-                      ? 'bg-sky-600 text-white shadow-sm'
-                      : 'text-slate-200 hover:text-white hover:bg-slate-800'
-                  }`}
-                >
-                  <Brain className="w-3.5 h-3.5" />
-                  AI & Coaching
-                  <ChevronDown className={`w-3 h-3 transition-transform ${openDropdown === 'ai' ? 'rotate-180 text-white' : 'text-slate-400'}`} />
-                </button>
-
-                {openDropdown === 'ai' && (
-                  <div className="absolute top-full left-0 pt-2 w-60 z-50">
-                    <div className="rounded-xl bg-[#152037] border border-slate-700 shadow-2xl p-2 space-y-1">
-                      {aiLinks.map((item) => {
-                        const Icon = item.icon;
-                        const isSubActive = activePath === item.href;
-                        return (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            prefetch={true}
-                            onClick={() => {
-                              setActivePath(item.href);
-                              setOpenDropdown(null);
-                            }}
-                            className={`p-2.5 rounded-lg block transition ${
-                              isSubActive ? 'bg-sky-600/20 border border-sky-500/40' : 'hover:bg-slate-800'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2.5">
-                              <div className="p-1.5 rounded-md bg-[#0b1329] border border-slate-700 text-sky-400">
-                                <Icon className="w-3.5 h-3.5" />
-                              </div>
-                              <div>
-                                <div className="text-xs font-bold text-white">{item.label}</div>
-                                <div className="text-[10px] text-slate-300 leading-tight">{item.desc}</div>
-                              </div>
+                            <div>
+                              <div className="text-xs font-bold text-white">{item.label}</div>
+                              <div className="text-[10px] text-slate-300 leading-tight">{item.desc}</div>
                             </div>
-                          </Link>
-                        );
-                      })}
-                    </div>
+                          </div>
+                        </Link>
+                      );
+                    })}
                   </div>
-                )}
-              </div>
-
-              {/* Upload CTA Button */}
-              <Link
-                href="/upload"
-                prefetch={true}
-                onClick={() => {
-                  setActivePath('/upload');
-                  setOpenDropdown(null);
-                }}
-                className="px-3.5 py-2 rounded-lg text-xs font-bold bg-sky-600 hover:bg-sky-500 text-white flex items-center gap-1.5 transition ml-1 shadow-sm"
-              >
-                <Upload className="w-3.5 h-3.5" />
-                Upload Match
-              </Link>
-            </nav>
-          ) : (
-            <div className="hidden lg:flex items-center gap-2 text-xs font-bold text-slate-300">
-              <span>Pro sports analytics workstation for coaches & competitive athletes</span>
+                </div>
+              )}
             </div>
-          )}
+
+            {/* AI & Coaching Dropdown (Desktop) */}
+            <div
+              className="hidden lg:block relative group"
+              onMouseEnter={() => setOpenDropdown('ai')}
+              onMouseLeave={() => setOpenDropdown(null)}
+            >
+              <button
+                onClick={() => setOpenDropdown(openDropdown === 'ai' ? null : 'ai')}
+                className={`px-3.5 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all ${
+                  isAIActive
+                    ? 'bg-sky-600 text-white shadow-sm'
+                    : 'text-slate-200 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Brain className="w-3.5 h-3.5" />
+                AI & Coaching
+                <ChevronDown className={`w-3 h-3 transition-transform ${openDropdown === 'ai' ? 'rotate-180 text-white' : 'text-slate-400'}`} />
+              </button>
+
+              {openDropdown === 'ai' && (
+                <div className="absolute top-full left-0 pt-2 w-60 z-50">
+                  <div className="rounded-xl bg-[#152037] border border-slate-700 shadow-2xl p-2 space-y-1">
+                    {aiLinks.map((item) => {
+                      const Icon = item.icon;
+                      const isSubActive = activePath === item.href;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          prefetch={true}
+                          onClick={() => {
+                            setActivePath(item.href);
+                            setOpenDropdown(null);
+                          }}
+                          className={`p-2.5 rounded-lg block transition ${
+                            isSubActive ? 'bg-sky-600/20 border border-sky-500/40' : 'hover:bg-slate-800'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <div className="p-1.5 rounded-md bg-[#0b1329] border border-slate-700 text-sky-400">
+                              <Icon className="w-3.5 h-3.5" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-bold text-white">{item.label}</div>
+                              <div className="text-[10px] text-slate-300 leading-tight">{item.desc}</div>
+                            </div>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Upload CTA Button */}
+            <Link
+              href="/upload"
+              prefetch={true}
+              onClick={() => {
+                setActivePath('/upload');
+                setOpenDropdown(null);
+              }}
+              className="px-2.5 sm:px-3.5 py-2 rounded-lg text-xs font-bold bg-sky-600 hover:bg-sky-500 text-white flex items-center gap-1.5 transition shadow-sm"
+            >
+              <Upload className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Upload Match</span>
+            </Link>
+          </nav>
 
           {/* User Auth & Sign Out Controls */}
           <div className="flex items-center gap-3">

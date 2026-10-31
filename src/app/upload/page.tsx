@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Upload, Video, ShieldCheck, ArrowRight, CheckCircle2, Trophy, MapPin, Calendar, Users, User } from 'lucide-react';
+import Link from 'next/link';
+import { Upload, Video, ShieldCheck, ArrowRight, CheckCircle2, Trophy, MapPin, Calendar, Users, User, LayoutDashboard, ArrowLeft } from 'lucide-react';
 import { useSportStore, SPORT_CONFIGS, SportType } from '@/lib/sportStore';
 import { useAuthStore, useMatchStore } from '@/lib/store';
 import { AuthGuard } from '@/components/AuthGuard';
@@ -107,6 +108,18 @@ export default function UploadPage() {
     <AuthGuard>
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
         
+        {/* Navigation Breadcrumb Bar */}
+        <div className="flex items-center justify-between pb-2">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2 text-xs font-bold text-slate-300 hover:text-sky-400 transition"
+          >
+            <ArrowLeft className="w-4 h-4 text-sky-400" />
+            <span>Back to Dashboard</span>
+          </Link>
+          <span className="text-[11px] font-mono text-slate-400">Match Video Intake</span>
+        </div>
+
         {/* Header Card */}
         <div className="pro-card p-6 sm:p-8 space-y-2 text-center relative overflow-hidden">
           <div className="w-12 h-12 rounded-xl bg-sky-600/20 text-sky-400 border border-sky-500/40 flex items-center justify-center mx-auto mb-2 font-bold shadow-md">
@@ -290,17 +303,27 @@ export default function UploadPage() {
           </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={uploading}
-            className="w-full py-4 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-extrabold text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-sky-600/30 transition disabled:opacity-50"
-          >
-            {uploading ? (
-              <>Extracting Pose Keypoints & Telemetry...</>
-            ) : (
-              <>Launch AI Telemetry & Open Workstation <ArrowRight className="w-4 h-4" /></>
-            )}
-          </button>
+          <div className="space-y-3 pt-2">
+            <button
+              type="submit"
+              disabled={uploading}
+              className="w-full py-4 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-extrabold text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-sky-600/30 transition disabled:opacity-50 active:scale-95"
+            >
+              {uploading ? (
+                <>Extracting Pose Keypoints & Telemetry...</>
+              ) : (
+                <>Launch AI Telemetry & Open Workstation <ArrowRight className="w-4 h-4" /></>
+              )}
+            </button>
+
+            <Link
+              href="/dashboard"
+              className="w-full py-3 rounded-xl bg-[#0b1329] hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold flex items-center justify-center gap-2 transition"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5 text-sky-400" />
+              Cancel & Return to Dashboard
+            </Link>
+          </div>
         </form>
 
       </div>
