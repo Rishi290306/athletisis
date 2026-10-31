@@ -179,13 +179,16 @@ export function VideoPlayer({
       const vid = videoRef.current;
       const dur = vid.duration && !isNaN(vid.duration) ? vid.duration : 15;
       const targetTime = seekTimestamp >= dur ? (seekTimestamp % dur) : Math.max(0, seekTimestamp);
-      vid.currentTime = targetTime;
-      vid.play().catch((e) => console.log('Autoplay deferred:', e));
-      setIsPlaying(true);
-      setCurrentCvTime(targetTime);
-      drawFrame();
+      if (Math.abs(vid.currentTime - targetTime) > 0.35) {
+        vid.currentTime = targetTime;
+        setCurrentCvTime(targetTime);
+        drawFrame();
+        if (isPlaying) {
+          vid.play().catch((e) => console.log('Autoplay deferred:', e));
+        }
+      }
     }
-  }, [seekTimestamp, drawFrame]);
+  }, [seekTimestamp, drawFrame, isPlaying]);
 
   const handleVideoError = () => {
     if (!hasError) {
@@ -213,12 +216,20 @@ export function VideoPlayer({
 
   const togglePlayPause = () => {
     if (videoRef.current) {
-      if (isPlaying) {
+      if (!videoRef.current.paused) {
         videoRef.current.pause();
         setIsPlaying(false);
       } else {
-        videoRef.current.play().catch((e) => console.log('Autoplay deferred:', e));
-        setIsPlaying(true);
+        videoRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch((e) => {
+          console.log('Autoplay deferred, attempting muted fallback:', e);
+          if (videoRef.current) {
+            videoRef.current.muted = true;
+            setIsMuted(true);
+            videoRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+          }
+        });
       }
     }
   };
@@ -491,6 +502,7 @@ export function VideoPlayer({
             drawFrame();
           }}
           onPause={() => setIsPlaying(false)}
+          onEnded={() => setIsPlaying(false)}
           className="w-full h-full object-contain"
           playsInline
         />

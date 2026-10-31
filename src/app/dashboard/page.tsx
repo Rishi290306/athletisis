@@ -20,7 +20,7 @@ export default function DashboardPage() {
   const [athlete, setAthlete] = useState<Athlete | null>(null);
 
   useEffect(() => {
-    const email = user?.email || 'user@athletisis.com';
+    const email = user?.email || 'rishi.tiwari@athletisis.ai';
     const accountMatches = getMatchesForUser(email);
     setUserMatches(accountMatches);
 

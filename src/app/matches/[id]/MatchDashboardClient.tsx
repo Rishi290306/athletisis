@@ -63,7 +63,8 @@ export function MatchDashboardClient() {
   const [analysis, setAnalysis] = useState<SportAnalysisData | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'drills' | 'injury' | 'report' | 'chat'>('overview');
   const [showComparison, setShowComparison] = useState(false);
-  const [activeSeekTimestamp, setActiveSeekTimestamp] = useState<number>(0);
+  const [currentPlayhead, setCurrentPlayhead] = useState<number>(0);
+  const [requestedSeekTimestamp, setRequestedSeekTimestamp] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     let foundMatch = matches.find((m) => m.id === matchId);
@@ -118,7 +119,8 @@ export function MatchDashboardClient() {
   }, [matchId, matches]);
 
   const handleSeek = (secs: number) => {
-    setActiveSeekTimestamp(secs);
+    setRequestedSeekTimestamp(secs);
+    setCurrentPlayhead(secs);
   };
 
   if (!match || !analysis) {
@@ -231,13 +233,13 @@ export function MatchDashboardClient() {
               clips={analysis.clips}
               sport={activeSportName}
               matchId={match.id}
-              seekTimestamp={activeSeekTimestamp}
-              onCurrentTimeChange={setActiveSeekTimestamp}
+              seekTimestamp={requestedSeekTimestamp}
+              onCurrentTimeChange={setCurrentPlayhead}
               onSeekTimestamp={handleSeek}
             />
 
             <ClipTagger
-              activeTimestamp={activeSeekTimestamp}
+              activeTimestamp={currentPlayhead}
               onSeekTimestamp={handleSeek}
             />
           </div>

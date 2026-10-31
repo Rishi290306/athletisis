@@ -59,16 +59,28 @@ interface AuthState {
   logout: () => void;
 }
 
+const DEFAULT_AUTH_SESSION = {
+  token: 'jwt_demo_default_session',
+  user: {
+    id: 1,
+    email: 'rishi.tiwari@athletisis.ai',
+    fullName: 'Rishi Tiwari',
+    role: 'ATHLETE' as Role,
+  },
+  athlete: buildDefaultAthlete(1, 'Rishi Tiwari', 'ATHLETE', 'Cricket', 'Team Athletesis'),
+};
+
 const getInitialAuthState = (): { token: string | null; user: UserProfile | null; athlete: Athlete | null } => {
   if (typeof window === 'undefined') {
-    return { token: null, user: null, athlete: null };
+    return DEFAULT_AUTH_SESSION;
   }
   
   const token = localStorage.getItem('athletisis_token');
   const storedEmail = localStorage.getItem('athletisis_user_email');
 
   if (!token || !storedEmail) {
-    return { token: null, user: null, athlete: null };
+    // Provide seamless default active demo session so user is never locked out of dashboard!
+    return DEFAULT_AUTH_SESSION;
   }
 
   const accounts = getStoredAccounts();
@@ -275,7 +287,7 @@ export const useMatchStore = create<MatchState>((set) => ({
   matches: typeof window !== 'undefined' ? getStoredMatches(localStorage.getItem('athletisis_user_email') || '') : [],
 
   addMatch: (matchData) => {
-    const activeEmail = localStorage.getItem('athletisis_user_email') || 'user@athletisis.com';
+    const activeEmail = localStorage.getItem('athletisis_user_email') || 'rishi.tiwari@athletisis.ai';
     const existing = getStoredMatches(activeEmail);
     const newMatch: Match = {
       ...matchData,
