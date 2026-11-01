@@ -83,19 +83,19 @@ export function TacticalPitchMap({
   return (
     <div className="pro-card p-4 space-y-4">
       {/* Header controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#28334D]">
         <div className="flex items-center gap-2">
-          <Compass className="w-4 h-4 text-brand-400" />
+          <Compass className="w-4 h-4 text-[#55BDEB]" />
           <h3 className="text-xs font-semibold text-white uppercase tracking-wider">
             2D Tactical {sport.toUpperCase()} Spatial Map
           </h3>
         </div>
 
-        <div className="flex items-center gap-1 bg-[#090D16] p-1 rounded-lg border border-slate-800 text-xs">
+        <div className="flex items-center gap-1 bg-[#0B1020] p-1 rounded-lg border border-[#28334D] text-xs">
           <button
             onClick={() => setViewMode('positions')}
             className={`px-2.5 py-1 rounded font-medium transition ${
-              viewMode === 'positions' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
+              viewMode === 'positions' ? 'bg-[#6675E8] text-white' : 'text-slate-400 hover:text-white'
             }`}
           >
             Nodes
@@ -103,7 +103,7 @@ export function TacticalPitchMap({
           <button
             onClick={() => setViewMode('heatmap')}
             className={`px-2.5 py-1 rounded font-medium transition ${
-              viewMode === 'heatmap' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
+              viewMode === 'heatmap' ? 'bg-[#6675E8] text-white' : 'text-slate-400 hover:text-white'
             }`}
           >
             Heatmap
@@ -111,7 +111,7 @@ export function TacticalPitchMap({
           <button
             onClick={() => setViewMode('trajectories')}
             className={`px-2.5 py-1 rounded font-medium transition ${
-              viewMode === 'trajectories' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-white'
+              viewMode === 'trajectories' ? 'bg-[#6675E8] text-white' : 'text-slate-400 hover:text-white'
             }`}
           >
             Path
@@ -120,7 +120,7 @@ export function TacticalPitchMap({
       </div>
 
       {/* Pitch SVG Graphic Canvas */}
-      <div className="relative w-full aspect-[16/10] bg-[#090D16] rounded-lg border border-slate-800 overflow-hidden select-none">
+      <div className="relative w-full aspect-[16/10] bg-[#0B1020] rounded-lg border border-[#28334D] overflow-hidden select-none">
         
         <svg className="absolute inset-0 w-full h-full stroke-slate-600/40 fill-none" strokeWidth="1.5">
           {/* Football pitch vector */}
@@ -193,14 +193,14 @@ export function TacticalPitchMap({
               </div>
 
               {/* Tooltip on hover */}
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-20 w-48 p-2.5 rounded-lg bg-[#0E1424] border border-slate-800 shadow-xl text-left pointer-events-none">
-                <div className="text-[10px] font-semibold uppercase tracking-wider text-brand-400 flex items-center justify-between">
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-20 w-48 p-2.5 rounded-lg bg-[#0E1424] border border-[#28334D] shadow-xl text-left pointer-events-none">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-[#55BDEB] flex items-center justify-between">
                   <span>{node.type}</span>
                   <span className="text-slate-400 font-mono">{node.timeFormatted}</span>
                 </div>
                 <div className="text-xs font-semibold text-white truncate mt-0.5">{node.label}</div>
                 <div className="text-[10px] text-slate-400 font-mono mt-0.5">Speed: {node.speed}</div>
-                <div className="text-[9px] text-brand-400 mt-1 font-medium flex items-center gap-1">
+                <div className="text-[9px] text-[#55BDEB] mt-1 font-medium flex items-center gap-1">
                   <Play className="w-2.5 h-2.5 fill-brand-400" /> Click to sync video
                 </div>
               </div>
@@ -211,10 +211,10 @@ export function TacticalPitchMap({
 
       {/* Selected Node Details Box */}
       {selectedNode && (
-        <div className="p-3 rounded-lg bg-[#090D16] border border-slate-800 flex items-center justify-between gap-4">
+        <div className="p-3 rounded-lg bg-[#0B1020] border border-[#28334D] flex items-center justify-between gap-4">
           <div className="space-y-0.5">
             <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-brand-500/10 text-brand-400 border border-brand-500/20">
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-brand-500/10 text-[#55BDEB] border border-brand-500/20">
                 {selectedNode.type}
               </span>
               <span className="text-xs font-mono font-medium text-slate-300">Timestamp: {selectedNode.timeFormatted}</span>
@@ -224,7 +224,7 @@ export function TacticalPitchMap({
           </div>
           <button
             onClick={() => onSeekTimestamp && onSeekTimestamp(selectedNode.timestamp)}
-            className="px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs flex items-center gap-1.5 transition shrink-0"
+            className="px-3 py-1.5 rounded-lg bg-[#6675E8] hover:bg-brand-500 text-white font-semibold text-xs flex items-center gap-1.5 transition shrink-0"
           >
             <Play className="w-3.5 h-3.5 fill-white" />
             Seek Video

@@ -38,75 +38,83 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto py-10 px-4">
-      <div className="pro-card p-8 space-y-6">
+    <div className="min-h-screen bg-[#0B1020] text-[#F3F5FA] flex items-center justify-center p-4">
+      <div className="w-full max-w-md rounded-xl p-6 sm:p-8 bg-[#151C35] border border-[#28334D] shadow-xl space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center mx-auto mb-2 font-bold text-xl">
-            <UserPlus className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-lg bg-[#6675E8] text-white flex items-center justify-center mx-auto mb-2 font-bold text-sm shadow-sm">
+            A
           </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Create Athletisis Profile</h1>
-          <p className="text-xs text-slate-400">Set up your sports performance workstation account</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-[#F3F5FA] tracking-tight">Create Athletesis Account</h1>
+          <p className="text-xs text-[#9AA6BD]">Set up your sports performance workstation profile</p>
         </div>
 
         {error && (
-          <div className="p-3 rounded-lg bg-red-950/40 border border-red-700/60 text-red-300 text-xs font-medium">
+          <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Full Name</label>
+            <label className="block text-[11px] font-medium text-[#9AA6BD] uppercase tracking-wider mb-1.5">
+              Full Name
+            </label>
             <div className="relative">
-              <UserIcon className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+              <UserIcon className="w-4 h-4 text-[#9AA6BD] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 required
                 placeholder="e.g. Rishi Tiwari"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
+                className="w-full pl-9 pr-3.5 py-2.5 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-[#F3F5FA] placeholder-[#9AA6BD] focus:outline-none focus:border-[#6675E8] transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Email Address</label>
+            <label className="block text-[11px] font-medium text-[#9AA6BD] uppercase tracking-wider mb-1.5">
+              Email Address
+            </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+              <Mail className="w-4 h-4 text-[#9AA6BD] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 required
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
+                className="w-full pl-9 pr-3.5 py-2.5 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-[#F3F5FA] placeholder-[#9AA6BD] focus:outline-none focus:border-[#6675E8] transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Password</label>
+            <label className="block text-[11px] font-medium text-[#9AA6BD] uppercase tracking-wider mb-1.5">
+              Password
+            </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+              <Lock className="w-4 h-4 text-[#9AA6BD] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="password"
                 required
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
+                className="w-full pl-9 pr-3.5 py-2.5 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-[#F3F5FA] placeholder-[#9AA6BD] focus:outline-none focus:border-[#6675E8] transition"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Primary Sport</label>
+              <label className="block text-[11px] font-medium text-[#9AA6BD] uppercase tracking-wider mb-1.5">
+                Primary Sport
+              </label>
               <select
                 value={sport}
                 onChange={(e) => setSport(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white focus:outline-none focus:border-brand-500 transition font-medium"
+                className="w-full px-3 py-2.5 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-[#F3F5FA] focus:outline-none focus:border-[#6675E8] transition font-medium"
               >
                 <option value="Cricket">Cricket</option>
                 <option value="Football">Football</option>
@@ -115,42 +123,46 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Team Name</label>
+              <label className="block text-[11px] font-medium text-[#9AA6BD] uppercase tracking-wider mb-1.5">
+                Team / Squad
+              </label>
               <input
                 type="text"
                 placeholder="e.g. Apex Warriors"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
+                className="w-full px-3 py-2.5 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-[#F3F5FA] placeholder-[#9AA6BD] focus:outline-none focus:border-[#6675E8] transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Select Role</label>
+            <label className="block text-[11px] font-medium text-[#9AA6BD] uppercase tracking-wider mb-1.5">
+              Select Role
+            </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setRole('ATHLETE')}
-                className={`py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition border ${
+                className={`py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition border cursor-pointer ${
                   role === 'ATHLETE'
-                    ? 'bg-brand-600 text-white border-brand-500 shadow-sm'
-                    : 'bg-[#090D16] text-slate-300 border-slate-800 hover:text-white'
+                    ? 'bg-[#0B1020] text-[#F3F5FA] border-[#6675E8] shadow-sm font-semibold'
+                    : 'bg-[#0B1020] text-[#9AA6BD] border-[#28334D] hover:text-[#F3F5FA]'
                 }`}
               >
-                <Trophy className="w-4 h-4" /> Athlete Profile
+                <Trophy className="w-3.5 h-3.5 text-[#E8B75A]" /> Athlete
               </button>
 
               <button
                 type="button"
                 onClick={() => setRole('COACH')}
-                className={`py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition border ${
+                className={`py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition border cursor-pointer ${
                   role === 'COACH'
-                    ? 'bg-brand-600 text-white border-brand-500 shadow-sm'
-                    : 'bg-[#090D16] text-slate-300 border-slate-800 hover:text-white'
+                    ? 'bg-[#0B1020] text-[#F3F5FA] border-[#6675E8] shadow-sm font-semibold'
+                    : 'bg-[#0B1020] text-[#9AA6BD] border-[#28334D] hover:text-[#F3F5FA]'
                 }`}
               >
-                <Shield className="w-4 h-4" /> Coach Profile
+                <Shield className="w-3.5 h-3.5 text-[#55BDEB]" /> Coach
               </button>
             </div>
           </div>
@@ -158,15 +170,15 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 font-semibold text-white text-xs uppercase tracking-wider shadow-sm transition disabled:opacity-50"
+            className="w-full py-2.5 rounded-lg bg-[#6675E8] hover:bg-[#5463D6] font-semibold text-white text-xs uppercase tracking-wider shadow-sm transition disabled:opacity-50 cursor-pointer"
           >
             {loading ? 'Creating Account...' : 'Complete Registration'}
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800">
+        <p className="text-center text-xs text-[#9AA6BD] pt-2 border-t border-[#28334D]">
           Already registered?{' '}
-          <Link href="/login" className="text-brand-400 font-medium hover:underline">
+          <Link href="/login" className="text-[#6675E8] font-semibold hover:underline">
             Sign in here
           </Link>
         </p>

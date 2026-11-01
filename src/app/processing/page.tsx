@@ -64,16 +64,16 @@ function ProcessingContent() {
   return (
     <div className="max-w-xl mx-auto py-12 space-y-8">
       <div className="pro-card p-8 shadow-2xl space-y-6 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center mx-auto">
+        <div className="w-16 h-16 rounded-2xl bg-[#55BDEB]/10 border border-[#55BDEB]/30 text-[#55BDEB] flex items-center justify-center mx-auto">
           {job?.status === 'COMPLETED' ? (
-            <CheckCircle2 className="w-8 h-8 text-sky-400" />
+            <CheckCircle2 className="w-8 h-8 text-[#55BDEB]" />
           ) : (
-            <Loader2 className="w-8 h-8 text-sky-400 animate-spin" />
+            <Loader2 className="w-8 h-8 text-[#55BDEB] animate-spin" />
           )}
         </div>
 
         <div>
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-sky-400">
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#55BDEB]">
             Asynchronous Background Execution
           </span>
           <h1 className="text-2xl font-black text-white mt-1">AI Video Processing Pipeline</h1>
@@ -84,11 +84,11 @@ function ProcessingContent() {
         <div className="space-y-2">
           <div className="flex justify-between text-xs font-bold text-slate-300">
             <span>Overall Progress</span>
-            <span className="text-sky-400 font-mono">{currentPct}%</span>
+            <span className="text-[#55BDEB] font-mono">{currentPct}%</span>
           </div>
-          <div className="w-full h-3 bg-[#0b1329] rounded-full overflow-hidden border border-slate-800">
+          <div className="w-full h-3 bg-[#0B1020] rounded-full overflow-hidden border border-[#28334D]">
             <div
-              className="h-full bg-gradient-to-r from-sky-500 to-emerald-400 rounded-full transition-all duration-500 shadow-lg shadow-sky-500/30"
+              className="h-full bg-gradient-to-r from-[#6675E8] to-[#55BDEB] rounded-full transition-all duration-500 shadow-lg shadow-sky-500/30"
               style={{ width: `${currentPct}%` }}
             />
           </div>
@@ -103,8 +103,8 @@ function ProcessingContent() {
                 key={stg.key}
                 className={`p-3 rounded-xl border text-xs flex items-center justify-between transition ${
                   isDone
-                    ? 'bg-sky-500/10 border-sky-500/20 text-slate-200'
-                    : 'bg-[#0b1329] border-slate-800/60 text-slate-500'
+                    ? 'bg-[#55BDEB]/10 border-[#55BDEB]/30 text-slate-200'
+                    : 'bg-[#0B1020] border-[#28334D]/60 text-slate-500'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
@@ -131,16 +131,16 @@ function ProcessingContent() {
             </button>
             <Link
               href="/dashboard"
-              className="w-full py-2.5 rounded-xl bg-[#0b1329] hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold flex items-center justify-center gap-2 transition"
+              className="w-full py-2.5 rounded-xl bg-[#0B1020] hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold flex items-center justify-center gap-2 transition"
             >
-              <LayoutDashboard className="w-3.5 h-3.5 text-sky-400" /> Return to Dashboard
+              <LayoutDashboard className="w-3.5 h-3.5 text-[#55BDEB]" /> Return to Dashboard
             </Link>
           </div>
         ) : (
           <div className="pt-2">
             <Link
               href="/dashboard"
-              className="text-xs text-slate-400 hover:text-sky-400 font-semibold flex items-center justify-center gap-1.5 transition"
+              className="text-xs text-slate-400 hover:text-[#55BDEB] font-semibold flex items-center justify-center gap-1.5 transition"
             >
               <LayoutDashboard className="w-3.5 h-3.5" /> Return to Dashboard while processing runs in background
             </Link>

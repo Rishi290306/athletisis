@@ -212,7 +212,7 @@ Analyzing your overall performance in **${sport}** (**${matchName}**):
 
   return (
     <div className="pro-card p-5 shadow-2xl flex flex-col h-[560px]">
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+      <div className="flex items-center justify-between border-b border-[#28334D] pb-3 mb-3">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center font-black shadow-lg">
             <Brain className="w-5 h-5" />
@@ -238,7 +238,7 @@ Analyzing your overall performance in **${sport}** (**${matchName}**):
           return (
             <div key={msg.id} className={`flex gap-2.5 ${isAi ? 'items-start' : 'items-end justify-end'}`}>
               {isAi && (
-                <div className="w-7 h-7 rounded-lg bg-brand-500/10 text-brand-400 border border-brand-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-7 h-7 rounded-lg bg-brand-500/10 text-[#55BDEB] border border-brand-500/20 flex items-center justify-center shrink-0 mt-0.5">
                   <Bot className="w-4 h-4" />
                 </div>
               )}
@@ -246,15 +246,15 @@ Analyzing your overall performance in **${sport}** (**${matchName}**):
               <div
                 className={`max-w-[88%] p-3.5 rounded-xl space-y-1.5 ${
                   isAi
-                    ? 'bg-[#090D16] border border-slate-800 text-slate-300 leading-relaxed font-sans'
-                    : 'bg-brand-600 text-white font-normal'
+                    ? 'bg-[#0B1020] border border-[#28334D] text-slate-300 leading-relaxed font-sans'
+                    : 'bg-[#6675E8] text-white font-normal'
                 }`}
               >
                 {isAi ? (
                   <div className="space-y-2 text-xs">
                     {msg.text.split('\n').map((line, idx) => {
                       if (line.startsWith('### ')) {
-                        return <h4 key={idx} className="font-semibold text-brand-400 text-xs uppercase tracking-wider pt-1">{line.replace('### ', '')}</h4>;
+                        return <h4 key={idx} className="font-semibold text-[#55BDEB] text-xs uppercase tracking-wider pt-1">{line.replace('### ', '')}</h4>;
                       } else if (line.startsWith('* ') || line.startsWith('- ')) {
                         return <div key={idx} className="pl-2 border-l-2 border-brand-500/40 text-slate-300">{line.replace(/^[*|-]\s/, '')}</div>;
                       }
@@ -280,8 +280,8 @@ Analyzing your overall performance in **${sport}** (**${matchName}**):
         })}
 
         {isTyping && (
-          <div className="flex items-center gap-2 text-slate-400 text-xs p-2 rounded-lg bg-[#090D16] border border-slate-800 w-fit">
-            <Bot className="w-4 h-4 text-brand-400 animate-spin" />
+          <div className="flex items-center gap-2 text-slate-400 text-xs p-2 rounded-lg bg-[#0B1020] border border-[#28334D] w-fit">
+            <Bot className="w-4 h-4 text-[#55BDEB] animate-spin" />
             <span className="font-medium text-slate-300">Evaluating kinetic chain, release telemetry & tactical counters...</span>
           </div>
         )}
@@ -293,7 +293,7 @@ Analyzing your overall performance in **${sport}** (**${matchName}**):
           <button
             key={i}
             onClick={() => handleSend(prompt)}
-            className="px-2.5 py-1.5 rounded-lg bg-[#0E1424] hover:bg-slate-800 text-[10px] font-medium text-slate-300 border border-slate-800 whitespace-nowrap transition"
+            className="px-2.5 py-1.5 rounded-lg bg-[#151C35] hover:bg-slate-800 text-[10px] font-medium text-slate-300 border border-[#28334D] whitespace-nowrap transition"
           >
             {prompt}
           </button>
@@ -306,19 +306,19 @@ Analyzing your overall performance in **${sport}** (**${matchName}**):
           e.preventDefault();
           handleSend();
         }}
-        className="pt-2 border-t border-slate-800 flex items-center gap-2"
+        className="pt-2 border-t border-[#28334D] flex items-center gap-2"
       >
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={`Ask Deep Reasoning AI Coach about your ${sport} biomechanics, speed, or drills...`}
-          className="flex-1 bg-[#090D16] border border-slate-800 rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 font-medium"
+          className="flex-1 bg-[#0B1020] border border-[#28334D] rounded-lg px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 font-medium"
         />
         <button
           type="submit"
           disabled={!input.trim()}
-          className="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-medium text-xs disabled:opacity-50 transition flex items-center gap-1.5"
+          className="px-4 py-2 rounded-lg bg-[#6675E8] hover:bg-[#5463D6] text-white font-medium text-xs disabled:opacity-50 transition flex items-center gap-1.5"
         >
           <Send className="w-3.5 h-3.5" /> Send
         </button>

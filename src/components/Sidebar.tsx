@@ -18,6 +18,13 @@ import {
   CheckCircle2,
   LogOut,
   Trash2,
+  Film,
+  HelpCircle,
+  Keyboard,
+  FileQuestion,
+  ExternalLink,
+  VolumeX,
+  Eye,
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store';
 import { useSportStore, SportType } from '@/lib/sportStore';
@@ -33,6 +40,7 @@ export function Sidebar({ mobileOpen = false, onClose }: SidebarProps) {
   const { user, logout } = useAuthStore();
   const { activeSport, setSport } = useSportStore();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   // Core navigation items corresponding to the user's top bar and requested architecture
   const navItems = [
@@ -40,6 +48,7 @@ export function Sidebar({ mobileOpen = false, onClose }: SidebarProps) {
     { href: '/matches', label: 'Match Analysis', icon: Video },
     { href: '/team', label: 'Player Analytics', icon: Users },
     { href: '/performance', label: 'Performance Reports', icon: BarChart2 },
+    { href: '/matches', label: 'Video Library', icon: Film },
     { href: '/training', label: 'Drills & Training', icon: Dumbbell },
     { href: '/coach', label: 'AI Coach & Tactics', icon: Bot },
   ];
@@ -83,7 +92,7 @@ export function Sidebar({ mobileOpen = false, onClose }: SidebarProps) {
       {/* Scrollable Navigation Body */}
       <div className="flex-1 px-3 py-3 space-y-4 overflow-y-auto">
         
-        {/* 2. Sport Discipline Switcher Pills (from top bar) */}
+        {/* 2. Sport Discipline Switcher (Cricket / Football / Volleyball from top bar) */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between px-1">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-[#9AA6BD]">
@@ -137,7 +146,7 @@ export function Sidebar({ mobileOpen = false, onClose }: SidebarProps) {
               const isActive =
                 item.href === '/dashboard'
                   ? pathname === '/dashboard'
-                  : pathname === item.href || (pathname?.startsWith(item.href) && item.href !== '/matches');
+                  : pathname === item.href || (pathname?.startsWith(item.href) && item.href !== '/matches' && item.href !== '/dashboard');
 
               return (
                 <Link
@@ -165,10 +174,10 @@ export function Sidebar({ mobileOpen = false, onClose }: SidebarProps) {
           </nav>
         </div>
 
-        {/* Preferences Section */}
+        {/* Preferences & Support Section */}
         <div className="space-y-1 pt-2 border-t border-[#28334D]">
           <span className="px-1 text-[10px] font-semibold uppercase tracking-wider text-[#9AA6BD]">
-            Preferences
+            Preferences & Help
           </span>
           <div className="pt-0.5 space-y-0.5">
             <Link
@@ -183,6 +192,17 @@ export function Sidebar({ mobileOpen = false, onClose }: SidebarProps) {
               <Settings className="w-4 h-4 shrink-0 text-[#9AA6BD]" />
               <span>Settings</span>
             </Link>
+
+            <button
+              onClick={() => {
+                setShowHelpModal(true);
+                onClose?.();
+              }}
+              className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-[#9AA6BD] hover:text-[#F3F5FA] hover:bg-[#151C35]/60 transition-colors cursor-pointer text-left"
+            >
+              <HelpCircle className="w-4 h-4 shrink-0 text-[#9AA6BD]" />
+              <span>Help & Support</span>
+            </button>
           </div>
         </div>
 
@@ -346,6 +366,93 @@ export function Sidebar({ mobileOpen = false, onClose }: SidebarProps) {
                 className="px-4 py-2 rounded-md bg-[#E8B75A] hover:bg-[#DBA644] font-bold text-xs text-[#0B1020] shadow-sm transition active:scale-95 cursor-pointer"
               >
                 Close Workstation
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Help & Support Modal */}
+      {showHelpModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-lg rounded-xl bg-[#151C35] border border-[#28334D] p-6 shadow-2xl relative space-y-5">
+            <button
+              onClick={() => setShowHelpModal(false)}
+              className="absolute top-4 right-4 p-1.5 rounded-md text-[#9AA6BD] hover:text-[#F3F5FA] hover:bg-[#1A2342] transition cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-[#6675E8]/10 border border-[#6675E8]/30 text-[#6675E8] flex items-center justify-center shadow-sm">
+                <HelpCircle className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-[#F3F5FA]">Athletesis Help & Pro Guide</h3>
+                <p className="text-xs text-[#9AA6BD]">Documentation, hotkeys and computer vision telemetry</p>
+              </div>
+            </div>
+
+            {/* Quick Actions & Features */}
+            <div className="space-y-3">
+              <div className="p-3 rounded-lg bg-[#0B1020] border border-[#28334D] space-y-1.5">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#F3F5FA]">
+                  <Eye className="w-3.5 h-3.5 text-[#55BDEB]" />
+                  <span>17-Point Pose Skeleton & Telemetry</span>
+                </div>
+                <p className="text-[11px] text-[#9AA6BD] leading-relaxed">
+                  During match playback, toggle the <strong>Pose Skeleton</strong> button on the video player to render calibrated 17-point joint keypoints and biomechanical angle metrics in real time.
+                </p>
+              </div>
+
+              <div className="p-3 rounded-lg bg-[#0B1020] border border-[#28334D] space-y-1.5">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#F3F5FA]">
+                  <VolumeX className="w-3.5 h-3.5 text-[#E8B75A]" />
+                  <span>Audio Voice Cancellation / Volume Suppression</span>
+                </div>
+                <p className="text-[11px] text-[#9AA6BD] leading-relaxed">
+                  Use the <strong>Cancel Voice</strong> or volume slider directly in the video player controls to suppress commentary and ambient noise so you can focus on pure movement kinematics.
+                </p>
+              </div>
+
+              {/* Keyboard Shortcuts */}
+              <div className="p-3 rounded-lg bg-[#0B1020] border border-[#28334D] space-y-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#F3F5FA]">
+                  <Keyboard className="w-3.5 h-3.5 text-[#6675E8]" />
+                  <span>Pro Keyboard Shortcuts</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-[11px]">
+                  <div className="flex items-center justify-between p-1.5 rounded bg-[#151C35] border border-[#28334D]/60">
+                    <span className="text-[#9AA6BD]">Global Search</span>
+                    <kbd className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#0B1020] text-[#F3F5FA] border border-[#28334D]">⌘K</kbd>
+                  </div>
+                  <div className="flex items-center justify-between p-1.5 rounded bg-[#151C35] border border-[#28334D]/60">
+                    <span className="text-[#9AA6BD]">Play / Pause</span>
+                    <kbd className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#0B1020] text-[#F3F5FA] border border-[#28334D]">Space</kbd>
+                  </div>
+                  <div className="flex items-center justify-between p-1.5 rounded bg-[#151C35] border border-[#28334D]/60">
+                    <span className="text-[#9AA6BD]">Step Frame</span>
+                    <kbd className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#0B1020] text-[#F3F5FA] border border-[#28334D]">J / L</kbd>
+                  </div>
+                  <div className="flex items-center justify-between p-1.5 rounded bg-[#151C35] border border-[#28334D]/60">
+                    <span className="text-[#9AA6BD]">Pose Skeleton</span>
+                    <kbd className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-[#0B1020] text-[#F3F5FA] border border-[#28334D]">C</kbd>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Diagnostic Footer */}
+            <div className="pt-2 flex items-center justify-between text-[11px] text-[#9AA6BD] border-t border-[#28334D]">
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Engine: MediaPipe 17-Pt Ready</span>
+              </div>
+              <button
+                onClick={() => setShowHelpModal(false)}
+                className="px-3.5 py-1.5 rounded-md bg-[#6675E8] hover:bg-[#5463D6] font-semibold text-xs text-white transition cursor-pointer"
+              >
+                Close Guide
               </button>
             </div>
           </div>

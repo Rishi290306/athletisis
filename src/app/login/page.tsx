@@ -33,49 +33,53 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto py-12 px-4">
-      <div className="pro-card p-8 space-y-6">
+    <div className="min-h-screen bg-[#0B1020] text-[#F3F5FA] flex items-center justify-center p-4">
+      <div className="w-full max-w-md rounded-xl p-6 sm:p-8 bg-[#151C35] border border-[#28334D] shadow-xl space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center mx-auto mb-2 font-bold text-xl">
-            <LogIn className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-lg bg-[#6675E8] text-white flex items-center justify-center mx-auto mb-2 font-bold text-sm shadow-sm">
+            A
           </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Sign In to Athletisis</h1>
-          <p className="text-xs text-slate-400">Access sports telemetry, 2D tactical maps, and AI performance coaching</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-[#F3F5FA] tracking-tight">Sign In to Athletesis</h1>
+          <p className="text-xs text-[#9AA6BD]">Access 17-point pose kinematics, spatial tactical maps, and match telemetry</p>
         </div>
 
         {error && (
-          <div className="p-3 rounded-lg bg-red-950/40 border border-red-700/60 text-red-300 text-xs font-medium">
+          <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-medium">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Email Address</label>
+            <label className="block text-[11px] font-medium text-[#9AA6BD] uppercase tracking-wider mb-1.5">
+              Email Address
+            </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+              <Mail className="w-4 h-4 text-[#9AA6BD] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 required
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
+                className="w-full pl-9 pr-3.5 py-2.5 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-[#F3F5FA] placeholder-[#9AA6BD] focus:outline-none focus:border-[#6675E8] transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[11px] font-medium text-slate-300 uppercase tracking-wider mb-1.5">Password</label>
+            <label className="block text-[11px] font-medium text-[#9AA6BD] uppercase tracking-wider mb-1.5">
+              Password
+            </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
+              <Lock className="w-4 h-4 text-[#9AA6BD] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="password"
                 required
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
+                className="w-full pl-9 pr-3.5 py-2.5 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-[#F3F5FA] placeholder-[#9AA6BD] focus:outline-none focus:border-[#6675E8] transition"
               />
             </div>
           </div>
@@ -83,15 +87,15 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 font-semibold text-white text-xs uppercase tracking-wider transition disabled:opacity-50"
+            className="w-full py-2.5 rounded-lg bg-[#6675E8] hover:bg-[#5463D6] font-semibold text-white text-xs uppercase tracking-wider transition disabled:opacity-50 cursor-pointer shadow-sm"
           >
             {loading ? 'Authenticating...' : 'Sign In'}
           </button>
         </form>
 
-        <div className="pt-3 border-t border-slate-800 space-y-3 text-center">
-          <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">
-            Quick Client Demo Login
+        <div className="pt-3 border-t border-[#28334D] space-y-2 text-center">
+          <div className="text-[10px] font-semibold text-[#9AA6BD] uppercase tracking-wider font-mono">
+            Direct Evaluation Demo
           </div>
           <button
             type="button"
@@ -99,16 +103,16 @@ export default function LoginPage() {
               loginWithCredentials('rishi.tiwari@athletisis.ai', 'Rishi Tiwari');
               router.push('/dashboard');
             }}
-            className="w-full py-2.5 rounded-lg bg-[#090D16] hover:bg-slate-800 text-brand-400 font-medium text-xs flex items-center justify-center gap-2 border border-slate-800 transition"
+            className="w-full py-2 rounded-lg bg-[#0B1020] hover:bg-[#1A2342] text-[#55BDEB] font-semibold text-xs flex items-center justify-center gap-2 border border-[#28334D] transition cursor-pointer"
           >
-            <UserCheck className="w-4 h-4 text-brand-400" />
-            Launch Instant Demo Profile (rishi.tiwari@athletisis.ai)
+            <UserCheck className="w-4 h-4 text-[#55BDEB]" />
+            <span>Launch Pre-Calibrated Demo Workstation</span>
           </button>
         </div>
 
-        <p className="text-center text-xs text-slate-400 pt-1">
+        <p className="text-center text-xs text-[#9AA6BD] pt-1">
           Don't have an account?{' '}
-          <Link href="/register" className="text-brand-400 font-medium hover:underline">
+          <Link href="/register" className="text-[#6675E8] font-semibold hover:underline">
             Register here
           </Link>
         </p>

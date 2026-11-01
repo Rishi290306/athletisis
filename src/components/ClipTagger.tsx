@@ -55,24 +55,24 @@ export function ClipTagger({ activeTimestamp = 0, onSeekTimestamp }: ClipTaggerP
   const getCategoryBadge = (cat: ClipTag['category']) => {
     switch (cat) {
       case 'highlight': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-      case 'mistake': return 'bg-red-500/10 text-red-400 border-red-500/20';
-      case 'tactical': return 'bg-brand-500/10 text-brand-400 border-brand-500/20';
-      default: return 'bg-slate-500/10 text-slate-400 border-slate-500/20';
+      case 'mistake': return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
+      case 'tactical': return 'bg-[#6675E8]/10 text-[#6675E8] border-[#6675E8]/20';
+      default: return 'bg-[#0B1020] text-[#9AA6BD] border-[#28334D]';
     }
   };
 
   return (
-    <div className="pro-card p-4 space-y-4">
+    <div className="rounded-xl p-4 bg-[#151C35] border border-[#28334D] space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+      <div className="flex items-center justify-between pb-3 border-b border-[#28334D]">
         <div className="flex items-center gap-2">
-          <Bookmark className="w-4 h-4 text-brand-400" />
-          <h3 className="text-xs font-semibold text-white uppercase tracking-wider">
+          <Bookmark className="w-4 h-4 text-[#6675E8]" />
+          <h3 className="text-xs font-semibold text-[#F3F5FA] uppercase tracking-wider">
             Custom Video Clip Tagging & Bookmarks
           </h3>
         </div>
-        <span className="text-xs font-mono text-slate-400">
-          Time: <span className="text-brand-400 font-semibold">{formatTime(activeTimestamp)}</span>
+        <span className="text-xs font-mono text-[#9AA6BD]">
+          Time: <span className="text-[#55BDEB] font-semibold">{formatTime(activeTimestamp)}</span>
         </span>
       </div>
 
@@ -83,50 +83,50 @@ export function ClipTagger({ activeTimestamp = 0, onSeekTimestamp }: ClipTaggerP
           value={inputLabel}
           onChange={(e) => setInputLabel(e.target.value)}
           placeholder={`Add tag at ${formatTime(activeTimestamp)} (e.g. Key Shot, Defensive Error)...`}
-          className="flex-1 min-w-[200px] px-3 py-2 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
+          className="flex-1 min-w-[200px] px-3 py-2 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-[#F3F5FA] placeholder-[#9AA6BD] focus:outline-none focus:border-[#6675E8] transition"
         />
 
         <select
           value={inputCategory}
           onChange={(e) => setInputCategory(e.target.value as ClipTag['category'])}
-          className="px-3 py-2 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-slate-300 focus:outline-none focus:border-brand-500 transition"
+          className="px-3 py-2 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-[#F3F5FA] focus:outline-none focus:border-[#6675E8] transition font-medium"
         >
           <option value="highlight">Highlight</option>
-          <option value="mistake">Technical Mistake</option>
-          <option value="tactical">Tactical Note</option>
+          <option value="mistake">Technical Flaw</option>
+          <option value="tactical">Tactical Movement</option>
           <option value="custom">Custom Tag</option>
         </select>
 
         <button
           type="submit"
-          className="px-3.5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-medium text-xs flex items-center gap-1.5 transition"
+          className="px-3.5 py-2 rounded-lg bg-[#6675E8] hover:bg-[#5463D6] text-white font-semibold text-xs flex items-center gap-1.5 transition cursor-pointer"
         >
-          <Plus className="w-3.5 h-3.5" /> Tag Clip
+          <Plus className="w-3.5 h-3.5" /> Tag Timestamp
         </button>
       </form>
 
       {/* Tagged Clips List */}
       <div className="space-y-2">
         {tags.length === 0 ? (
-          <div className="text-center py-6 text-xs text-slate-500">
+          <div className="text-center py-6 text-xs text-[#9AA6BD]">
             No clips bookmarked yet. Add tags during playback.
           </div>
         ) : (
           tags.map((tag) => (
             <div
               key={tag.id}
-              className="p-2.5 rounded-lg bg-[#090D16] border border-slate-800 flex items-center justify-between gap-3 hover:border-slate-700 transition"
+              className="p-2.5 rounded-lg bg-[#0B1020] border border-[#28334D] flex items-center justify-between gap-3 hover:border-[#3D4D73] transition"
             >
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => onSeekTimestamp && onSeekTimestamp(tag.timestamp)}
-                  className="px-2.5 py-1 rounded bg-brand-500/10 hover:bg-brand-500/20 border border-brand-500/20 text-brand-400 font-mono font-medium text-xs flex items-center gap-1.5 transition"
+                  className="px-2.5 py-1 rounded bg-[#151C35] hover:bg-[#1A2342] border border-[#28334D] text-[#55BDEB] font-mono font-medium text-xs flex items-center gap-1.5 transition cursor-pointer"
                 >
-                  <Play className="w-3 h-3 fill-brand-400" />
+                  <Play className="w-3 h-3 fill-[#55BDEB]" />
                   {tag.timeFormatted}
                 </button>
                 <div>
-                  <div className="text-xs font-semibold text-white">{tag.label}</div>
+                  <div className="text-xs font-semibold text-[#F3F5FA]">{tag.label}</div>
                   <span className={`px-2 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border ${getCategoryBadge(tag.category)}`}>
                     {tag.category}
                   </span>
@@ -135,7 +135,7 @@ export function ClipTagger({ activeTimestamp = 0, onSeekTimestamp }: ClipTaggerP
 
               <button
                 onClick={() => handleDeleteTag(tag.id)}
-                className="p-1.5 text-slate-500 hover:text-red-400 rounded hover:bg-slate-800 transition"
+                className="p-1.5 text-[#9AA6BD] hover:text-rose-400 rounded hover:bg-[#151C35] transition cursor-pointer"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </button>

@@ -57,7 +57,7 @@ export default function OpponentAnalysisPage() {
       <div className="space-y-6">
         <div className="pro-card p-6">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[11px] font-semibold uppercase text-brand-400 tracking-wider">{config.name} Scouting Engine</span>
+            <span className="text-[11px] font-semibold uppercase text-[#55BDEB] tracking-wider">{config.name} Scouting Engine</span>
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">Opponent Analysis & Pre-Match Strategy</h1>
           <p className="text-xs text-slate-400">Analyze opponent video footage to uncover attack patterns, defensive gaps, and tactical tendencies for {config.name}</p>
@@ -65,7 +65,7 @@ export default function OpponentAnalysisPage() {
 
         {userMatches.length === 0 ? (
           <div className="pro-card p-12 text-center space-y-6">
-            <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center mx-auto">
+            <div className="w-12 h-12 rounded-xl bg-[#55BDEB]/10 border border-[#55BDEB]/30 text-[#55BDEB] flex items-center justify-center mx-auto">
               <FolderPlus className="w-6 h-6" />
             </div>
             <div className="max-w-md mx-auto space-y-2">
@@ -76,25 +76,25 @@ export default function OpponentAnalysisPage() {
             </div>
             <Link
               href="/upload"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 font-semibold text-white text-xs uppercase tracking-wider transition"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#6675E8] hover:bg-[#5463D6] font-semibold text-white text-xs uppercase tracking-wider transition"
             >
               <Upload className="w-4 h-4" /> Upload Opponent Video <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         ) : (
           <div className="pro-card p-6 space-y-4">
-            <div className="flex items-center gap-2 text-brand-400 font-semibold text-xs uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-[#55BDEB] font-semibold text-xs uppercase tracking-wider">
               <ShieldAlert className="w-4 h-4" />
               Pre-Match AI Game Plan vs {oppData.opponent} ({config.name})
             </div>
 
             <div className="space-y-3">
-              <div className="p-4 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-slate-300">
-                <strong className="text-brand-400 font-semibold block mb-1">{oppData.obs1Title}</strong>
+              <div className="p-4 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-slate-300">
+                <strong className="text-[#55BDEB] font-semibold block mb-1">{oppData.obs1Title}</strong>
                 {oppData.obs1Desc}
               </div>
 
-              <div className="p-4 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-slate-300">
+              <div className="p-4 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs text-slate-300">
                 <strong className="text-amber-400 font-semibold block mb-1">{oppData.obs2Title}</strong>
                 {oppData.obs2Desc}
               </div>

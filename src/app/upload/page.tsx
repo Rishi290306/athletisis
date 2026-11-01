@@ -3,7 +3,21 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Upload, Video, ShieldCheck, ArrowRight, CheckCircle2, Trophy, MapPin, Calendar, Users, User, LayoutDashboard, ArrowLeft } from 'lucide-react';
+import {
+  Upload,
+  Video,
+  ShieldCheck,
+  ArrowRight,
+  CheckCircle2,
+  Trophy,
+  MapPin,
+  Calendar,
+  Users,
+  User,
+  LayoutDashboard,
+  ArrowLeft,
+  Loader2,
+} from 'lucide-react';
 import { useSportStore, SPORT_CONFIGS, SportType } from '@/lib/sportStore';
 import { useAuthStore, useMatchStore } from '@/lib/store';
 import { AuthGuard } from '@/components/AuthGuard';
@@ -15,7 +29,7 @@ export default function UploadPage() {
   const { activeSport, setSport } = useSportStore();
   const { user, athlete: storeAthlete } = useAuthStore();
 
-  const currentTeam = storeAthlete?.teamName || 'FC Thunder';
+  const currentTeam = storeAthlete?.teamName || 'National High Performance Center';
 
   // Form Fields
   const [selectedSport, setSelectedSport] = useState<SportType>(activeSport || 'Cricket');
@@ -73,6 +87,8 @@ export default function UploadPage() {
         fileBlobUrl = URL.createObjectURL(selectedFile);
       } else if (selectedSport === 'Cricket') {
         fileBlobUrl = '/sample-match2.mp4';
+      } else if (selectedSport === 'Volleyball') {
+        fileBlobUrl = '/sample-volleyball.mp4';
       }
 
       const newMatch = addMatch({
@@ -81,7 +97,7 @@ export default function UploadPage() {
         matchDate: matchDate || new Date().toISOString().split('T')[0],
         teamName: currentTeam,
         opponentName: opponentName.trim() || 'Opponent Team',
-        venue: venue.trim() || 'Main Stadium',
+        venue: venue.trim() || 'National Stadium',
         matchType,
         athleteId: user?.id || Date.now(),
         athleteName: user?.fullName || 'Athlete User',
@@ -106,38 +122,38 @@ export default function UploadPage() {
 
   return (
     <AuthGuard>
-      <div className="max-w-3xl mx-auto space-y-5 py-4">
+      <div className="max-w-3xl mx-auto space-y-5">
         
-        {/* Navigation Breadcrumb Bar */}
-        <div className="flex items-center justify-between pb-1 border-b border-slate-800/80">
+        {/* Navigation Breadcrumb */}
+        <div className="flex items-center justify-between pb-2 border-b border-[#28334D]">
           <Link
             href="/dashboard"
-            className="flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-sky-400 transition"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#9AA6BD] hover:text-[#55BDEB] transition"
           >
-            <ArrowLeft className="w-3.5 h-3.5 text-sky-400" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Return to Dashboard</span>
           </Link>
-          <span className="text-[11px] font-mono text-slate-500">Video Intake & Telemetry Processor</span>
+          <span className="text-[11px] font-mono text-[#9AA6BD]">Video Intake & Telemetry Engine</span>
         </div>
 
         {/* Header Card */}
-        <div className="pro-card p-5 sm:p-6 text-center space-y-1.5">
-          <div className="w-10 h-10 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 flex items-center justify-center mx-auto mb-1.5 shadow-sm">
+        <div className="rounded-xl p-5 sm:p-6 bg-[#151C35] border border-[#28334D] text-center space-y-1.5">
+          <div className="w-10 h-10 rounded-lg bg-[#0B1020] text-[#6675E8] border border-[#28334D] flex items-center justify-center mx-auto mb-1.5 shadow-sm">
             <Upload className="w-5 h-5" />
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Upload Match Video & Run Telemetry</h1>
-          <p className="text-xs text-slate-400 max-w-lg mx-auto">
-            Upload match video recordings to generate 17-point pose skeleton tracking, 2D tactical field maps, biomechanical strain metrics, and training drills.
+          <h1 className="text-xl sm:text-2xl font-bold text-[#F3F5FA] tracking-tight">Upload Match Footage & Run Telemetry</h1>
+          <p className="text-xs text-[#9AA6BD] max-w-lg mx-auto">
+            Ingest video recordings to extract 17-point pose skeleton tracking, 2D tactical field maps, biomechanical strain metrics, and training drills.
           </p>
         </div>
 
         {/* Upload Form */}
-        <form onSubmit={handleUploadAndAnalyze} className="pro-card p-5 sm:p-6 space-y-5 text-xs">
+        <form onSubmit={handleUploadAndAnalyze} className="rounded-xl p-5 sm:p-6 bg-[#151C35] border border-[#28334D] space-y-5 text-xs">
           
           {/* 1. Sport Selection Field */}
           <div>
-            <label className="block font-medium text-slate-300 uppercase tracking-wider mb-2 text-[11px]">
-              1. Sport Discipline <span className="text-sky-400">*</span>
+            <label className="block font-semibold text-[#F3F5FA] uppercase tracking-wider mb-2 text-[11px]">
+              1. Sport Discipline <span className="text-[#6675E8]">*</span>
             </label>
             <div className="grid grid-cols-3 gap-2.5">
               {sportsList.map((s) => {
@@ -148,10 +164,10 @@ export default function UploadPage() {
                     type="button"
                     key={s}
                     onClick={() => handleSportChange(s)}
-                    className={`p-3 rounded-lg border text-center transition flex flex-col items-center justify-center gap-1 ${
+                    className={`p-3 rounded-lg border text-center transition flex flex-col items-center justify-center gap-1 cursor-pointer ${
                       isSelected
-                        ? 'bg-sky-500/15 border-sky-400 text-white shadow-sm ring-1 ring-sky-400/30'
-                        : 'bg-[#141D30] border-slate-800 text-slate-300 hover:border-slate-700 hover:text-white'
+                        ? 'bg-[#0B1020] border-[#6675E8] text-[#F3F5FA] shadow-sm ring-1 ring-[#6675E8]/40'
+                        : 'bg-[#0B1020] border-[#28334D] text-[#9AA6BD] hover:border-[#3D4D73] hover:text-[#F3F5FA]'
                     }`}
                   >
                     <span className="text-xl">{conf?.icon}</span>
@@ -164,25 +180,25 @@ export default function UploadPage() {
 
           {/* 2. Video File Dropzone */}
           <div>
-            <label className="block font-medium text-slate-300 uppercase tracking-wider mb-2 text-[11px]">
-              2. Match Video Recording <span className="text-slate-500 font-normal lowercase">(Optional: leave empty to use sample video)</span>
+            <label className="block font-semibold text-[#F3F5FA] uppercase tracking-wider mb-2 text-[11px]">
+              2. Match Video Recording <span className="text-[#9AA6BD] font-normal lowercase">(Optional: leave empty to use pre-calibrated sample footage)</span>
             </label>
-            <div className="border border-dashed border-slate-700 hover:border-sky-500 rounded-xl p-5 text-center space-y-2 bg-[#141D30] transition group cursor-pointer relative">
+            <div className="border-2 border-dashed border-[#28334D] hover:border-[#6675E8] rounded-xl p-6 text-center space-y-2 bg-[#0B1020] transition group cursor-pointer relative">
               <input
                 type="file"
                 accept="video/mp4,video/quicktime,video/avi,video/webm,video/x-matroska"
                 onChange={handleFileChange}
                 className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
               />
-              <Video className="w-8 h-8 text-sky-400 mx-auto transition-transform group-hover:scale-105" />
+              <Video className="w-8 h-8 text-[#6675E8] mx-auto transition-transform group-hover:scale-105" />
               <div>
-                <p className="font-semibold text-sky-400 text-xs">
-                  {selectedFile ? selectedFile.name : 'Select or drag match video file'}
+                <p className="font-semibold text-[#F3F5FA] text-xs">
+                  {selectedFile ? selectedFile.name : 'Select or drop match video file here'}
                 </p>
-                <p className="text-[11px] text-slate-500 mt-0.5">MP4, MOV, AVI, WebM (Adaptive letterbox & 17-point pose estimation)</p>
+                <p className="text-[11px] text-[#9AA6BD] mt-0.5">MP4, MOV, AVI, WebM (Auto 17-point MediaPipe mesh calibration)</p>
               </div>
               {selectedFile && (
-                <div className="inline-block px-2.5 py-0.5 rounded bg-sky-500/10 border border-sky-500/30 text-sky-300 font-mono text-[11px] font-semibold">
+                <div className="inline-block px-2.5 py-0.5 rounded bg-[#6675E8]/10 border border-[#6675E8]/30 text-[#55BDEB] font-mono text-[11px] font-semibold">
                   ✓ File Attached: {(selectedFile.size / (1024 * 1024)).toFixed(1)} MB
                 </div>
               )}
@@ -196,64 +212,64 @@ export default function UploadPage() {
           )}
 
           {/* 3. Match Details Form Fields */}
-          <div className="space-y-3.5 pt-2 border-t border-slate-800">
-            <h3 className="font-semibold text-white uppercase tracking-wider text-[11px] flex items-center gap-2">
-              <Trophy className="w-3.5 h-3.5 text-sky-400" /> Match Metadata & Telemetry Parameters
+          <div className="space-y-3.5 pt-2 border-t border-[#28334D]">
+            <h3 className="font-bold text-[#F3F5FA] uppercase tracking-wider text-[11px] flex items-center gap-2">
+              <Trophy className="w-3.5 h-3.5 text-[#55BDEB]" /> Match Metadata & Telemetry Parameters
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
-                <label className="block font-medium text-slate-400 mb-1">Match Title</label>
+                <label className="block text-[11px] font-medium text-[#9AA6BD] mb-1">Match Title</label>
                 <input
                   type="text"
                   required
                   value={matchName}
                   onChange={(e) => setMatchName(e.target.value)}
                   placeholder="e.g. Semi-Final vs Rivals"
-                  className="w-full px-3 py-2 rounded-lg bg-[#141D30] border border-slate-800 text-white focus:outline-none focus:border-sky-400"
+                  className="w-full px-3 py-2 rounded-lg bg-[#0B1020] border border-[#28334D] text-[#F3F5FA] focus:outline-none focus:border-[#6675E8] text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-slate-400 mb-1">Match Date</label>
+                <label className="block text-[11px] font-medium text-[#9AA6BD] mb-1">Match Date</label>
                 <input
                   type="date"
                   required
                   value={matchDate}
                   onChange={(e) => setMatchDate(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-[#141D30] border border-slate-800 text-white focus:outline-none focus:border-sky-400"
+                  className="w-full px-3 py-2 rounded-lg bg-[#0B1020] border border-[#28334D] text-[#F3F5FA] focus:outline-none focus:border-[#6675E8] text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-slate-400 mb-1">Opponent Team</label>
+                <label className="block text-[11px] font-medium text-[#9AA6BD] mb-1">Opponent Team</label>
                 <input
                   type="text"
                   required
                   value={opponentName}
                   onChange={(e) => setOpponentName(e.target.value)}
                   placeholder="e.g. Melbourne Stars"
-                  className="w-full px-3 py-2 rounded-lg bg-[#141D30] border border-slate-800 text-white focus:outline-none focus:border-sky-400"
+                  className="w-full px-3 py-2 rounded-lg bg-[#0B1020] border border-[#28334D] text-[#F3F5FA] focus:outline-none focus:border-[#6675E8] text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-slate-400 mb-1">Venue / Arena</label>
+                <label className="block text-[11px] font-medium text-[#9AA6BD] mb-1">Venue / Arena</label>
                 <input
                   type="text"
                   value={venue}
                   onChange={(e) => setVenue(e.target.value)}
                   placeholder="e.g. Melbourne Cricket Ground"
-                  className="w-full px-3 py-2 rounded-lg bg-[#141D30] border border-slate-800 text-white focus:outline-none focus:border-sky-400"
+                  className="w-full px-3 py-2 rounded-lg bg-[#0B1020] border border-[#28334D] text-[#F3F5FA] focus:outline-none focus:border-[#6675E8] text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-slate-400 mb-1">Player Position</label>
+                <label className="block text-[11px] font-medium text-[#9AA6BD] mb-1">Player Position</label>
                 <select
                   value={position}
                   onChange={(e) => setPosition(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-[#141D30] border border-slate-800 text-white focus:outline-none focus:border-sky-400"
+                  className="w-full px-3 py-2 rounded-lg bg-[#0B1020] border border-[#28334D] text-[#F3F5FA] focus:outline-none focus:border-[#6675E8] text-xs"
                 >
                   {SPORT_CONFIGS[selectedSport]?.positions.map((pos) => (
                     <option key={pos} value={pos}>{pos}</option>
@@ -262,15 +278,15 @@ export default function UploadPage() {
               </div>
 
               <div>
-                <label className="block font-medium text-slate-400 mb-1">Analysis Focus</label>
+                <label className="block text-[11px] font-medium text-[#9AA6BD] mb-1">Analysis Focus</label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setAnalysisFocus('PLAYER')}
-                    className={`py-2 rounded-lg font-medium text-xs flex items-center justify-center gap-1.5 border transition ${
+                    className={`py-2 rounded-lg font-medium text-xs flex items-center justify-center gap-1.5 border transition cursor-pointer ${
                       analysisFocus === 'PLAYER'
-                        ? 'bg-sky-600 text-white border-sky-400 shadow-sm'
-                        : 'bg-[#141D30] text-slate-300 border-slate-800 hover:text-white'
+                        ? 'bg-[#0B1020] text-[#F3F5FA] border-[#6675E8] shadow-sm font-semibold'
+                        : 'bg-[#0B1020] text-[#9AA6BD] border-[#28334D] hover:text-[#F3F5FA]'
                     }`}
                   >
                     <User className="w-3.5 h-3.5" /> Individual Player
@@ -278,10 +294,10 @@ export default function UploadPage() {
                   <button
                     type="button"
                     onClick={() => setAnalysisFocus('TEAM')}
-                    className={`py-2 rounded-lg font-medium text-xs flex items-center justify-center gap-1.5 border transition ${
+                    className={`py-2 rounded-lg font-medium text-xs flex items-center justify-center gap-1.5 border transition cursor-pointer ${
                       analysisFocus === 'TEAM'
-                        ? 'bg-sky-600 text-white border-sky-400 shadow-sm'
-                        : 'bg-[#141D30] text-slate-300 border-slate-800 hover:text-white'
+                        ? 'bg-[#0B1020] text-[#F3F5FA] border-[#6675E8] shadow-sm font-semibold'
+                        : 'bg-[#0B1020] text-[#9AA6BD] border-[#28334D] hover:text-[#F3F5FA]'
                     }`}
                   >
                     <Users className="w-3.5 h-3.5" /> Entire Team
@@ -291,13 +307,13 @@ export default function UploadPage() {
             </div>
 
             <div>
-              <label className="block font-medium text-slate-400 mb-1">Coach Notes & Tactical Directives</label>
+              <label className="block text-[11px] font-medium text-[#9AA6BD] mb-1">Coach Notes & Tactical Directives</label>
               <textarea
                 rows={2}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Specific focus areas for computer vision analysis..."
-                className="w-full px-3 py-2 rounded-lg bg-[#141D30] border border-slate-800 text-white focus:outline-none focus:border-sky-400 resize-none"
+                className="w-full px-3 py-2 rounded-lg bg-[#0B1020] border border-[#28334D] text-[#F3F5FA] focus:outline-none focus:border-[#6675E8] resize-none text-xs"
               />
             </div>
           </div>
@@ -307,21 +323,27 @@ export default function UploadPage() {
             <button
               type="submit"
               disabled={uploading}
-              className="w-full py-3 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition disabled:opacity-50 active:scale-95"
+              className="w-full py-3 rounded-lg bg-[#6675E8] hover:bg-[#5463D6] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition disabled:opacity-50 active:scale-95 cursor-pointer"
             >
               {uploading ? (
-                <>Extracting Pose Keypoints & Telemetry...</>
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Extracting 17-Point Pose Keypoints & Telemetry...</span>
+                </>
               ) : (
-                <>Launch AI Telemetry & Open Workstation <ArrowRight className="w-4 h-4" /></>
+                <>
+                  <span>Launch AI Telemetry & Open Workstation</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
               )}
             </button>
 
             <Link
               href="/dashboard"
-              className="w-full py-2.5 rounded-lg bg-[#141D30] hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs font-semibold flex items-center justify-center gap-2 transition"
+              className="w-full py-2 rounded-lg bg-[#0B1020] hover:bg-[#1A2342] text-[#9AA6BD] hover:text-[#F3F5FA] border border-[#28334D] text-xs font-semibold flex items-center justify-center gap-2 transition"
             >
-              <LayoutDashboard className="w-3.5 h-3.5 text-sky-400" />
-              Cancel & Return to Dashboard
+              <LayoutDashboard className="w-3.5 h-3.5 text-[#6675E8]" />
+              <span>Cancel & Return to Dashboard</span>
             </Link>
           </div>
         </form>

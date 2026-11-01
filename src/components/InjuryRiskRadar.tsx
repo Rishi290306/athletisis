@@ -49,19 +49,19 @@ export function InjuryRiskRadar({ sport = 'soccer', fatigueIndex = 62 }: InjuryR
   const overallRisk = fatigueIndex > 75 ? 'HIGH' : fatigueIndex > 45 ? 'MODERATE' : 'LOW';
 
   return (
-    <div className="pro-card p-4 space-y-4">
+    <div className="rounded-xl p-5 bg-[#151C35] border border-[#28334D] space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+      <div className="flex items-center justify-between pb-3 border-b border-[#28334D]">
         <div className="flex items-center gap-2">
-          <ShieldAlert className="w-4 h-4 text-amber-400" />
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider">
+          <ShieldAlert className="w-4 h-4 text-[#E8B75A]" />
+          <h3 className="text-xs font-bold text-[#F3F5FA] uppercase tracking-wider">
             Biomechanical Strain & Injury Risk Radar
           </h3>
         </div>
-        <span className={`px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider ${
-          overallRisk === 'HIGH' ? 'bg-red-500/20 text-red-400 border border-red-500/40' :
-          overallRisk === 'MODERATE' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40' :
-          'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
+        <span className={`px-2.5 py-0.5 rounded text-[11px] font-mono font-bold uppercase tracking-wider border ${
+          overallRisk === 'HIGH' ? 'bg-rose-500/15 text-rose-400 border-rose-500/30' :
+          overallRisk === 'MODERATE' ? 'bg-[#E8B75A]/15 text-[#E8B75A] border-[#E8B75A]/30' :
+          'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
         }`}>
           Overall Strain: {overallRisk}
         </span>
@@ -70,35 +70,35 @@ export function InjuryRiskRadar({ sport = 'soccer', fatigueIndex = 62 }: InjuryR
       {/* Muscle Group Strain Breakdown */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {riskData.map((item, idx) => (
-          <div key={idx} className="p-3.5 rounded-lg bg-[#090D16] border border-slate-800 space-y-2.5">
+          <div key={idx} className="p-3.5 rounded-lg bg-[#0B1020] border border-[#28334D] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-white">{item.muscleGroup}</span>
-              <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider ${
-                item.riskLevel === 'high' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
-                item.riskLevel === 'moderate' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
-                'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+              <span className="text-xs font-semibold text-[#F3F5FA]">{item.muscleGroup}</span>
+              <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-semibold uppercase tracking-wider border ${
+                item.riskLevel === 'high' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
+                item.riskLevel === 'moderate' ? 'bg-[#E8B75A]/10 text-[#E8B75A] border-[#E8B75A]/20' :
+                'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
               }`}>
                 {item.riskLevel} Risk ({item.stressScore}%)
               </span>
             </div>
 
             {/* Stress Level Bar */}
-            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-[#151C35] rounded-full overflow-hidden">
               <div
                 className={`h-full transition-all duration-500 ${
-                  item.stressScore > 75 ? 'bg-red-500' :
-                  item.stressScore > 45 ? 'bg-amber-500' : 'bg-emerald-500'
+                  item.stressScore > 75 ? 'bg-rose-500' :
+                  item.stressScore > 45 ? 'bg-[#E8B75A]' : 'bg-emerald-500'
                 }`}
                 style={{ width: `${item.stressScore}%` }}
               />
             </div>
 
-            <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
-              <Activity className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              <span>Cause: <span className="text-slate-300 font-medium">{item.cause}</span></span>
+            <div className="text-[11px] text-[#9AA6BD] flex items-center gap-1.5">
+              <Activity className="w-3.5 h-3.5 text-[#9AA6BD] shrink-0" />
+              <span>Cause: <span className="text-[#F3F5FA] font-medium">{item.cause}</span></span>
             </div>
 
-            <div className="text-[11px] text-brand-400/90 font-medium bg-brand-500/10 p-2 rounded-lg border border-brand-500/20">
+            <div className="text-[11px] text-[#55BDEB] font-medium bg-[#151C35] p-2 rounded-lg border border-[#28334D]">
               {item.recommendation}
             </div>
           </div>
@@ -106,12 +106,12 @@ export function InjuryRiskRadar({ sport = 'soccer', fatigueIndex = 62 }: InjuryR
       </div>
 
       {/* Proactive Recovery Advisory */}
-      <div className="p-3 rounded-lg bg-amber-950/20 border border-amber-800/40 flex items-start gap-3">
-        <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+      <div className="p-3.5 rounded-lg bg-[#0B1020] border border-[#E8B75A]/30 flex items-start gap-3">
+        <AlertTriangle className="w-4 h-4 text-[#E8B75A] shrink-0 mt-0.5" />
         <div className="text-xs space-y-1">
-          <div className="font-bold text-amber-300">Coach Load Management Directive</div>
-          <p className="text-slate-300 leading-relaxed">
-            Telemetry indicates elevated deceleration force on high-speed sprints. Maintain 48-hour recovery before next high-intensity training session to prevent hamstring strain.
+          <div className="font-bold text-[#E8B75A]">Coach Load Management Directive</div>
+          <p className="text-[#9AA6BD] leading-relaxed">
+            Telemetry indicates elevated deceleration force on high-speed sprint bursts. Maintain 48-hour recovery before next high-intensity training session to prevent hamstring or patellar overload.
           </p>
         </div>
       </div>

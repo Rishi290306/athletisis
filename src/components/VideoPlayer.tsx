@@ -313,7 +313,7 @@ export function VideoPlayer({
   return (
     <div className="pro-card p-4 sm:p-5 space-y-3.5">
       {/* Header & Controls Toolbar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#28334D]">
         <div>
           <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -326,8 +326,8 @@ export function VideoPlayer({
 
         <div className="flex items-center gap-1.5 flex-wrap">
           {/* Tracked Player Selector */}
-          <div className="flex items-center gap-1.5 bg-[#141D30] px-2.5 py-1 rounded-lg border border-slate-800 text-xs">
-            <Users className="w-3.5 h-3.5 text-sky-400" />
+          <div className="flex items-center gap-1.5 bg-[#0B1020] px-2.5 py-1 rounded-lg border border-[#28334D] text-xs">
+            <Users className="w-3.5 h-3.5 text-[#55BDEB]" />
             <select
               value={selectedPersonId}
               onChange={(e) => {
@@ -349,8 +349,8 @@ export function VideoPlayer({
             onClick={() => setCvOverlayEnabled(!cvOverlayEnabled)}
             className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 border ${
               cvOverlayEnabled
-                ? 'bg-sky-500/15 text-sky-300 border-sky-500/30'
-                : 'bg-[#141D30] text-slate-400 border-slate-800 hover:text-white'
+                ? 'bg-[#6675E8]/15 text-[#55BDEB] border-[#6675E8]/30'
+                : 'bg-[#0B1020] text-slate-400 border-[#28334D] hover:text-white'
             }`}
           >
             <Eye className="w-3.5 h-3.5" />
@@ -363,7 +363,7 @@ export function VideoPlayer({
             className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 border ${
               debugMode
                 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                : 'bg-[#141D30] text-slate-400 border-slate-800 hover:text-white'
+                : 'bg-[#0B1020] text-slate-400 border-[#28334D] hover:text-white'
             }`}
             title="Inspect raw coordinates, bounding boxes, and letterbox geometry"
           >
@@ -376,8 +376,8 @@ export function VideoPlayer({
             onClick={() => setShowSettingsDrawer(!showSettingsDrawer)}
             className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 border ${
               showSettingsDrawer
-                ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
-                : 'bg-[#141D30] text-slate-400 border-slate-800 hover:text-white'
+                ? 'bg-sky-500/20 text-[#55BDEB] border-sky-500/40'
+                : 'bg-[#0B1020] text-slate-400 border-[#28334D] hover:text-white'
             }`}
           >
             <Sliders className="w-3.5 h-3.5" />
@@ -385,13 +385,13 @@ export function VideoPlayer({
           </button>
 
           {/* Cancel / Reduce Voice Pill */}
-          <div className="flex items-center gap-1 bg-[#141D30] px-2 py-1 rounded-lg border border-slate-800 text-xs">
+          <div className="flex items-center gap-1 bg-[#0B1020] px-2 py-1 rounded-lg border border-[#28334D] text-xs">
             <button
               onClick={toggleCancelVoice}
               className={`flex items-center gap-1.5 font-medium transition ${
                 isMuted || volume === 0
                   ? 'text-rose-400 hover:text-rose-300'
-                  : 'text-sky-400 hover:text-sky-300'
+                  : 'text-[#55BDEB] hover:text-[#55BDEB]'
               }`}
               title={isMuted || volume === 0 ? 'Voice Cancelled / Muted — Click to Restore Audio' : 'Cancel Voice / Mute Video'}
             >
@@ -402,7 +402,7 @@ export function VideoPlayer({
                 </>
               ) : (
                 <>
-                  <Volume2 className="w-3.5 h-3.5 text-sky-400" />
+                  <Volume2 className="w-3.5 h-3.5 text-[#55BDEB]" />
                   <span className="text-slate-300 text-[11px] font-semibold">{(volume * 100).toFixed(0)}%</span>
                 </>
               )}
@@ -412,8 +412,8 @@ export function VideoPlayer({
               onClick={() => reduceVoiceLevel(0.2)}
               className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-medium transition border ${
                 !isMuted && Math.abs(volume - 0.2) < 0.05
-                  ? 'bg-sky-600 text-white border-sky-400'
-                  : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border-slate-700'
+                  ? 'bg-[#6675E8] text-white border-sky-400'
+                  : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border-[#28334D]'
               }`}
               title="Reduce voice / audio level to 20%"
             >
@@ -425,8 +425,8 @@ export function VideoPlayer({
 
       {/* Settings Drawer */}
       {showSettingsDrawer && (
-        <div className="p-3 rounded-lg bg-[#141D30] border border-slate-800 space-y-2.5 text-xs">
-          <div className="flex items-center justify-between font-semibold text-white border-b border-slate-800/80 pb-1.5">
+        <div className="p-3 rounded-lg bg-[#0B1020] border border-[#28334D] space-y-2.5 text-xs">
+          <div className="flex items-center justify-between font-semibold text-white border-b border-[#28334D] pb-1.5">
             <span className="text-xs">Pose Tracking & Vision Calibration</span>
             <button onClick={() => setShowSettingsDrawer(false)} className="text-slate-400 hover:text-white">✕</button>
           </div>
@@ -436,7 +436,7 @@ export function VideoPlayer({
                 type="checkbox"
                 checked={showSkeleton}
                 onChange={(e) => setShowSkeleton(e.target.checked)}
-                className="rounded bg-slate-800 text-sky-500 border-slate-700"
+                className="rounded bg-slate-800 text-sky-500 border-[#28334D]"
               />
               <span>17-Point Skeleton</span>
             </label>
@@ -445,7 +445,7 @@ export function VideoPlayer({
                 type="checkbox"
                 checked={showBoundingBox}
                 onChange={(e) => setShowBoundingBox(e.target.checked)}
-                className="rounded bg-slate-800 text-sky-500 border-slate-700"
+                className="rounded bg-slate-800 text-sky-500 border-[#28334D]"
               />
               <span>Detection Box</span>
             </label>
@@ -454,7 +454,7 @@ export function VideoPlayer({
                 type="checkbox"
                 checked={showTelemetry}
                 onChange={(e) => setShowTelemetry(e.target.checked)}
-                className="rounded bg-slate-800 text-sky-500 border-slate-700"
+                className="rounded bg-slate-800 text-sky-500 border-[#28334D]"
               />
               <span>Biomechanical Angles</span>
             </label>
@@ -471,7 +471,7 @@ export function VideoPlayer({
                 onChange={(e) => setMinConfidence(parseFloat(e.target.value))}
                 className="w-20 accent-sky-500 cursor-pointer"
               />
-              <span className="font-mono text-sky-400 text-xs">{(minConfidence * 100).toFixed(0)}%</span>
+              <span className="font-mono text-[#55BDEB] text-xs">{(minConfidence * 100).toFixed(0)}%</span>
             </div>
           </div>
         </div>
@@ -480,7 +480,7 @@ export function VideoPlayer({
       {/* Main Video Screen Container with Canvas Overlay */}
       <div
         ref={containerRef}
-        className="relative aspect-video bg-[#070B14] rounded-xl border border-slate-800/90 overflow-hidden group select-none shadow-sm"
+        className="relative aspect-video bg-[#0B1020] rounded-xl border border-[#28334D] overflow-hidden group select-none shadow-sm"
       >
         <video
           ref={videoRef}
@@ -515,8 +515,8 @@ export function VideoPlayer({
 
         {/* Floating Live Telemetry HUD */}
         {showTelemetry && cvOverlayEnabled && (
-          <div className="absolute bottom-3 left-3 px-3 py-2 rounded-lg bg-[#0E1424]/90 backdrop-blur-md border border-slate-800 text-xs font-mono space-y-0.5 shadow-md pointer-events-none">
-            <div className="flex items-center gap-1.5 text-sky-400 font-semibold text-xs">
+          <div className="absolute bottom-3 left-3 px-3 py-2 rounded-lg bg-[#151C35]/90 backdrop-blur-md border border-[#28334D] text-xs font-mono space-y-0.5 shadow-md pointer-events-none">
+            <div className="flex items-center gap-1.5 text-[#55BDEB] font-semibold text-xs">
               <Activity className="w-3.5 h-3.5" />
               <span>VELOCITY: {liveTelemetry.velocityKmh.toFixed(1)} km/h</span>
             </div>
@@ -531,39 +531,39 @@ export function VideoPlayer({
       </div>
 
       {/* Scrubber & Speed Controls + Dedicated Voice Cancellation Unit */}
-      <div className="p-3 rounded-lg bg-[#0E1424] border border-slate-800/80 space-y-2">
+      <div className="p-3 rounded-lg bg-[#151C35] border border-[#28334D] space-y-2">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5">
           <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={togglePlayPause}
-              className="p-2 rounded-md bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs transition shadow-sm"
+              className="p-2 rounded-md bg-[#6675E8] hover:bg-[#5463D6] text-white font-semibold text-xs transition shadow-sm"
               title={isPlaying ? 'Pause' : 'Play'}
             >
               {isPlaying ? <Pause className="w-3.5 h-3.5 fill-white" /> : <Play className="w-3.5 h-3.5 fill-white" />}
             </button>
             <button
               onClick={() => stepFrame(-0.1)}
-              className="px-2 py-1 rounded-md bg-[#141D30] hover:bg-slate-800 text-slate-300 text-xs font-mono font-medium border border-slate-800"
+              className="px-2 py-1 rounded-md bg-[#0B1020] hover:bg-slate-800 text-slate-300 text-xs font-mono font-medium border border-[#28334D]"
               title="Step backward 0.1s"
             >
               -0.1s
             </button>
             <button
               onClick={() => stepFrame(0.1)}
-              className="px-2 py-1 rounded-md bg-[#141D30] hover:bg-slate-800 text-slate-300 text-xs font-mono font-medium border border-slate-800"
+              className="px-2 py-1 rounded-md bg-[#0B1020] hover:bg-slate-800 text-slate-300 text-xs font-mono font-medium border border-[#28334D]"
               title="Step forward 0.1s"
             >
               +0.1s
             </button>
 
             {/* DEDICATED CANCEL / REDUCE VOICE CONTROLS */}
-            <div className="flex items-center gap-1.5 pl-2 sm:border-l border-slate-800 flex-wrap">
+            <div className="flex items-center gap-1.5 pl-2 sm:border-l border-[#28334D] flex-wrap">
               <button
                 onClick={toggleCancelVoice}
                 className={`px-2.5 py-1 rounded-md text-xs font-medium transition flex items-center gap-1.5 border ${
                   isMuted || volume === 0
                     ? 'bg-rose-500/15 text-rose-300 border-rose-500/40 hover:bg-rose-500/25'
-                    : 'bg-[#141D30] text-slate-300 border-slate-800 hover:text-white'
+                    : 'bg-[#0B1020] text-slate-300 border-[#28334D] hover:text-white'
                 }`}
                 title={isMuted || volume === 0 ? 'Voice Cancelled / Muted — Click to Restore Audio' : 'Cancel Voice / Mute Video'}
               >
@@ -574,21 +574,21 @@ export function VideoPlayer({
                   </>
                 ) : (
                   <>
-                    {volume < 0.5 ? <Volume1 className="w-3.5 h-3.5 text-sky-400" /> : <Volume2 className="w-3.5 h-3.5 text-sky-400" />}
+                    {volume < 0.5 ? <Volume1 className="w-3.5 h-3.5 text-[#55BDEB]" /> : <Volume2 className="w-3.5 h-3.5 text-[#55BDEB]" />}
                     <span>Cancel Voice</span>
                   </>
                 )}
               </button>
 
               {/* Reduce Voice Presets & Slider */}
-              <div className="flex items-center gap-1.5 bg-[#141D30] px-2 py-1 rounded-md border border-slate-800">
+              <div className="flex items-center gap-1.5 bg-[#0B1020] px-2 py-1 rounded-md border border-[#28334D]">
                 <span className="text-[11px] font-mono text-slate-400 font-medium hidden sm:inline">Reduce:</span>
                 <button
                   onClick={() => reduceVoiceLevel(0.2)}
                   className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-medium transition border ${
                     !isMuted && Math.abs(volume - 0.2) < 0.05
-                      ? 'bg-sky-600 text-white border-sky-400 shadow-sm'
-                      : 'bg-slate-800 text-slate-400 hover:text-white border-slate-700'
+                      ? 'bg-[#6675E8] text-white border-sky-400 shadow-sm'
+                      : 'bg-slate-800 text-slate-400 hover:text-white border-[#28334D]'
                   }`}
                   title="Reduce Voice to 20%"
                 >
@@ -598,8 +598,8 @@ export function VideoPlayer({
                   onClick={() => reduceVoiceLevel(0.5)}
                   className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-medium transition border ${
                     !isMuted && Math.abs(volume - 0.5) < 0.05
-                      ? 'bg-sky-600 text-white border-sky-400 shadow-sm'
-                      : 'bg-slate-800 text-slate-400 hover:text-white border-slate-700'
+                      ? 'bg-[#6675E8] text-white border-sky-400 shadow-sm'
+                      : 'bg-slate-800 text-slate-400 hover:text-white border-[#28334D]'
                   }`}
                   title="Reduce Voice to 50%"
                 >
@@ -615,7 +615,7 @@ export function VideoPlayer({
                   className="w-16 sm:w-20 accent-sky-500 cursor-pointer"
                   title={`Voice Volume: ${(isMuted ? 0 : volume * 100).toFixed(0)}%`}
                 />
-                <span className="font-mono text-[10px] text-sky-400 min-w-[28px] text-right font-medium">
+                <span className="font-mono text-[10px] text-[#55BDEB] min-w-[28px] text-right font-medium">
                   {(isMuted ? 0 : volume * 100).toFixed(0)}%
                 </span>
               </div>
@@ -624,13 +624,13 @@ export function VideoPlayer({
 
           <div className="flex items-center gap-1.5 self-end sm:self-auto">
             <span className="text-xs font-mono text-slate-400 font-medium">Speed:</span>
-            <div className="flex items-center gap-1 bg-[#141D30] p-0.5 rounded-md border border-slate-800 text-xs font-mono">
+            <div className="flex items-center gap-1 bg-[#0B1020] p-0.5 rounded-md border border-[#28334D] text-xs font-mono">
               {[0.5, 1, 1.5, 2].map((r) => (
                 <button
                   key={r}
                   onClick={() => changePlaybackRate(r)}
                   className={`px-2 py-0.5 rounded text-[11px] font-medium transition ${
-                    playbackRate === r ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                    playbackRate === r ? 'bg-[#6675E8] text-white shadow-sm' : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   {r}x
@@ -646,7 +646,7 @@ export function VideoPlayer({
         <div className="space-y-2 pt-1">
           <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center justify-between">
             <span>Detected Game Moments ({clips.length} Plays)</span>
-            <span className="text-[10px] text-sky-400 font-mono">Click to jump frame</span>
+            <span className="text-[10px] text-[#55BDEB] font-mono">Click to jump frame</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             {clips.map((clip) => (
@@ -655,11 +655,11 @@ export function VideoPlayer({
                 onClick={() => jumpToClip(clip)}
                 className={`p-2.5 rounded-lg border text-left transition ${
                   selectedClip?.id === clip.id
-                    ? 'bg-sky-500/15 border-sky-400 text-white shadow-sm ring-1 ring-sky-400/40'
-                    : 'bg-[#0E1424] border-slate-800 text-slate-300 hover:border-slate-700 hover:text-white'
+                    ? 'bg-[#6675E8]/15 border-sky-400 text-white shadow-sm ring-1 ring-sky-400/40'
+                    : 'bg-[#151C35] border-[#28334D] text-slate-300 hover:border-[#28334D] hover:text-white'
                 }`}
               >
-                <div className="text-[10px] font-mono font-semibold text-sky-400">
+                <div className="text-[10px] font-mono font-semibold text-[#55BDEB]">
                   {(clip as any).timestamp || `${clip.startTimestampSeconds}s`}
                 </div>
                 <div className="text-xs font-semibold truncate mt-0.5">{clip.title}</div>

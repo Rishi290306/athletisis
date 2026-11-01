@@ -155,9 +155,9 @@ export function MatchStrategyTrainingHub({ sport = 'Cricket', athleteName = 'Ris
   return (
     <div className="pro-card p-4 space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+      <div className="flex items-center justify-between pb-3 border-b border-[#28334D]">
         <div className="flex items-center gap-2">
-          <Dumbbell className="w-4 h-4 text-brand-400" />
+          <Dumbbell className="w-4 h-4 text-[#55BDEB]" />
           <h3 className="text-xs font-semibold text-white uppercase tracking-wider">
             AI Strategy & Actionable Training Drill Generator
           </h3>
@@ -177,13 +177,13 @@ export function MatchStrategyTrainingHub({ sport = 'Cricket', athleteName = 'Ris
               className={`p-4 rounded-lg border transition ${
                 isDone
                   ? 'bg-emerald-950/20 border-emerald-800/40 opacity-75'
-                  : 'bg-[#090D16] border-slate-800 hover:border-slate-700'
+                  : 'bg-[#0B1020] border-[#28334D] hover:border-[#28334D]'
               }`}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-800/60">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[#28334D]">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-brand-500/10 text-brand-400 border border-brand-500/20">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-[#6675E8]/10 text-[#55BDEB] border border-[#6675E8]/20">
                       {drill.focusArea}
                     </span>
                     <span className="text-xs font-mono text-slate-400">{drill.prescribedSets} • {drill.durationMins} min</span>
@@ -196,7 +196,7 @@ export function MatchStrategyTrainingHub({ sport = 'Cricket', athleteName = 'Ris
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition shrink-0 ${
                     isDone
                       ? 'bg-emerald-600 text-white'
-                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
+                      : 'bg-[#0B1020] hover:bg-slate-700 text-slate-300 border border-[#28334D]'
                   }`}
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -207,9 +207,9 @@ export function MatchStrategyTrainingHub({ sport = 'Cricket', athleteName = 'Ris
               <p className="text-xs text-slate-400 mt-2">{drill.description}</p>
 
               {/* Score Target Bar */}
-              <div className="mt-3 p-2.5 rounded-lg bg-[#0E1424] border border-slate-800/80 flex items-center justify-between text-xs">
+              <div className="mt-3 p-2.5 rounded-lg bg-[#151C35] border border-[#28334D] flex items-center justify-between text-xs">
                 <span className="font-medium text-slate-400">Target Improvement:</span>
-                <span className="font-mono font-medium text-brand-400">
+                <span className="font-mono font-medium text-[#55BDEB]">
                   {drill.currentScore.toFixed(1)} → <span className="text-emerald-400 font-semibold">{drill.targetScore.toFixed(1)} / 100</span>
                 </span>
               </div>

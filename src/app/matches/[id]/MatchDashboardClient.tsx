@@ -140,19 +140,19 @@ export function MatchDashboardClient() {
       <div className="space-y-5">
         
         {/* Breadcrumb & Instant Back Navigation Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-1 border-b border-slate-800/80">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-1 border-b border-[#28334D]/80">
           <div className="flex items-center gap-2 text-xs text-slate-400 font-medium overflow-x-auto py-0.5">
             <Link
               href="/dashboard"
-              className="flex items-center gap-1.5 text-slate-400 hover:text-sky-400 transition font-medium shrink-0"
+              className="flex items-center gap-1.5 text-slate-400 hover:text-[#55BDEB] transition font-medium shrink-0"
             >
-              <LayoutDashboard className="w-3.5 h-3.5 text-sky-400" />
+              <LayoutDashboard className="w-3.5 h-3.5 text-[#55BDEB]" />
               <span>Dashboard</span>
             </Link>
             <span className="text-slate-700">/</span>
             <Link
               href="/matches"
-              className="text-slate-400 hover:text-sky-400 transition font-medium shrink-0"
+              className="text-slate-400 hover:text-[#55BDEB] transition font-medium shrink-0"
             >
               Matches
             </Link>
@@ -162,7 +162,7 @@ export function MatchDashboardClient() {
 
           <Link
             href="/dashboard"
-            className="px-3 py-1.5 rounded-lg bg-[#0E1424] hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition shadow-sm w-fit"
+            className="px-3 py-1.5 rounded-lg bg-[#151C35] hover:bg-slate-800 border border-[#28334D] text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition shadow-sm w-fit"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Return to Dashboard</span>
@@ -173,7 +173,7 @@ export function MatchDashboardClient() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 sm:p-6 pro-card">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded text-[11px] font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+              <span className="px-2.5 py-0.5 rounded text-[11px] font-semibold bg-[#55BDEB]/10 text-[#55BDEB] border border-[#55BDEB]/30">
                 {activeSportName} • MATCH #{match.id}
               </span>
               <span className="text-xs font-mono text-slate-400">{match.matchDate}</span>
@@ -188,7 +188,7 @@ export function MatchDashboardClient() {
             {/* Primary Back to Dashboard Button */}
             <Link
               href="/dashboard"
-              className="px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white shadow-sm transition active:scale-95"
+              className="px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 bg-[#6675E8] hover:bg-[#5463D6] text-white shadow-sm transition active:scale-95"
             >
               <LayoutDashboard className="w-4 h-4" />
               <span>Back to Dashboard</span>
@@ -197,9 +197,9 @@ export function MatchDashboardClient() {
             {/* All Matches list button */}
             <Link
               href="/matches"
-              className="px-3 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 bg-[#141D30] text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition"
+              className="px-3 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 bg-[#151C35] text-slate-300 border border-[#28334D] hover:border-slate-700 hover:text-white transition"
             >
-              <VideoIcon className="w-3.5 h-3.5 text-sky-400" />
+              <VideoIcon className="w-3.5 h-3.5 text-[#55BDEB]" />
               <span>All Matches</span>
             </Link>
 
@@ -208,8 +208,8 @@ export function MatchDashboardClient() {
               onClick={() => setShowComparison(!showComparison)}
               className={`px-3 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition border ${
                 showComparison
-                  ? 'bg-sky-600 text-white border-sky-400 shadow-sm'
-                  : 'bg-[#141D30] text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
+                  ? 'bg-[#6675E8] text-white border-sky-400 shadow-sm'
+                  : 'bg-[#151C35] text-slate-300 border-[#28334D] hover:border-slate-700 hover:text-white'
               }`}
             >
               <Columns className="w-3.5 h-3.5" />
@@ -248,11 +248,11 @@ export function MatchDashboardClient() {
           <div className="lg:col-span-4 space-y-3.5">
             
             {/* Segmented Tab Navigation Controls */}
-            <div className="flex items-center gap-1 p-1 rounded-lg bg-[#0E1424] border border-slate-800/90 overflow-x-auto text-xs font-medium">
+            <div className="flex items-center gap-1 p-1 rounded-lg bg-[#151C35] border border-[#28334D]/90 overflow-x-auto text-xs font-medium">
               <button
                 onClick={() => setActiveTab('overview')}
                 className={`px-2.5 py-1.5 rounded-md flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'overview' ? 'bg-sky-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
+                  activeTab === 'overview' ? 'bg-[#6675E8] text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 <Activity className="w-3.5 h-3.5" /> Telemetry
@@ -260,7 +260,7 @@ export function MatchDashboardClient() {
               <button
                 onClick={() => setActiveTab('drills')}
                 className={`px-2.5 py-1.5 rounded-md flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'drills' ? 'bg-sky-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
+                  activeTab === 'drills' ? 'bg-[#6675E8] text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 <Dumbbell className="w-3.5 h-3.5" /> Drills
@@ -268,7 +268,7 @@ export function MatchDashboardClient() {
               <button
                 onClick={() => setActiveTab('injury')}
                 className={`px-2.5 py-1.5 rounded-md flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'injury' ? 'bg-sky-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
+                  activeTab === 'injury' ? 'bg-[#6675E8] text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 <ShieldAlert className="w-3.5 h-3.5" /> Strain
@@ -276,7 +276,7 @@ export function MatchDashboardClient() {
               <button
                 onClick={() => setActiveTab('report')}
                 className={`px-2.5 py-1.5 rounded-md flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'report' ? 'bg-sky-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
+                  activeTab === 'report' ? 'bg-[#6675E8] text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 <FileText className="w-3.5 h-3.5" /> Report
@@ -284,7 +284,7 @@ export function MatchDashboardClient() {
               <button
                 onClick={() => setActiveTab('chat')}
                 className={`px-2.5 py-1.5 rounded-md flex items-center gap-1.5 transition shrink-0 ${
-                  activeTab === 'chat' ? 'bg-sky-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
+                  activeTab === 'chat' ? 'bg-[#6675E8] text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 <Bot className="w-3.5 h-3.5" /> AI Coach
@@ -297,19 +297,19 @@ export function MatchDashboardClient() {
                 {/* Metric Summary Cards Grid */}
                 <div className="grid grid-cols-2 gap-2.5">
                   {analysis.metricCards.slice(0, 4).map((card, idx) => (
-                    <div key={idx} className="p-3 rounded-lg bg-[#0E1424] border border-slate-800">
+                    <div key={idx} className="p-3 rounded-lg bg-[#151C35] border border-[#28334D]">
                       <div className="text-[10px] font-medium text-slate-400">{card.title}</div>
                       <div className="text-base font-bold text-white font-mono mt-0.5">
                         {card.value} <span className="text-[11px] font-normal text-slate-500">{card.unit}</span>
                       </div>
-                      <div className="text-[10px] text-sky-400 font-medium truncate mt-0.5">{card.subtitle}</div>
+                      <div className="text-[10px] text-[#55BDEB] font-medium truncate mt-0.5">{card.subtitle}</div>
                     </div>
                   ))}
                 </div>
 
                 {/* Biomechanical Angle Calibrations */}
-                <div className="p-3.5 rounded-xl bg-[#0E1424] border border-slate-800 space-y-2.5">
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <div className="p-3.5 rounded-xl bg-[#151C35] border border-[#28334D] space-y-2.5">
+                  <div className="flex items-center justify-between border-b border-[#28334D] pb-2">
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-white">
                       <Zap className="w-3.5 h-3.5 text-amber-400" />
                       <span>Live Joint Angles</span>
@@ -320,19 +320,19 @@ export function MatchDashboardClient() {
                   </div>
 
                   <div className="space-y-1.5 text-xs font-mono">
-                    <div className="flex items-center justify-between p-2 rounded bg-[#141D30] border border-slate-800/80">
+                    <div className="flex items-center justify-between p-2 rounded bg-[#151C35] border border-[#28334D]/80">
                       <span className="text-slate-400">Arm Extension Angle</span>
                       <span className="text-amber-400 font-semibold">88° (Target: 85°-95°)</span>
                     </div>
-                    <div className="flex items-center justify-between p-2 rounded bg-[#141D30] border border-slate-800/80">
+                    <div className="flex items-center justify-between p-2 rounded bg-[#151C35] border border-[#28334D]/80">
                       <span className="text-slate-400">Front Knee Brace</span>
                       <span className="text-emerald-400 font-semibold">142° (Strong Leverage)</span>
                     </div>
-                    <div className="flex items-center justify-between p-2 rounded bg-[#141D30] border border-slate-800/80">
+                    <div className="flex items-center justify-between p-2 rounded bg-[#151C35] border border-[#28334D]/80">
                       <span className="text-slate-400">Release Apex</span>
-                      <span className="text-sky-400 font-semibold">2.14 m</span>
+                      <span className="text-[#55BDEB] font-semibold">2.14 m</span>
                     </div>
-                    <div className="flex items-center justify-between p-2 rounded bg-[#141D30] border border-slate-800/80">
+                    <div className="flex items-center justify-between p-2 rounded bg-[#151C35] border border-[#28334D]/80">
                       <span className="text-slate-400">Trunk Flexion</span>
                       <span className="text-slate-200 font-semibold">18° Forward Lean</span>
                     </div>
@@ -340,8 +340,8 @@ export function MatchDashboardClient() {
                 </div>
 
                 {/* Key Delivery Clips & Breakdown */}
-                <div className="p-3.5 rounded-xl bg-[#0E1424] border border-slate-800 space-y-2.5">
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
+                <div className="p-3.5 rounded-xl bg-[#151C35] border border-[#28334D] space-y-2.5">
+                  <div className="flex items-center justify-between border-b border-[#28334D] pb-1.5">
                     <span className="text-xs font-semibold text-white">
                       Action Phase Highlights
                     </span>
@@ -350,7 +350,7 @@ export function MatchDashboardClient() {
 
                   <div className="space-y-1.5">
                     {[
-                      { label: 'Run-up & Acceleration Approach', time: 1.0, badge: 'APPROACH', color: 'bg-sky-500/10 text-sky-400 border-sky-500/20' },
+                      { label: 'Run-up & Acceleration Approach', time: 1.0, badge: 'APPROACH', color: 'bg-[#55BDEB]/10 text-[#55BDEB] border-[#55BDEB]/30' },
                       { label: 'Foot Plant & Loading Coil', time: 2.0, badge: 'COIL', color: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' },
                       { label: 'Kinematic Release Apex Point', time: 2.8, badge: 'RELEASE', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
                       { label: 'Deceleration Follow-Through', time: 3.5, badge: 'FINISH', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
@@ -358,10 +358,10 @@ export function MatchDashboardClient() {
                       <button
                         key={idx}
                         onClick={() => handleSeek(phase.time)}
-                        className="w-full flex items-center justify-between p-2 rounded-lg bg-[#141D30] border border-slate-800 hover:border-sky-500/50 hover:bg-[#18233C] transition group text-left"
+                        className="w-full flex items-center justify-between p-2 rounded-lg bg-[#151C35] border border-[#28334D] hover:border-sky-500/50 hover:bg-[#18233C] transition group text-left"
                       >
                         <div className="flex items-center gap-2">
-                          <div className="p-1 rounded bg-slate-800 group-hover:bg-sky-600 transition text-slate-400 group-hover:text-white">
+                          <div className="p-1 rounded bg-slate-800 group-hover:bg-[#6675E8] transition text-slate-400 group-hover:text-white">
                             <Play className="w-2.5 h-2.5 fill-current" />
                           </div>
                           <div>
@@ -402,7 +402,7 @@ export function MatchDashboardClient() {
         </div>
 
         {/* Bottom Session Completion & Action Bar */}
-        <div className="p-4 sm:p-5 rounded-xl bg-[#0E1424] border border-slate-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 rounded-xl bg-[#151C35] border border-[#28334D] shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 text-center sm:text-left">
             <div className="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 mx-auto sm:mx-0">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -418,7 +418,7 @@ export function MatchDashboardClient() {
           <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
             <Link
               href="/dashboard"
-              className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition active:scale-95 w-full sm:w-auto"
+              className="px-4 py-2 rounded-lg bg-[#6675E8] hover:bg-[#5463D6] text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition active:scale-95 w-full sm:w-auto"
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
               <span>Return to Dashboard</span>
@@ -426,9 +426,9 @@ export function MatchDashboardClient() {
 
             <Link
               href="/upload"
-              className="px-3.5 py-2 rounded-lg bg-[#141D30] hover:bg-slate-800 text-slate-300 border border-slate-800 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition w-full sm:w-auto"
+              className="px-3.5 py-2 rounded-lg bg-[#151C35] hover:bg-slate-800 text-slate-300 border border-[#28334D] hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition w-full sm:w-auto"
             >
-              <Upload className="w-3.5 h-3.5 text-sky-400" />
+              <Upload className="w-3.5 h-3.5 text-[#55BDEB]" />
               <span>Upload New Video</span>
             </Link>
           </div>

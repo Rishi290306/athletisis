@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Bot, Send, User, AlertTriangle, Video, Sparkles, MessageSquare, Dumbbell, Zap } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Bot, Send, User, Sparkles, MessageSquare, Dumbbell, Zap, ArrowRight, Loader2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { AuthGuard } from '@/components/AuthGuard';
 import { useAuthStore, useMatchStore } from '@/lib/store';
@@ -17,22 +17,27 @@ interface ChatMessage {
 export default function AICoachPage() {
   const { user } = useAuthStore();
   const { activeSport } = useSportStore();
-  const config = SPORT_CONFIGS[activeSport];
+  const config = SPORT_CONFIGS[activeSport] || SPORT_CONFIGS['Cricket'];
   const userName = user?.fullName || 'Athlete';
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMessages([
       {
         id: 1,
         sender: 'coach',
-        text: `Hello ${userName}! 👋 I am your Athletisis AI Performance Coach for ${config.name} ${config.icon}.\n\nI am your 24/7 tactical chatbot. You can ask me ANYTHING—from analyzing your match video, to training drills, jump height improvement, passing under pressure, match strategies, or fitness routines! What would you like to discuss today?`,
+        text: `Hello ${userName}! 👋 I am your Athletesis AI Performance Coach for ${config.name} ${config.icon}.\n\nI analyze your 17-point pose kinematics, spatial pitch maps, and match video telemetry. Ask me anything about improving jump height, good-length delivery consistency, passing accuracy under pressure, tactical game preparation, or conditioning routines!`,
       },
     ]);
   }, [activeSport, userName, config]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const generateCoachReply = (
     userText: string,
@@ -43,7 +48,6 @@ export default function AICoachPage() {
   ): { reply: string; clips?: any[] } => {
     const q = userText.toLowerCase();
 
-    // Check if user specifically asks about their uploaded video / match analysis
     if (
       q.includes('analyze my game') ||
       q.includes('analyze my match') ||
@@ -55,11 +59,11 @@ export default function AICoachPage() {
     ) {
       if (!hasMatches) {
         return {
-          reply: `Hey ${athleteName}, I don't see any uploaded ${sportName} match video in your account yet! 📹\n\nTo generate computer-vision tracking, spatial heatmaps, and video mistake clips, go to the Upload Match page (/upload) and submit your match footage. Once uploaded, I'll process every play for you! In the meantime, feel free to ask me any tactical, technical, or fitness questions!`,
+          reply: `Hey ${athleteName}, I don't see any uploaded ${sportName} match video in your account yet! 📹\n\nTo generate 17-point pose telemetry, spatial heatmaps, and video mistake clips, go to the Upload Match page (/upload) and submit your footage. Once uploaded, I'll calculate every kinematic metric for you! In the meantime, feel free to ask me any tactical, technical, or fitness questions!`,
         };
       } else {
         return {
-          reply: `Looking at your latest uploaded ${sportName} match "${latestMatchName || 'Match 1'}", your overall performance score is evaluated at 84.0/100. Your technical execution is strong, but tactical positioning during fast transitions shows room for a 15-20% boost!`,
+          reply: `Looking at your latest uploaded ${sportName} match "${latestMatchName || 'Match 1'}", your overall performance score is evaluated at 84.0/100. Your mechanical consistency is rated high, while transition positioning shows potential for a +15-20% boost with targeted drills!`,
           clips: [
             { id: 1, title: `${sportName} Decision Analysis`, timestamp: '00:10:20', guidance: 'Maintain optimal spatial positioning under pressure.' },
           ],
@@ -67,57 +71,32 @@ export default function AICoachPage() {
       }
     }
 
-    // Jump height & vertical explosive power
     if (q.includes('jump') || q.includes('height') || q.includes('vertical')) {
       return {
-        reply: `To increase your vertical jump for ${sportName}, focus on these 3 proven areas:\n\n1. ⚡ **Explosive Plyometrics**: Perform depth jumps, box jumps, and bounding 3x/week to maximize muscle stretch-shortening cycle (SSC) speed.\n2. 🏋️ **Posterior Chain Strength**: Heavy trap-bar deadlifts and barbell hip thrusts build the raw force needed for takeoff power.\n3. 🏃 **Approach Velocity**: Ensure your penultimate step before takeoff is long and fast to convert horizontal speed into upward lift!\n\nWould you like a structured 4-week jump training program?`,
+        reply: `To increase your vertical jump for ${sportName}, focus on these 3 proven areas:\n\n1. ⚡ **Explosive Plyometrics**: Perform depth jumps, box jumps, and bounding 3x/week to maximize stretch-shortening cycle (SSC) velocity.\n2. 🏋️ **Posterior Chain Force**: Heavy trap-bar deadlifts and barbell hip thrusts build the raw takeoff force.\n3. 🏃 **Penultimate Step Speed**: Ensure your penultimate approach step is long and rapid to convert horizontal sprint momentum into upward vertical lift!`,
       };
     }
 
-    // Passing, technique & accuracy
     if (q.includes('pass') || q.includes('passing') || q.includes('accuracy') || q.includes('distribution')) {
       return {
-        reply: `For ${sportName} passing precision & distribution under pressure:\n\n• **Pre-Orientation Scanning**: Scan the field 2-3 times before receiving the ball so your decision is made before first touch.\n• **Weight of Pass**: Adjust your ankle/wrist firmness to match your teammate's momentum.\n• **Body Angle**: Position your body at a 45° angle to keep both sides of the field in view.\n\nPractice 15 minutes of wall-rebound drills daily to sharpen first-touch reflexes!`,
+        reply: `For ${sportName} passing precision & distribution under pressure:\n\n• **Pre-Orientation Scanning**: Scan the field 2–3 times before receiving the ball so your distribution decision is locked before first touch.\n• **Weight of Release**: Calibrate joint firmness to match your receiver's acceleration vector.\n• **Body Angle Openness**: Position your torso at 45° to maintain visibility over both flanks.\n\nPractice 15 minutes of wall-rebound drills daily to sharpen first-touch reflexes!`,
       };
     }
 
-    // Cricket specific (bowling, batting, strike rate)
     if (q.includes('bowling') || q.includes('batting') || q.includes('pitch') || q.includes('strike rate') || q.includes('spin')) {
       return {
-        reply: `Here are key tactical strategies for Cricket 🏏:\n\n• **Good Length Consistency**: Target the top of off-stump (6-8 meter pitch landing zone) to keep batsmen indecisive.\n• **Middle-Overs Spin Tactics**: Rotate strike with soft hands into vacant mid-wicket and cover gaps to avoid dot-ball pressure.\n• **Powerplay Boundary Control**: Bowl tight stump-to-stump lines early on and vary pace in death overs!`,
+        reply: `Here are key tactical strategies for Cricket 🏏:\n\n• **Good Length Channel**: Target the top of off-stump (6–8 meter pitch landing zone) to keep batsmen on the back foot.\n• **Middle-Overs Rotation**: Rotate strike with soft hands into vacant mid-wicket and backward point gaps to eliminate dot-ball pressure.\n• **Seam Upright Release**: Maintain wrist extension behind the seam until the apex release point!`,
       };
     }
 
-    // Volleyball specific (spiking, serving, digging, blocking)
-    if (q.includes('spike') || q.includes('spiking') || q.includes('serve') || q.includes('dig') || q.includes('block')) {
-      return {
-        reply: `Here is key technical advice for Volleyball 🏐:\n\n• **Spike Timing**: Approach early, jump at peak height, and snap your wrist sharply over the top of the ball to beat double blocks.\n• **Block Reading**: Watch the setter's elbows and shoulder angle to anticipate quick middle sets versus outside high sets.\n• **Dig Defense**: Stay low on your toes with elbows unlocked to absorb heavy spike velocity into your platform!`,
-      };
-    }
-
-    // Workout, drills & conditioning
-    if (q.includes('workout') || q.includes('drill') || q.includes('fitness') || q.includes('gym') || q.includes('training')) {
-      return {
-        reply: `Here is a complete weekly conditioning routine tailored for ${sportName} 🎯:\n\n🏋️ **Strength & Power (Mon / Thu)**:\n- Trap-Bar Deadlifts (4 sets x 5 reps)\n- Dumbbell Bulgarian Split Squats (3 sets x 8 reps/leg)\n- Rotational Medicine Ball Slams (3 sets x 10 reps)\n\n⚡ **Agility & Reaction (Tue / Fri)**:\n- 5-10-5 Pro Agility Shuttles (5 rounds)\n- Reactive Cone Sprint Drills (10 mins)\n- Core Anti-Rotation Pallof Press (3 sets x 12 reps)\n\nCombine this with 8+ hours of sleep and adequate hydration for optimal recovery!`,
-      };
-    }
-
-    // Greetings
-    if (q.includes('hello') || q.includes('hi') || q.includes('hey') || q.includes('sup') || q.includes('greetings')) {
-      return {
-        reply: `Hey ${athleteName}! 👋 Ready to discuss your ${sportName} performance? Ask me anything about tactical game plans, training routines, technique improvements, or match analytics!`,
-      };
-    }
-
-    // General fallback answer for any player inquiry
     return {
-      reply: `As your ${sportName} AI Performance Coach, here is my advice for ${athleteName}:\n\nTo excel in ${sportName}, focus on 3 core pillars:\n1. **Technical Precision**: Master baseline mechanical repeatability in every drill.\n2. **Decision Velocity**: Scan your environment constantly to make faster tactical choices.\n3. **Recovery & Peak Fitness**: Prioritize post-game active recovery, mobility, and hydration.\n\nWhat specific topic, drill, or scenario would you like to explore next?`,
+      reply: `As your ${sportName} AI Performance Coach, here is my guidance for ${athleteName}:\n\n1. **Mechanical Repeatability**: Focus on zero variance during initial setup and release.\n2. **Decision Velocity**: Scan opponents continuously to reduce tactical reaction delay.\n3. **Recovery & Joint Health**: Incorporate active mobility post-session to keep knee and shoulder strain low.\n\nWhat specific technique or match scenario would you like to drill next?`,
     };
   };
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
 
     const userText = input.trim();
     setInput('');
@@ -144,7 +123,7 @@ export default function AICoachPage() {
         }
       }
     } catch (err) {
-      // Fallback to local chatbot engine
+      // Fallback to local response engine
     }
 
     setTimeout(() => {
@@ -159,129 +138,133 @@ export default function AICoachPage() {
         },
       ]);
       setLoading(false);
-    }, 400);
-  };
-
-  const handleQuickPrompt = (promptText: string) => {
-    setInput(promptText);
+    }, 350);
   };
 
   const samplePrompts = [
     { label: `⚡ Improve ${config.name} Vertical Jump`, prompt: `How can I improve my jump height for ${config.name}?` },
     { label: `🎯 Passing & Distribution Tips`, prompt: `How do I improve my passing accuracy and decision making under pressure?` },
-    { label: `🏋️ Weekly Training & Workout Plan`, prompt: `Give me a complete workout and conditioning plan for ${config.name}.` },
-    { label: `📹 How do I analyze my match video?`, prompt: `How can I analyze my match video and see my mistake clips?` },
+    { label: `🏋️ Weekly Conditioning Plan`, prompt: `Give me a complete workout and conditioning plan for ${config.name}.` },
+    { label: `📹 Analyze My Match Footage`, prompt: `How can I analyze my match video and inspect mistake clips?` },
   ];
 
   return (
     <AuthGuard>
-      <div className="max-w-4xl mx-auto py-6 space-y-6">
+      <div className="max-w-4xl mx-auto space-y-4">
+        
         {/* Header */}
-        <div className="flex items-center justify-between pro-card p-6">
+        <div className="rounded-xl p-5 bg-[#151C35] border border-[#28334D] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center font-bold">
+            <div className="w-9 h-9 rounded-lg bg-[#0B1020] border border-[#28334D] text-[#55BDEB] flex items-center justify-center font-bold">
               <Bot className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-[11px] font-semibold uppercase text-brand-400 tracking-wider">{config.name} AI Intelligence</span>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#0B1020] text-[#55BDEB] border border-[#28334D]">
+                  {config.name} AI Intelligence
+                </span>
+                <span className="text-xs text-[#9AA6BD]">• 24/7 Kinematic Assistant</span>
               </div>
-              <h1 className="text-xl font-bold text-white tracking-tight">AI Performance Coach</h1>
-              <p className="text-xs text-slate-400">Ask questions about tactical strategy, drills, technique, fitness, or match video analytics</p>
+              <h1 className="text-lg font-bold text-[#F3F5FA] tracking-tight">AI Tactical & Kinematics Coach</h1>
             </div>
           </div>
         </div>
 
         {/* Quick Conversation Suggestion Chips */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1">
           {samplePrompts.map((item, idx) => (
             <button
               key={idx}
-              onClick={() => handleQuickPrompt(item.prompt)}
-              className="px-3 py-1.5 rounded-lg bg-[#0E1424] hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 hover:text-white whitespace-nowrap transition flex items-center gap-1.5 shrink-0"
+              onClick={() => setInput(item.prompt)}
+              className="px-3 py-1.5 rounded-lg bg-[#151C35] hover:bg-[#1A2342] border border-[#28334D] hover:border-[#3D4D73] text-xs font-medium text-[#F3F5FA] whitespace-nowrap transition cursor-pointer"
             >
-              <Sparkles className="w-3 h-3 text-brand-400" />
               {item.label}
             </button>
           ))}
         </div>
 
-        {/* Chat Messages Container */}
-        <div className="pro-card p-6 space-y-4 min-h-[440px] flex flex-col justify-between">
-          <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
-            {messages.map((m) => (
-              <div key={m.id} className={`flex gap-3 ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                {m.sender === 'coach' && (
-                  <div className="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center shrink-0">
-                    <Bot className="w-4 h-4" />
-                  </div>
-                )}
-
+        {/* Chat Conversation Canvas */}
+        <div className="rounded-xl bg-[#151C35] border border-[#28334D] flex flex-col h-[520px] overflow-hidden">
+          
+          {/* Messages Scroll Area */}
+          <div className="flex-1 p-5 overflow-y-auto space-y-4">
+            {messages.map((m) => {
+              const isUser = m.sender === 'user';
+              return (
                 <div
-                  className={`max-w-xl p-4 rounded-xl text-xs space-y-2 leading-relaxed whitespace-pre-line ${
-                    m.sender === 'user'
-                      ? 'bg-brand-600 text-white font-normal rounded-tr-none'
-                      : 'bg-[#090D16] border border-slate-800 text-slate-300 rounded-tl-none'
-                  }`}
+                  key={m.id}
+                  className={`flex items-start gap-3 ${isUser ? 'flex-row-reverse' : ''}`}
                 >
-                  <p>{m.text}</p>
-
-                  {m.clips && m.clips.length > 0 && (
-                    <div className="pt-2 border-t border-slate-800 space-y-2 mt-2">
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-brand-400 flex items-center gap-1">
-                        <Video className="w-3 h-3" /> Relevant Analyzed Clips ({m.clips.length})
-                      </span>
-                      {m.clips.map((clip, i) => (
-                        <div key={i} className="p-2.5 rounded-lg bg-[#0E1424] border border-slate-800 text-[11px] space-y-1">
-                          <div className="font-semibold text-white flex justify-between">
-                            <span>{clip.title}</span>
-                            <span className="font-mono text-brand-400">{clip.timestamp}</span>
-                          </div>
-                          {clip.guidance && <p className="text-slate-400 text-[10px]">{clip.guidance}</p>}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {m.sender === 'user' && (
-                  <div className="w-8 h-8 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center shrink-0">
-                    <User className="w-4 h-4" />
+                  <div
+                    className={`w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold shrink-0 ${
+                      isUser
+                        ? 'bg-[#6675E8] text-white'
+                        : 'bg-[#0B1020] border border-[#28334D] text-[#55BDEB]'
+                    }`}
+                  >
+                    {isUser ? 'YOU' : <Bot className="w-3.5 h-3.5" />}
                   </div>
-                )}
-              </div>
-            ))}
+
+                  <div
+                    className={`max-w-[80%] rounded-xl px-4 py-3 text-xs leading-relaxed ${
+                      isUser
+                        ? 'bg-[#6675E8] text-white font-medium'
+                        : 'bg-[#0B1020] border border-[#28334D] text-[#F3F5FA] whitespace-pre-wrap'
+                    }`}
+                  >
+                    {m.text}
+
+                    {m.clips && m.clips.length > 0 && (
+                      <div className="mt-3 pt-2.5 border-t border-[#28334D] space-y-2">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-[#55BDEB] font-semibold block">
+                          Referenced Video Clips
+                        </span>
+                        {m.clips.map((c: any) => (
+                          <div key={c.id} className="p-2 rounded bg-[#151C35] border border-[#28334D] text-[11px] space-y-0.5">
+                            <span className="font-semibold text-[#F3F5FA]">{c.title} ({c.timestamp})</span>
+                            <p className="text-[#9AA6BD]">{c.guidance}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
 
             {loading && (
-              <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center shrink-0">
-                  <Bot className="w-4 h-4 animate-pulse" />
-                </div>
-                <div className="p-3 rounded-xl bg-[#090D16] border border-slate-800 text-xs text-slate-400">
-                  AI Performance Coach is thinking...
-                </div>
+              <div className="flex items-center gap-2 text-xs text-[#9AA6BD] p-2">
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#6675E8]" />
+                <span>Coach is analyzing telemetry & formulating response...</span>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Form */}
-          <form onSubmit={handleSend} className="flex gap-2 pt-4 border-t border-slate-800">
+          {/* Input Bar */}
+          <form
+            onSubmit={handleSend}
+            className="p-3 border-t border-[#28334D] bg-[#0B1020] flex items-center gap-2"
+          >
             <input
               type="text"
-              placeholder={`Ask AI Coach: 'How do I improve my ${config.name} jump/passing?' or 'How do I analyze my game?'`}
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="flex-1 px-4 py-2.5 rounded-lg bg-[#090D16] border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 transition"
+              placeholder={`Ask Coach about ${config.name} kinematics, drills, or match telemetry...`}
+              className="flex-1 bg-[#151C35] border border-[#28334D] text-xs text-[#F3F5FA] placeholder-[#9AA6BD] rounded-lg px-3.5 py-2.5 focus:outline-none focus:border-[#6675E8] transition"
             />
             <button
               type="submit"
-              disabled={loading}
-              className="px-5 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 font-semibold text-white text-xs flex items-center gap-1.5 transition disabled:opacity-50"
+              disabled={!input.trim() || loading}
+              className="px-4 py-2.5 rounded-lg bg-[#6675E8] hover:bg-[#5463D6] disabled:opacity-40 text-white font-semibold text-xs flex items-center gap-1.5 transition cursor-pointer"
             >
-              Send <Send className="w-3.5 h-3.5" />
+              <span>Send</span>
+              <Send className="w-3.5 h-3.5" />
             </button>
           </form>
+
         </div>
+
       </div>
     </AuthGuard>
   );
