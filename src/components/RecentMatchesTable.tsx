@@ -6,8 +6,12 @@ import {
   Video,
   Upload,
   ArrowRight,
+  Trash2,
+  AlertTriangle,
+  X,
 } from 'lucide-react';
 import { Match } from '@/types';
+import { useMatchStore } from '@/lib/store';
 
 interface RecentMatchesTableProps {
   matches: Match[];
@@ -22,6 +26,8 @@ export function RecentMatchesTable({
   selectedSportFilter = 'ALL',
 }: RecentMatchesTableProps) {
   const [filter, setFilter] = useState<string>(selectedSportFilter);
+  const [matchToDelete, setMatchToDelete] = useState<Match | null>(null);
+  const { deleteMatch } = useMatchStore();
 
   const filterTabs = ['ALL', 'Football', 'Cricket', 'Volleyball'];
 
@@ -35,6 +41,13 @@ export function RecentMatchesTable({
       m.sport.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
+
+  const handleDeleteConfirmed = () => {
+    if (matchToDelete) {
+      deleteMatch(matchToDelete.id);
+      setMatchToDelete(null);
+    }
+  };
 
   return (
     <div className="rounded-xl p-5 bg-[#151C35] border border-[#28334D] space-y-4">
@@ -90,7 +103,7 @@ export function RecentMatchesTable({
               <th className="py-2.5 px-3">Key Athlete</th>
               <th className="py-2.5 px-3">Performance</th>
               <th className="py-2.5 px-3">AI Status</th>
-              <th className="py-2.5 px-3 text-right">Action</th>
+              <th className="py-2.5 px-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#28334D]/60">
@@ -101,7 +114,7 @@ export function RecentMatchesTable({
                 </td>
               </tr>
             ) : (
-              filteredMatches.slice(0, 5).map((m) => {
+              filteredMatches.slice(0, 8).map((m) => {
                 const isCricket = m.sport === 'Cricket';
                 const isVolleyball = m.sport === 'Volleyball';
                 return (
@@ -158,13 +171,25 @@ export function RecentMatchesTable({
                     </td>
 
                     <td className="py-3 px-3 text-right">
-                      <Link
-                        href={`/matches/analysis?id=${m.id}`}
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#6675E8] hover:text-[#55BDEB] transition group-hover:translate-x-0.5 duration-150"
-                      >
-                        <span>Open Workstation</span>
-                        <ArrowRight className="w-3 h-3" />
-                      </Link>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setMatchToDelete(m)}
+                          className="p-1 rounded text-[#9AA6BD] hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
+                          title={`Delete ${m.matchName}`}
+                          aria-label={`Delete ${m.matchName}`}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+
+                        <Link
+                          href={`/matches/analysis?id=${m.id}`}
+                          className="inline-flex items-center gap-1 text-xs font-semibold text-[#6675E8] hover:text-[#55BDEB] transition group-hover:translate-x-0.5 duration-150"
+                        >
+                          <span>Open</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -177,7 +202,7 @@ export function RecentMatchesTable({
       {/* Footer link to view full library */}
       <div className="pt-2 border-t border-[#28334D] flex items-center justify-between text-xs">
         <span className="text-[#9AA6BD]">
-          Showing {Math.min(filteredMatches.length, 5)} of {matches.length} matches in database
+          Showing {Math.min(filteredMatches.length, 8)} of {matches.length} matches in database
         </span>
         <Link
           href="/matches"
@@ -187,6 +212,57 @@ export function RecentMatchesTable({
           <ArrowRight className="w-3 h-3" />
         </Link>
       </div>
+
+      {/* Delete Confirmation Modal Dialog */}
+      {matchToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-md rounded-xl bg-[#151C35] border border-[#28334D] p-6 shadow-2xl relative space-y-4">
+            <button
+              onClick={() => setMatchToDelete(null)}
+              className="absolute top-4 right-4 p-1.5 rounded-md text-[#9AA6BD] hover:text-[#F3F5FA] hover:bg-[#1A2342] transition cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-[#F3F5FA]">Delete Match Recording?</h3>
+                <p className="text-xs text-[#9AA6BD]">This action cannot be undone.</p>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-lg bg-[#0B1020] border border-[#28334D] text-xs space-y-1">
+              <div className="font-semibold text-[#F3F5FA] truncate">
+                {matchToDelete.matchName}
+              </div>
+              <div className="text-[#9AA6BD]">
+                {matchToDelete.sport} • {matchToDelete.matchDate} • {matchToDelete.venue}
+              </div>
+            </div>
+
+            <div className="pt-2 flex items-center justify-end gap-2.5 border-t border-[#28334D]">
+              <button
+                type="button"
+                onClick={() => setMatchToDelete(null)}
+                className="px-4 py-2 rounded-lg bg-[#151C35] hover:bg-[#1A2342] border border-[#28334D] text-xs font-semibold text-[#F3F5FA] transition cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteConfirmed}
+                className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-xs font-semibold text-white flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Delete Match</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

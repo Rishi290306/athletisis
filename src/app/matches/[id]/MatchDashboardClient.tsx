@@ -23,7 +23,7 @@ import {
   LayoutDashboard,
   ArrowLeft,
   Upload,
-  Video as VideoIcon,
+  Video as VideoIcon, Trash2, AlertTriangle, X,
 } from 'lucide-react';
 import { Match, PerformanceScore, VideoClip, StandardizedEvent, Recommendation } from '@/types';
 import { AuthGuard } from '@/components/AuthGuard';
@@ -56,7 +56,7 @@ export function MatchDashboardClient() {
   const matchId: number = isNaN(Number(rawId)) ? 101 : Number(rawId);
   
   const { user } = useAuthStore();
-  const { matches } = useMatchStore();
+  const { matches, deleteMatch } = useMatchStore(); const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { setSport } = useSportStore();
 
   const [match, setMatch] = useState<Match | null>(null);
@@ -438,3 +438,5 @@ export function MatchDashboardClient() {
     </AuthGuard>
   );
 }
+
+

@@ -31,7 +31,7 @@ export default function DashboardPage() {
     const matchingSportMatch = resolvedMatches.find(
       (m) => m.sport?.toLowerCase() === activeSport.toLowerCase()
     );
-    setRecentMatch(matchingSportMatch || resolvedMatches[0]);
+    setRecentMatch(matchingSportMatch || resolvedMatches[0] || DEFAULT_DEMO_MATCHES[0]);
   }, [user, matches, activeSport, getMatchesForUser]);
 
   // Compute aggregated stats

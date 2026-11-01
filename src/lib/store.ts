@@ -207,10 +207,13 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 }));
 
+import { deleteVideoBlob } from './videoStore';
+
 // DYNAMIC MATCHES STORE
 interface MatchState {
   matches: Match[];
   addMatch: (match: Omit<Match, 'id'>) => Match;
+  deleteMatch: (id: number) => void;
   getMatchesForUser: (userEmail: string) => Match[];
 }
 
@@ -270,8 +273,12 @@ const getStoredMatches = (email?: string): Match[] => {
   const activeEmail = email || localStorage.getItem('athletisis_user_email') || 'rishi.tiwari@athletisis.ai';
   try {
     const raw = localStorage.getItem(`athletisis_matches_${activeEmail.toLowerCase().trim()}`);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return parsed.length > 0 ? parsed : DEFAULT_DEMO_MATCHES;
+    if (raw !== null) {
+      return JSON.parse(raw);
+    }
+    // First time initialization
+    localStorage.setItem(`athletisis_matches_${activeEmail.toLowerCase().trim()}`, JSON.stringify(DEFAULT_DEMO_MATCHES));
+    return DEFAULT_DEMO_MATCHES;
   } catch (e) {
     return DEFAULT_DEMO_MATCHES;
   }
@@ -298,6 +305,21 @@ export const useMatchStore = create<MatchState>((set) => ({
     saveStoredMatches(activeEmail, updated);
     set({ matches: updated });
     return newMatch;
+  },
+
+  deleteMatch: (id: number) => {
+    const activeEmail = localStorage.getItem('athletisis_user_email') || 'rishi.tiwari@athletisis.ai';
+    const existing = getStoredMatches(activeEmail);
+    const updated = existing.filter((m) => m.id !== id);
+    saveStoredMatches(activeEmail, updated);
+    if (typeof window !== 'undefined') {
+      try {
+        deleteVideoBlob(id);
+      } catch (e) {
+        console.warn('Failed to delete video blob for match', id);
+      }
+    }
+    set({ matches: updated });
   },
 
   getMatchesForUser: (userEmail) => {

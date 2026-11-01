@@ -75,6 +75,22 @@ export async function getLatestVideoObjectUrl(): Promise<string | null> {
   return null;
 }
 
+export async function deleteVideoBlob(matchId: number | string): Promise<void> {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, 'readwrite');
+      const store = transaction.objectStore(STORE_NAME);
+      store.delete(matchId);
+
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error);
+    });
+  } catch (err) {
+    console.error('Failed to delete video from IndexedDB:', err);
+  }
+}
+
 export async function clearAllVideoData(): Promise<void> {
   try {
     const db = await openDB();
