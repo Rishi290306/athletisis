@@ -9,39 +9,37 @@
   }
 
   body {
-    @apply bg-[#070B1E] text-slate-200 font-sans antialiased selection:bg-blue-500 selection:text-white;
-    background-color: #070B1E;
-    background-image: radial-gradient(1200px circle at 50% 0%, rgba(30, 42, 92, 0.28) 0%, rgba(7, 11, 30, 1) 100%);
-    background-attachment: fixed;
+    background-color: #0B1020;
+    color: #F3F5FA;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     letter-spacing: -0.011em;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-/* Professional Sports Analytics Card Styles */
+/* Linear / Stripe / Vercel Pro Card Design System */
 .pro-card,
 .glass-panel {
-  background: linear-gradient(145deg, rgba(14, 22, 53, 0.85) 0%, rgba(10, 15, 38, 0.95) 100%);
-  border: 1px solid rgba(99, 102, 241, 0.16);
-  border-radius: 1rem;
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(12px);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #151C35;
+  border: 1px solid #28334D;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .pro-card:hover,
 .glass-panel:hover {
-  border-color: rgba(99, 102, 241, 0.32);
-  box-shadow: 0 14px 35px -5px rgba(0, 0, 0, 0.55), 0 0 20px -3px rgba(59, 130, 246, 0.15);
+  border-color: #3D4D73;
 }
 
 .pro-card-active {
-  background-color: #0E1638;
-  border: 1px solid #3B82F6;
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+  background-color: #1A2342;
+  border: 1px solid #6675E8;
+  box-shadow: 0 0 0 1px rgba(102, 117, 232, 0.3);
 }
 
 .pro-pill {
-  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors;
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border transition-colors;
 }
 
 /* Tabular Telemetry Numbers */
@@ -49,26 +47,26 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Sports Workstation Scrollbar */
+/* Custom Sleek Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #070B1E;
+  background: #0B1020;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1E2958;
-  border-radius: 4px;
+  background: #28334D;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #314282;
+  background: #3D4D73;
 }
 
-/* Print Styles for Executive Match Report */
+/* Print Styles */
 @media print {
   body {
     background: white !important;

@@ -12,26 +12,48 @@ module.exports = {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       colors: {
+        // Athletesis SaaS Design System (Linear / Stripe / Vercel standard)
+        navy: {
+          main: '#0B1020',
+          dark: '#070A14',
+          light: '#11182E',
+        },
+        surface: {
+          DEFAULT: '#151C35',
+          elevated: '#1A2342',
+          subtle: '#0F162B',
+        },
+        accent: {
+          indigo: '#6675E8',
+          indigoHover: '#5463D6',
+          gold: '#E8B75A',
+          goldHover: '#DBA644',
+          cyan: '#55BDEB',
+        },
+        text: {
+          primary: '#F3F5FA',
+          secondary: '#9AA6BD',
+          muted: '#6B7A99',
+        },
+        border: {
+          subtle: '#28334D',
+          hover: '#3D4D73',
+          focus: '#6675E8',
+        },
+        // Backwards compatibility mappings for existing utility usages:
         brand: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9', // Clean Pro Azure
-          600: '#0284c7', // Primary Accent
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+          400: '#55BDEB',
+          500: '#6675E8',
+          600: '#5463D6',
         },
         dark: {
-          700: '#1E293B', // Subtle slate border
-          800: '#172238', // Elevated surface / hover
-          900: '#0E1424', // Card & Panel Surface
-          950: '#090D16', // Deep Neutral Canvas
+          700: '#28334D',
+          800: '#1A2342',
+          900: '#151C35',
+          950: '#0B1020',
         }
       },
     },
   },
   plugins: [],
-}
+};

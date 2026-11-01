@@ -12,10 +12,10 @@ import {
   LogOut,
   ChevronDown,
   User,
-  Shield,
+  Settings,
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store';
-import { useSportStore, SportType } from '@/lib/sportStore';
+import { useSportStore } from '@/lib/sportStore';
 
 interface DashboardHeaderProps {
   onOpenMobileMenu?: () => void;
@@ -33,15 +33,9 @@ export function DashboardHeader({
   subtitle,
 }: DashboardHeaderProps) {
   const { user, logout } = useAuthStore();
-  const { activeSport, setSport } = useSportStore();
+  const { activeSport } = useSportStore();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-
-  const sports: { type: SportType; label: string; icon: string }[] = [
-    { type: 'Football', label: 'Football', icon: '⚽' },
-    { type: 'Cricket', label: 'Cricket', icon: '🏏' },
-    { type: 'Volleyball', label: 'Volleyball', icon: '🏐' },
-  ];
 
   const notifications = [
     {
@@ -50,7 +44,7 @@ export function DashboardHeader({
       desc: '17 keypoint anatomical tracking calibrated for Match #101',
       time: '12m ago',
       icon: Activity,
-      color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+      color: 'text-[#55BDEB] bg-[#55BDEB]/10 border-[#55BDEB]/30',
     },
     {
       id: 2,
@@ -58,7 +52,7 @@ export function DashboardHeader({
       desc: 'Burst speed 29.4 km/h recorded in 2nd half transition',
       time: '1h ago',
       icon: Zap,
-      color: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+      color: 'text-[#E8B75A] bg-[#E8B75A]/10 border-[#E8B75A]/30',
     },
     {
       id: 3,
@@ -75,112 +69,94 @@ export function DashboardHeader({
     `Welcome back, ${user?.fullName || 'Athlete'}. Real-time biomechanics & tactical performance overview.`;
 
   return (
-    <header className="sticky top-0 z-30 bg-[#070B1E]/80 backdrop-blur-md border-b border-indigo-950/60 px-4 sm:px-6 lg:px-8 py-3.5 transition-all">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3.5">
+    <header className="sticky top-0 z-30 bg-[#0B1020]/90 backdrop-blur-md border-b border-[#28334D] px-4 sm:px-6 lg:px-8 h-14 flex items-center transition-all">
+      <div className="flex items-center justify-between gap-4 w-full">
         
-        {/* Left: Mobile Toggle + Title & Subtitle */}
-        <div className="flex items-center gap-3">
+        {/* Left: Mobile Drawer Toggle + Page Title & Subtitle */}
+        <div className="flex items-center gap-3 min-w-0">
           {onOpenMobileMenu && (
             <button
               onClick={onOpenMobileMenu}
-              className="lg:hidden p-2 rounded-xl bg-[#0D1535] border border-indigo-900/40 text-slate-300 hover:text-white transition"
+              className="lg:hidden p-1.5 rounded-md bg-[#151C35] border border-[#28334D] text-[#9AA6BD] hover:text-[#F3F5FA] transition cursor-pointer"
               aria-label="Open Navigation Drawer"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-4 h-4" />
             </button>
           )}
 
-          <div className="space-y-0.5">
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white font-sans">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <h1 className="text-base sm:text-lg font-bold tracking-tight text-[#F3F5FA] truncate">
                 {title}
               </h1>
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider uppercase bg-blue-500/10 text-blue-400 border border-blue-500/25">
+              <span className="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider uppercase bg-[#151C35] text-[#55BDEB] border border-[#28334D]">
                 {activeSport}
               </span>
             </div>
-            <p className="text-xs text-slate-400 font-medium line-clamp-1">
+            <p className="text-[11px] text-[#9AA6BD] font-normal truncate hidden sm:block">
               {derivedSubtitle}
             </p>
           </div>
         </div>
 
-        {/* Right: Sport Engine Switcher + Search Bar + Notification + Profile Avatar */}
-        <div className="flex items-center gap-2.5 flex-wrap sm:flex-nowrap justify-between sm:justify-end">
+        {/* Right Context Controls: Search Bar + Notification Bell + Profile Avatar */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           
-          {/* Sport Engine Pills */}
-          <div className="flex items-center bg-[#0C132E] p-1 rounded-xl border border-indigo-950/80 text-xs shadow-inner">
-            {sports.map((s) => (
-              <button
-                key={s.type}
-                onClick={() => setSport(s.type)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
-                  activeSport === s.type
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm shadow-blue-500/30'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                <span>{s.icon}</span>
-                <span className="hidden sm:inline">{s.label}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Search Bar with Shortcut Badge */}
-          <div className="relative flex-1 sm:flex-initial">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          {/* Search Input with ⌘K Badge */}
+          <div className="relative">
+            <Search className="w-3.5 h-3.5 text-[#9AA6BD] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange?.(e.target.value)}
-              placeholder="Search matches, players, metrics..."
-              className="w-full sm:w-56 md:w-64 bg-[#0B112C] border border-indigo-900/40 text-xs text-slate-200 placeholder-slate-400 rounded-xl pl-9 pr-10 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition shadow-inner"
+              placeholder="Search matches, players, telemetry..."
+              className="w-44 sm:w-64 bg-[#151C35] border border-[#28334D] text-xs text-[#F3F5FA] placeholder-[#9AA6BD] rounded-lg pl-8 pr-9 py-1.5 focus:border-[#6675E8] focus:outline-none transition shadow-sm"
             />
-            <kbd className="hidden sm:inline-block absolute right-2.5 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#141E47] text-slate-400 border border-indigo-800/40 pointer-events-none">
+            <kbd className="hidden sm:inline-block absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded text-[9px] font-mono font-semibold bg-[#0B1020] text-[#9AA6BD] border border-[#28334D] pointer-events-none">
               ⌘K
             </kbd>
           </div>
 
-          {/* Notification Bell Button */}
+          {/* Notification Bell with Dropdown */}
           <div className="relative">
             <button
               onClick={() => {
                 setShowNotifications(!showNotifications);
                 setShowProfileMenu(false);
               }}
-              className="p-2.5 rounded-xl bg-[#0C132E] border border-indigo-900/40 text-slate-300 hover:text-white hover:border-indigo-500/50 transition relative shadow-sm"
+              className="p-1.5 rounded-lg bg-[#151C35] border border-[#28334D] text-[#9AA6BD] hover:text-[#F3F5FA] hover:border-[#3D4D73] transition relative cursor-pointer"
               aria-label="View notifications"
             >
               <Bell className="w-4 h-4" />
-              <span className="w-2 h-2 rounded-full bg-amber-400 absolute top-2 right-2 ring-2 ring-[#0C132E] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E8B75A] absolute top-1.5 right-1.5 ring-2 ring-[#151C35]" />
             </button>
 
             {/* Notification Dropdown */}
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-[#0D1535] border border-indigo-500/30 p-3.5 shadow-2xl z-50 animate-in fade-in space-y-2">
-                <div className="flex items-center justify-between pb-2 border-b border-indigo-900/40">
-                  <span className="text-xs font-bold text-white uppercase tracking-wider">
+              <div className="absolute right-0 mt-2 w-80 rounded-xl bg-[#151C35] border border-[#28334D] p-3 shadow-2xl z-50 animate-in fade-in space-y-2">
+                <div className="flex items-center justify-between pb-2 border-b border-[#28334D]">
+                  <span className="text-xs font-semibold text-[#F3F5FA] uppercase tracking-wider">
                     Notifications
                   </span>
-                  <span className="text-[10px] font-mono text-cyan-400 font-semibold">3 New</span>
+                  <span className="text-[10px] font-mono text-[#55BDEB] font-semibold">3 New</span>
                 </div>
 
-                <div className="space-y-1.5 max-h-64 overflow-y-auto">
+                <div className="space-y-1 max-h-64 overflow-y-auto">
                   {notifications.map((n) => {
                     const Icon = n.icon;
                     return (
                       <div
                         key={n.id}
-                        className="p-2.5 rounded-xl bg-[#121B42]/60 hover:bg-[#121B42] transition border border-indigo-900/30 text-xs space-y-0.5 cursor-pointer"
+                        className="p-2 rounded-lg bg-[#0B1020] hover:bg-[#1A2342] transition border border-[#28334D] text-xs space-y-0.5 cursor-pointer"
                       >
                         <div className="flex items-center gap-2">
-                          <div className={`p-1 rounded-md border ${n.color}`}>
+                          <div className={`p-1 rounded border ${n.color}`}>
                             <Icon className="w-3 h-3" />
                           </div>
-                          <span className="font-bold text-slate-200 text-xs">{n.title}</span>
-                          <span className="text-[10px] text-slate-400 font-mono ml-auto">{n.time}</span>
+                          <span className="font-semibold text-[#F3F5FA] text-xs truncate">{n.title}</span>
+                          <span className="text-[10px] text-[#9AA6BD] font-mono ml-auto shrink-0">{n.time}</span>
                         </div>
-                        <p className="text-[11px] text-slate-400 leading-tight pl-6">{n.desc}</p>
+                        <p className="text-[11px] text-[#9AA6BD] leading-tight pl-6">{n.desc}</p>
                       </div>
                     );
                   })}
@@ -196,46 +172,41 @@ export function DashboardHeader({
                 setShowProfileMenu(!showProfileMenu);
                 setShowNotifications(false);
               }}
-              className="flex items-center gap-2 p-1 pl-1.5 rounded-xl bg-[#0C132E] border border-indigo-900/40 hover:border-indigo-500/50 transition cursor-pointer"
+              className="flex items-center gap-2 p-1 rounded-lg bg-[#151C35] border border-[#28334D] hover:border-[#3D4D73] transition cursor-pointer"
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-500 p-[1px] shadow-sm">
-                <div className="w-full h-full bg-[#080E24] rounded-[7px] flex items-center justify-center text-xs font-black text-cyan-300">
-                  {user?.fullName
-                    ? user.fullName
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')
-                        .slice(0, 2)
-                        .toUpperCase()
-                    : 'RT'}
-                </div>
+              <div className="w-6 h-6 rounded bg-[#6675E8] flex items-center justify-center text-[10px] font-bold text-white">
+                {user?.fullName
+                  ? user.fullName
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')
+                      .slice(0, 2)
+                      .toUpperCase()
+                  : 'RT'}
               </div>
 
               <div className="hidden md:flex flex-col text-left pr-1">
-                <span className="text-xs font-bold text-white tracking-tight leading-none">
+                <span className="text-xs font-semibold text-[#F3F5FA] leading-tight">
                   {user?.fullName || 'Rishi Tiwari'}
                 </span>
-                <span className="text-[10px] text-slate-400 font-medium">
-                  {user?.role === 'COACH' ? 'Tactical Coach' : 'Pro Athlete'}
-                </span>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden md:block" />
+              <ChevronDown className="w-3 h-3 text-[#9AA6BD] hidden md:block" />
             </button>
 
             {/* Profile Dropdown Menu */}
             {showProfileMenu && (
-              <div className="absolute right-0 mt-2 w-52 rounded-2xl bg-[#0D1535] border border-indigo-500/30 p-2 shadow-2xl z-50 animate-in fade-in space-y-1 text-xs">
-                <div className="p-2 border-b border-indigo-900/40">
-                  <div className="font-bold text-white">{user?.fullName || 'Rishi Tiwari'}</div>
-                  <div className="text-[11px] text-slate-400 truncate">{user?.email || 'rishi.tiwari@athletisis.ai'}</div>
+              <div className="absolute right-0 mt-2 w-48 rounded-xl bg-[#151C35] border border-[#28334D] p-1.5 shadow-2xl z-50 animate-in fade-in space-y-1 text-xs">
+                <div className="p-2 border-b border-[#28334D]">
+                  <div className="font-semibold text-[#F3F5FA] truncate">{user?.fullName || 'Rishi Tiwari'}</div>
+                  <div className="text-[10px] text-[#9AA6BD] truncate">{user?.email || 'rishi.tiwari@athletisis.ai'}</div>
                 </div>
 
                 <Link
                   href="/settings"
                   onClick={() => setShowProfileMenu(false)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition"
+                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[#9AA6BD] hover:text-[#F3F5FA] hover:bg-[#1A2342] transition"
                 >
-                  <User className="w-3.5 h-3.5 text-slate-400" />
+                  <Settings className="w-3.5 h-3.5 text-[#9AA6BD]" />
                   <span>Profile Settings</span>
                 </Link>
 
@@ -244,7 +215,7 @@ export function DashboardHeader({
                     logout();
                     window.location.href = '/login';
                   }}
-                  className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition text-left cursor-pointer"
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md text-rose-400 hover:bg-rose-500/10 transition text-left cursor-pointer"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>Sign Out</span>

@@ -10,7 +10,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from 'recharts';
-import { TrendingUp, Sparkles, Activity } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 import { SportType } from '@/lib/sportStore';
 
 interface PerformanceTrendChartProps {
@@ -53,30 +53,30 @@ export function PerformanceTrendChart({ sport = 'Football' }: PerformanceTrendCh
   const activeData = trendDataMap[timeframe] || trendDataMap['1M'];
 
   return (
-    <div className="rounded-2xl p-5 sm:p-6 bg-[#0C132E]/90 border border-indigo-950/80 shadow-2xl flex flex-col justify-between space-y-4">
+    <div className="rounded-xl p-5 bg-[#151C35] border border-[#28334D] flex flex-col justify-between space-y-4">
       
       {/* Header with Timeframe Pills */}
-      <div className="flex items-center justify-between gap-2 pb-3 border-b border-indigo-950/60">
+      <div className="flex items-center justify-between gap-2 pb-3 border-b border-[#28334D]">
         <div>
-          <h3 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-purple-400" />
+          <h3 className="text-sm font-semibold text-[#F3F5FA] tracking-tight flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-[#6675E8]" />
             <span>Performance Trend</span>
           </h3>
-          <p className="text-[11px] text-slate-400 mt-0.5">
+          <p className="text-[11px] text-[#9AA6BD] mt-0.5">
             Biomechanical index & consistency curve
           </p>
         </div>
 
         {/* Timeframe Selector */}
-        <div className="flex items-center bg-[#090E26] p-1 rounded-xl border border-indigo-950 text-xs">
+        <div className="flex items-center bg-[#0B1020] p-0.5 rounded-lg border border-[#28334D] text-xs">
           {(['7D', '1M', '3M', '1Y'] as const).map((tf) => (
             <button
               key={tf}
               onClick={() => setTimeframe(tf)}
-              className={`px-2 py-0.5 rounded-lg text-[11px] font-mono font-bold transition cursor-pointer ${
+              className={`px-2 py-0.5 rounded text-[11px] font-mono transition cursor-pointer ${
                 timeframe === tf
-                  ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm shadow-purple-500/20'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-[#151C35] text-[#F3F5FA] font-semibold border border-[#28334D]'
+                  : 'text-[#9AA6BD] hover:text-[#F3F5FA]'
               }`}
             >
               {tf}
@@ -90,44 +90,39 @@ export function PerformanceTrendChart({ sport = 'Football' }: PerformanceTrendCh
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={activeData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <defs>
-              {/* Lavender / Cyan Gradient Fill */}
               <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#818CF8" stopOpacity={0.4} />
-                <stop offset="60%" stopColor="#06B6D4" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="#06B6D4" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#6675E8" stopOpacity={0.25} />
+                <stop offset="95%" stopColor="#6675E8" stopOpacity={0.0} />
               </linearGradient>
             </defs>
 
-            <CartesianGrid strokeDasharray="3 3" stroke="#162045" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#28334D" vertical={false} />
 
             <XAxis
               dataKey="label"
-              stroke="#64748B"
+              stroke="#9AA6BD"
               fontSize={11}
               tickLine={false}
-              axisLine={{ stroke: '#1E293B' }}
+              axisLine={{ stroke: '#28334D' }}
             />
+
             <YAxis
-              domain={[60, 100]}
-              stroke="#64748B"
+              stroke="#9AA6BD"
               fontSize={11}
+              domain={[60, 100]}
               tickLine={false}
-              axisLine={{ stroke: '#1E293B' }}
+              axisLine={{ stroke: '#28334D' }}
             />
 
             <Tooltip
-              content={({ active, payload, label }) => {
+              content={({ active, payload }) => {
                 if (active && payload && payload.length) {
+                  const data = payload[0].payload;
                   return (
-                    <div className="p-3 rounded-xl bg-[#090F28] border border-indigo-500/40 shadow-2xl text-xs space-y-1">
-                      <div className="font-bold text-white font-mono">{label} Telemetry</div>
-                      <div className="text-cyan-400 font-bold flex items-center gap-1.5">
-                        <Activity className="w-3 h-3" />
-                        <span>Overall Score: {payload[0].value}%</span>
-                      </div>
-                      <div className="text-[10px] text-purple-300">
-                        Technical: {(payload[0].payload as any).technical}% • Tactical: {(payload[0].payload as any).tactical}%
-                      </div>
+                    <div className="bg-[#151C35] border border-[#28334D] p-2.5 rounded-lg shadow-lg text-xs space-y-1">
+                      <div className="font-semibold text-[#F3F5FA]">{data.label}</div>
+                      <div className="text-[11px] text-[#6675E8] font-mono">Overall Score: {data.score}%</div>
+                      <div className="text-[10px] text-[#9AA6BD] font-mono">Technical: {data.technical}% • Tactical: {data.tactical}%</div>
                     </div>
                   );
                 }
@@ -138,25 +133,24 @@ export function PerformanceTrendChart({ sport = 'Football' }: PerformanceTrendCh
             <Area
               type="monotone"
               dataKey="score"
-              stroke="#818CF8"
-              strokeWidth={3}
+              stroke="#6675E8"
+              strokeWidth={2}
               fillOpacity={1}
               fill="url(#trendGradient)"
-              activeDot={{ r: 6, fill: '#06B6D4', stroke: '#FFFFFF', strokeWidth: 2 }}
             />
           </AreaChart>
         </ResponsiveContainer>
       </div>
 
-      {/* Mini Stat Badges Below Chart */}
-      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-indigo-950/60">
-        <div className="p-2.5 rounded-xl bg-[#0E1638]/70 border border-indigo-950 flex items-center justify-between">
-          <span className="text-[11px] text-slate-400 font-medium">Peak Rating</span>
-          <span className="text-xs font-black text-amber-300 font-mono">92.4%</span>
+      {/* Footer Metrics */}
+      <div className="pt-2 border-t border-[#28334D] flex items-center justify-between text-xs">
+        <div>
+          <span className="text-[10px] text-[#9AA6BD] uppercase font-mono">Current Peak</span>
+          <div className="text-sm font-bold text-[#F3F5FA] font-mono">89.5%</div>
         </div>
-        <div className="p-2.5 rounded-xl bg-[#0E1638]/70 border border-indigo-950 flex items-center justify-between">
-          <span className="text-[11px] text-slate-400 font-medium">Consistency</span>
-          <span className="text-xs font-black text-emerald-400 font-mono">88.5%</span>
+        <div className="text-right">
+          <span className="text-[10px] text-[#9AA6BD] uppercase font-mono">Trajectory</span>
+          <div className="text-xs font-semibold text-emerald-400 font-mono">+13.0% Net Growth</div>
         </div>
       </div>
 

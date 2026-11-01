@@ -20,7 +20,7 @@ export function RecentActivityPanel() {
       desc: '17-point skeletal mesh calibrated with 96.8% confidence',
       time: '12m ago',
       icon: Activity,
-      color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+      color: 'text-[#55BDEB] bg-[#55BDEB]/10 border-[#55BDEB]/30',
       link: '/matches/analysis?id=101',
     },
     {
@@ -29,7 +29,7 @@ export function RecentActivityPanel() {
       desc: 'Peak burst speed 29.4 km/h in counter-attack phase',
       time: '1h ago',
       icon: Zap,
-      color: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+      color: 'text-[#E8B75A] bg-[#E8B75A]/10 border-[#E8B75A]/30',
       link: '/performance',
     },
     {
@@ -38,16 +38,16 @@ export function RecentActivityPanel() {
       desc: 'Knee flexion & deceleration force within optimal limits',
       time: '3h ago',
       icon: ShieldAlert,
-      color: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+      color: 'text-[#6675E8] bg-[#6675E8]/10 border-[#6675E8]/30',
       link: '/matches/analysis?id=101',
     },
     {
       id: 4,
       title: 'Tactical Training Drill Assigned',
-      desc: 'Defensive Transition Positioning added to plan',
+      desc: 'Defensive Transition Positioning added to squad plan',
       time: 'Yesterday',
       icon: Dumbbell,
-      color: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
+      color: 'text-[#6675E8] bg-[#6675E8]/10 border-[#6675E8]/30',
       link: '/training',
     },
     {
@@ -62,23 +62,23 @@ export function RecentActivityPanel() {
   ];
 
   return (
-    <div className="rounded-2xl p-5 sm:p-6 bg-[#0C132E]/90 border border-indigo-950/80 shadow-2xl flex flex-col justify-between space-y-4">
+    <div className="rounded-xl p-5 bg-[#151C35] border border-[#28334D] flex flex-col justify-between space-y-4">
       
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-indigo-950/60">
+      <div className="flex items-center justify-between pb-3 border-b border-[#28334D]">
         <div>
-          <h3 className="text-base font-black text-white tracking-tight flex items-center gap-2">
-            <Clock className="w-4 h-4 text-cyan-400" />
+          <h3 className="text-sm font-bold text-[#F3F5FA] tracking-tight flex items-center gap-2">
+            <Clock className="w-4 h-4 text-[#55BDEB]" />
             <span>Recent Activity</span>
           </h3>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-[#9AA6BD] mt-0.5">
             Automated timeline of AI insights & updates
           </p>
         </div>
 
         <Link
           href="/training"
-          className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition"
+          className="text-xs font-semibold text-[#6675E8] hover:text-[#55BDEB] flex items-center gap-1 transition"
         >
           <span>View All</span>
           <ArrowRight className="w-3 h-3" />
@@ -86,28 +86,29 @@ export function RecentActivityPanel() {
       </div>
 
       {/* Activity List */}
-      <div className="space-y-3 flex-1 overflow-y-auto">
+      <div className="space-y-2 flex-1 overflow-y-auto">
         {activities.map((act) => {
           const Icon = act.icon;
           return (
             <Link
               key={act.id}
               href={act.link}
-              className="flex items-start gap-3 p-3 rounded-xl bg-[#0E1638]/60 hover:bg-[#121B42] border border-indigo-950/80 hover:border-indigo-500/30 transition group block"
+              className="flex items-start gap-2.5 p-2.5 rounded-lg bg-[#0B1020] hover:bg-[#1A2342] border border-[#28334D] hover:border-[#3D4D73] transition group block"
             >
-              <div className={`p-2 rounded-xl border shrink-0 mt-0.5 ${act.color}`}>
-                <Icon className="w-4 h-4" />
+              <div className={`p-1.5 rounded-md border shrink-0 mt-0.5 ${act.color}`}>
+                <Icon className="w-3.5 h-3.5" />
               </div>
-              <div className="flex-1 min-w-0 space-y-0.5">
-                <div className="flex items-center justify-between gap-1">
-                  <span className="font-bold text-slate-200 text-xs truncate group-hover:text-cyan-300 transition-colors">
+
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-[#F3F5FA] group-hover:text-[#55BDEB] transition-colors truncate">
                     {act.title}
                   </span>
-                  <span className="text-[10px] text-slate-400 font-mono shrink-0">
+                  <span className="text-[10px] text-[#9AA6BD] font-mono shrink-0">
                     {act.time}
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-snug line-clamp-2">
+                <p className="text-[11px] text-[#9AA6BD] leading-snug line-clamp-1 mt-0.5">
                   {act.desc}
                 </p>
               </div>
@@ -116,13 +117,15 @@ export function RecentActivityPanel() {
         })}
       </div>
 
-      {/* Live System Engine Status Footer */}
-      <div className="p-3 rounded-xl bg-[#090E26] border border-indigo-950 flex items-center justify-between text-[11px]">
-        <div className="flex items-center gap-2 text-slate-300">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="font-semibold">Kinematic Engine Status:</span>
-        </div>
-        <span className="text-emerald-400 font-mono font-bold">100% OPERATIONAL</span>
+      {/* Footer System Status */}
+      <div className="pt-2 border-t border-[#28334D] flex items-center justify-between text-[11px] text-[#9AA6BD]">
+        <span className="flex items-center gap-1.5 font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <span>Real-time Inference Active</span>
+        </span>
+        <span className="font-mono text-[10px]">
+          Latency: 14ms
+        </span>
       </div>
 
     </div>
