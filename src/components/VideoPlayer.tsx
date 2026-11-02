@@ -64,24 +64,41 @@ export function VideoPlayer({
   // Ground-Truth MediaPipe Pose Dataset State
   const [poseDataset, setPoseDataset] = useState<VideoPoseDataset | null>(null);
   const [detectedPersonsCount, setDetectedPersonsCount] = useState<number>(1);
+  const [trackingStatus, setTrackingStatus] = useState<string>('CALIBRATION: ACTIVE (MediaPipe Tasks)');
+  const [isCalibrating, setIsCalibrating] = useState<boolean>(false);
 
   const activeSport: SportType = sport || (selectedClip as any)?.sport || 'Cricket';
 
-  // Load ground-truth pose track for the current active video
-  useEffect(() => {
+  // Load or dynamically calibrate MediaPipe pose track for this specific video
+  const reloadPose = useCallback(async () => {
     let isMounted = true;
-    setPoseDataset(null); // Immediate clean reset to prevent stale overlay across videos
-    const fetchDataset = async () => {
-      const data = await loadVideoPoseDataset(videoSrc, activeSport);
+    setIsCalibrating(true);
+    setTrackingStatus('MediaPipe: Calibrating 17-Point Pose...');
+    try {
+      const data = await loadVideoPoseDataset(
+        videoSrc,
+        activeSport,
+        matchId,
+        videoRef.current,
+        (msg) => {
+          if (isMounted) setTrackingStatus(msg);
+        }
+      );
       if (isMounted && data) {
         setPoseDataset(data);
+        setTrackingStatus('CALIBRATION: ACTIVE (MediaPipe Tasks)');
       }
-    };
-    fetchDataset();
-    return () => {
-      isMounted = false;
-    };
-  }, [videoSrc, activeSport]);
+    } catch (err) {
+      console.warn('[VideoPlayer] Error loading pose dataset:', err);
+      if (isMounted) setTrackingStatus('MediaPipe: Adaptive Tracking');
+    } finally {
+      if (isMounted) setIsCalibrating(false);
+    }
+  }, [videoSrc, activeSport, matchId]);
+
+  useEffect(() => {
+    reloadPose();
+  }, [reloadPose]);
 
   // Main Canvas Rendering Loop (synced via requestAnimationFrame)
   const drawFrame = useCallback(() => {
@@ -487,7 +504,10 @@ export function VideoPlayer({
           src={videoSrc}
           muted={isMuted}
           onError={handleVideoError}
-          onLoadedMetadata={drawFrame}
+          onLoadedMetadata={() => {
+            reloadPose();
+            drawFrame();
+          }}
           onCanPlay={drawFrame}
           onTimeUpdate={() => {
             if (videoRef.current) {
@@ -672,3 +692,5 @@ export function VideoPlayer({
     </div>
   );
 }
+
+

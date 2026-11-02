@@ -21,7 +21,7 @@ import {
 import { useSportStore, SPORT_CONFIGS, SportType } from '@/lib/sportStore';
 import { useAuthStore, useMatchStore } from '@/lib/store';
 import { AuthGuard } from '@/components/AuthGuard';
-import { saveVideoBlob } from '@/lib/videoStore';
+import { saveVideoBlob, savePoseDataset } from '@/lib/videoStore';
 import { detectSportFromVideo } from '@/lib/sportDetector';
 
 export default function UploadPage() {
@@ -109,6 +109,28 @@ export default function UploadPage() {
 
       if (selectedFile) {
         await saveVideoBlob(newMatch.id, selectedFile);
+
+        // Initiate MediaPipe pose extraction on the backend
+        try {
+          const formData = new FormData();
+          formData.append('file', selectedFile);
+          fetch('http://127.0.0.1:8000/api/v1/video/process-direct', {
+            method: 'POST',
+            body: formData,
+          })
+            .then((res) => (res.ok ? res.json() : null))
+            .then(async (poseData) => {
+              if (poseData && poseData.timeline && poseData.timeline.length > 0) {
+                await savePoseDataset(newMatch.id, poseData);
+                console.log('[Upload] MediaPipe pose track saved for match', newMatch.id);
+              }
+            })
+            .catch((err) => {
+              console.warn('[Upload] MediaPipe background processing error:', err);
+            });
+        } catch (e) {
+          console.warn('[Upload] Could not trigger MediaPipe inference:', e);
+        }
       }
 
       router.push(`/matches/analysis?id=${newMatch.id}`);
@@ -352,3 +374,4 @@ export default function UploadPage() {
     </AuthGuard>
   );
 }
+

@@ -47,11 +47,11 @@ export function RecentAnalysisWorkbench({ match, sport }: RecentAnalysisWorkbenc
       ? '/sample-volleyball.mp4'
       : '/sample-match.mp4');
 
-  // Load ground-truth pose track for the video
+  // Load calibrated pose track for the video
   useEffect(() => {
     let isMounted = true;
     const fetchPoses = async () => {
-      const data = await loadVideoPoseDataset(videoUrl, sport);
+      const data = await loadVideoPoseDataset(videoUrl, sport, match?.id, videoRef.current);
       if (isMounted && data) {
         setPoseDataset(data);
       }
@@ -60,7 +60,7 @@ export function RecentAnalysisWorkbench({ match, sport }: RecentAnalysisWorkbenc
     return () => {
       isMounted = false;
     };
-  }, [videoUrl, sport]);
+  }, [videoUrl, sport, match?.id]);
 
   // Main canvas render loop
   const drawFrame = useCallback(() => {
@@ -357,3 +357,4 @@ export function RecentAnalysisWorkbench({ match, sport }: RecentAnalysisWorkbenc
     </div>
   );
 }
+

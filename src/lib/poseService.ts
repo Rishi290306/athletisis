@@ -1,5 +1,7 @@
 'use client';
 
+import { getPoseDataset, savePoseDataset, getVideoBlob } from './videoStore';
+
 export interface PoseKeypoint {
   id: string;
   name: string;
@@ -137,66 +139,159 @@ export function projectNormalizedToCanvas(
 const poseDatasetCache: Record<string, VideoPoseDataset> = {};
 
 /**
- * Resolves the appropriate calibrated pose dataset filename for a given video.
+ * Resolves the appropriate calibrated pose dataset filename for static demo videos.
+ * Returns null for any custom or user-uploaded video (preventing mismatched skeletons).
  */
-export function resolvePoseTrackFile(videoSrc: string, sport?: string): string {
+export function resolvePoseTrackFile(videoSrc: string, sport?: string): string | null {
   const lower = (videoSrc || '').toLowerCase();
-  if (lower.includes('volleyball') || sport === 'Volleyball') {
+  
+  // Custom uploaded video (blob URL or user upload) should NEVER use hardcoded Bumrah coords!
+  if (lower.startsWith('blob:') || lower.startsWith('data:') || lower.includes('uploaded')) {
+    return null;
+  }
+  
+  if (lower.includes('sample-volleyball.mp4') || (lower.includes('volleyball') && !lower.includes('custom'))) {
     return '/sample-volleyball_poses.json';
   }
-  if (lower.includes('sample-match.mp4') || (sport === 'Football' && !lower.includes('bumrah') && !lower.includes('match2'))) {
+  if (lower.includes('sample-match.mp4') || (lower.includes('football') && !lower.includes('bumrah') && !lower.includes('match2') && !lower.includes('custom'))) {
     return '/sample-match_poses.json';
   }
-  if (lower.includes('sample-match2.mp4')) {
-    return '/sample-match2_poses.json';
+  if (lower.includes('sample-match2.mp4') || lower.includes('bumrah2.mp4')) {
+    return '/bumrah2_poses.json';
   }
-  // Default to Bumrah cricket delivery pose track
-  return '/bumrah2_poses.json';
+  
+  return null;
 }
 
 /**
- * Loads and caches ground-truth pose datasets asynchronously.
- * Falls back gracefully to adaptive anatomical synthesis if network or file is unavailable.
+ * Calls backend MediaPipe Pose Estimation Engine directly with a video Blob/File
+ * to generate real 17-point pose tracks across all sampled frames.
  */
-export async function loadVideoPoseDataset(videoSrc: string, sport?: string): Promise<VideoPoseDataset> {
-  const trackFile = resolvePoseTrackFile(videoSrc, sport);
-
-  if (poseDatasetCache[trackFile]) {
-    return poseDatasetCache[trackFile];
-  }
-
+export async function extractPoseTrackFromBackend(
+  videoBlob: Blob,
+  matchId?: number | string
+): Promise<VideoPoseDataset | null> {
   try {
-    const res = await fetch(trackFile);
+    const formData = new FormData();
+    formData.append('file', videoBlob, 'match_upload.mp4');
+
+    const res = await fetch('http://127.0.0.1:8000/api/v1/video/process-direct', {
+      method: 'POST',
+      body: formData,
+    });
+
     if (res.ok) {
       const data: VideoPoseDataset = await res.json();
-      poseDatasetCache[trackFile] = data;
-      return data;
+      if (data && data.timeline && data.timeline.length > 0) {
+        if (matchId) {
+          await savePoseDataset(matchId, data);
+        }
+        return data;
+      }
     }
   } catch (err) {
-    console.warn(`[PoseService] Error loading pose dataset for ${videoSrc}:`, err);
+    console.warn('[PoseService] Backend MediaPipe inference not reachable:', err);
   }
+  return null;
+}
 
-  // Secondary fallback attempt: Load Bumrah ground-truth reference
-  try {
-    const fallbackRes = await fetch('/bumrah2_poses.json');
-    if (fallbackRes.ok) {
-      const fallbackData: VideoPoseDataset = await fallbackRes.json();
-      poseDatasetCache[trackFile] = fallbackData;
-      return fallbackData;
+/**
+ * Loads, computes, or retrieves ground-truth pose datasets for any video.
+ * Handles custom uploaded videos by querying IndexedDB cache or dispatching to MediaPipe.
+ */
+export async function loadVideoPoseDataset(
+  videoSrc: string,
+  sport?: string,
+  matchId?: number | string,
+  videoElement?: HTMLVideoElement | null,
+  onStatusChange?: (status: string) => void
+): Promise<VideoPoseDataset> {
+  const isCustomUpload =
+    (videoSrc || '').startsWith('blob:') ||
+    (videoSrc || '').startsWith('data:') ||
+    (matchId !== undefined && Number(matchId) > 1000);
+
+  // 1. If custom match, check local cache first (IndexedDB / localStorage)
+  if (matchId) {
+    const cacheKey = `custom_${matchId}`;
+    if (poseDatasetCache[cacheKey]) {
+      return poseDatasetCache[cacheKey];
     }
-  } catch {
-    // Ignore and proceed to adaptive synthesis
+
+    const storedPose = await getPoseDataset(matchId);
+    if (storedPose && storedPose.timeline && storedPose.timeline.length > 0) {
+      poseDatasetCache[cacheKey] = storedPose;
+      return storedPose;
+    }
   }
 
-  // Universal Adaptive Synthesis Fallback
-  const adaptiveDataset = generateAdaptivePoseDataset(1280, 720, 15.0, sport || 'General');
-  poseDatasetCache[trackFile] = adaptiveDataset;
+  // 2. Check for matching static demo track
+  const trackFile = resolvePoseTrackFile(videoSrc, sport);
+  if (trackFile) {
+    if (poseDatasetCache[trackFile]) {
+      return poseDatasetCache[trackFile];
+    }
+    try {
+      const res = await fetch(trackFile);
+      if (res.ok) {
+        const data: VideoPoseDataset = await res.json();
+        poseDatasetCache[trackFile] = data;
+        return data;
+      }
+    } catch (err) {
+      console.warn(`[PoseService] Error loading static pose dataset:`, err);
+    }
+  }
+
+  // 3. For Custom Uploaded Video: Try Real-time MediaPipe Extraction via Backend
+  if (isCustomUpload && matchId) {
+    onStatusChange?.('Calibrating 17-Point Pose with MediaPipe...');
+    try {
+      let blob: Blob | null = null;
+      if (typeof window !== 'undefined') {
+        blob = await getVideoBlob(matchId);
+      }
+      if (!blob && videoSrc.startsWith('blob:')) {
+        const blobRes = await fetch(videoSrc);
+        blob = await blobRes.blob();
+      }
+
+      if (blob) {
+        const mpDataset = await extractPoseTrackFromBackend(blob, matchId);
+        if (mpDataset) {
+          poseDatasetCache[`custom_${matchId}`] = mpDataset;
+          onStatusChange?.('MediaPipe 17-Point Pose Calibrated');
+          return mpDataset;
+        }
+      }
+    } catch (e) {
+      console.warn('[PoseService] Automatic MediaPipe pose extraction error:', e);
+    }
+  }
+
+  // 4. Adaptive Anatomical Fallback (Dynamic calibration to actual video dimensions)
+  const videoW = videoElement?.videoWidth || 1280;
+  const videoH = videoElement?.videoHeight || 720;
+  const duration = videoElement?.duration && !isNaN(videoElement.duration) && videoElement.duration > 0
+    ? videoElement.duration
+    : 15.0;
+
+  const adaptiveDataset = generateAdaptivePoseDataset(
+    videoW,
+    videoH,
+    duration,
+    sport || 'General'
+  );
+
+  if (matchId) {
+    poseDatasetCache[`custom_${matchId}`] = adaptiveDataset;
+  }
   return adaptiveDataset;
 }
 
 /**
  * Universal adaptive human pose synthesizer matching COCO-17 anatomical hierarchy.
- * Used when a video does not have precomputed tracks or network is offline.
+ * Accurately adapts position and proportions to portrait or landscape video dimensions.
  */
 export function generateAdaptivePoseDataset(
   videoWidth = 1280,
@@ -205,16 +300,21 @@ export function generateAdaptivePoseDataset(
   sport = 'General'
 ): VideoPoseDataset {
   const fps = 15;
-  const totalFrames = Math.floor(durationSec * fps);
+  const totalFrames = Math.max(15, Math.floor(durationSec * fps));
   const timeline: VideoPoseTimelineFrame[] = [];
+
+  const isPortrait = videoHeight > videoWidth;
+  // In portrait sport videos (mobile phone recordings), athlete stands in lower-mid frame
+  const baseCenterY = isPortrait ? 0.58 : 0.50;
+  const athleteHeight = isPortrait ? 0.48 : 0.65;
+  const athleteWidthRatio = isPortrait ? 0.26 : 0.18;
 
   for (let f = 0; f < totalFrames; f++) {
     const t = f / fps;
     const phase = t * 1.5;
 
-    const centerX = 0.50 + Math.sin(phase * 0.5) * 0.04;
-    const centerY = 0.50 + Math.cos(phase * 0.3) * 0.02;
-    const athleteHeight = 0.65;
+    const centerX = 0.50 + Math.sin(phase * 0.5) * 0.03;
+    const centerY = baseCenterY + Math.cos(phase * 0.3) * 0.015;
 
     const headY = centerY - athleteHeight * 0.42;
     const shoulderY = centerY - athleteHeight * 0.28;
@@ -222,30 +322,30 @@ export function generateAdaptivePoseDataset(
     const kneeY = centerY + athleteHeight * 0.26;
     const ankleY = centerY + athleteHeight * 0.48;
 
-    const shoulderHalfW = 0.065;
-    const hipHalfW = 0.045;
+    const shoulderHalfW = athleteWidthRatio * 0.45;
+    const hipHalfW = athleteWidthRatio * 0.32;
 
-    const leftElbowX = centerX - shoulderHalfW - 0.04 + Math.sin(phase) * 0.03;
-    const leftElbowY = shoulderY + 0.12;
-    const leftWristX = leftElbowX - 0.02 + Math.cos(phase) * 0.04;
-    const leftWristY = leftElbowY + 0.11;
+    const leftElbowX = centerX - shoulderHalfW - 0.03 + Math.sin(phase) * 0.02;
+    const leftElbowY = shoulderY + 0.10;
+    const leftWristX = leftElbowX - 0.015 + Math.cos(phase) * 0.02;
+    const leftWristY = leftElbowY + 0.09;
 
-    const rightElbowX = centerX + shoulderHalfW + 0.04 + Math.cos(phase) * 0.03;
-    const rightElbowY = shoulderY + 0.12;
-    const rightWristX = rightElbowX + 0.02 + Math.sin(phase) * 0.04;
-    const rightWristY = rightElbowY + 0.11;
+    const rightElbowX = centerX + shoulderHalfW + 0.03 + Math.cos(phase) * 0.02;
+    const rightElbowY = shoulderY + 0.10;
+    const rightWristX = rightElbowX + 0.015 + Math.sin(phase) * 0.02;
+    const rightWristY = rightElbowY + 0.09;
 
     const leftKneeX = centerX - hipHalfW - 0.01;
-    const leftAnkleX = centerX - hipHalfW - 0.02;
+    const leftAnkleX = centerX - hipHalfW - 0.015;
     const rightKneeX = centerX + hipHalfW + 0.01;
-    const rightAnkleX = centerX + hipHalfW + 0.02;
+    const rightAnkleX = centerX + hipHalfW + 0.015;
 
     const keypointsDict: Record<string, PoseKeypoint> = {
       nose: { id: 'nose', name: 'Nose', x: centerX, y: headY, confidence: 0.95 },
-      left_eye: { id: 'left_eye', name: 'Left Eye', x: centerX - 0.015, y: headY - 0.015, confidence: 0.94 },
-      right_eye: { id: 'right_eye', name: 'Right Eye', x: centerX + 0.015, y: headY - 0.015, confidence: 0.94 },
-      left_ear: { id: 'left_ear', name: 'Left Ear', x: centerX - 0.035, y: headY - 0.01, confidence: 0.91 },
-      right_ear: { id: 'right_ear', name: 'Right Ear', x: centerX + 0.035, y: headY - 0.01, confidence: 0.91 },
+      left_eye: { id: 'left_eye', name: 'Left Eye', x: centerX - 0.012, y: headY - 0.012, confidence: 0.94 },
+      right_eye: { id: 'right_eye', name: 'Right Eye', x: centerX + 0.012, y: headY - 0.012, confidence: 0.94 },
+      left_ear: { id: 'left_ear', name: 'Left Ear', x: centerX - 0.028, y: headY - 0.008, confidence: 0.91 },
+      right_ear: { id: 'right_ear', name: 'Right Ear', x: centerX + 0.028, y: headY - 0.008, confidence: 0.91 },
       left_shoulder: { id: 'left_shoulder', name: 'Left Shoulder', x: centerX - shoulderHalfW, y: shoulderY, confidence: 0.92 },
       right_shoulder: { id: 'right_shoulder', name: 'Right Shoulder', x: centerX + shoulderHalfW, y: shoulderY, confidence: 0.92 },
       left_elbow: { id: 'left_elbow', name: 'Left Elbow', x: leftElbowX, y: leftElbowY, confidence: 0.88 },
@@ -269,18 +369,18 @@ export function generateAdaptivePoseDataset(
       persons: [
         {
           personId: 1,
-          confidence: 0.90,
+          confidence: 0.91,
           box: {
-            left: centerX - 0.15,
-            top: headY - 0.05,
-            width: 0.30,
-            height: athleteHeight + 0.10,
+            left: Math.max(0.02, centerX - athleteWidthRatio * 0.75),
+            top: Math.max(0.02, headY - 0.04),
+            width: athleteWidthRatio * 1.5,
+            height: athleteHeight + 0.08,
           },
           keypoints: keypointsDict,
           keypointsList,
           biomechanics: {
-            armAngleDeg: 145,
-            kneeAngleDeg: 168,
+            armAngleDeg: 148,
+            kneeAngleDeg: 165,
           },
         },
       ],

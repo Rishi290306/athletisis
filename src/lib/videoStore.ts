@@ -1,8 +1,9 @@
 'use client';
 
 const DB_NAME = 'AthletisisVideoDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE_NAME = 'videos';
+const POSE_STORE_NAME = 'poses';
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -17,6 +18,9 @@ function openDB(): Promise<IDBDatabase> {
       const db = (event.target as IDBOpenDBRequest).result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
         db.createObjectStore(STORE_NAME);
+      }
+      if (!db.objectStoreNames.contains(POSE_STORE_NAME)) {
+        db.createObjectStore(POSE_STORE_NAME);
       }
     };
 
@@ -79,15 +83,65 @@ export async function deleteVideoBlob(matchId: number | string): Promise<void> {
   try {
     const db = await openDB();
     return new Promise((resolve, reject) => {
-      const transaction = db.transaction(STORE_NAME, 'readwrite');
+      const transaction = db.transaction([STORE_NAME, POSE_STORE_NAME], 'readwrite');
       const store = transaction.objectStore(STORE_NAME);
+      const poseStore = transaction.objectStore(POSE_STORE_NAME);
       store.delete(matchId);
+      poseStore.delete(matchId);
 
       transaction.oncomplete = () => resolve();
       transaction.onerror = () => reject(transaction.error);
     });
   } catch (err) {
     console.error('Failed to delete video from IndexedDB:', err);
+  }
+}
+
+export async function savePoseDataset(matchId: number | string, data: any): Promise<void> {
+  try {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(`athletisis_poses_${matchId}`, JSON.stringify(data));
+      } catch (e) {
+        // LocalStorage may exceed quota for large datasets, IndexedDB handles it smoothly
+      }
+    }
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(POSE_STORE_NAME, 'readwrite');
+      const store = transaction.objectStore(POSE_STORE_NAME);
+      store.put(data, matchId);
+
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error);
+    });
+  } catch (err) {
+    console.error('Failed to save pose dataset to IndexedDB:', err);
+  }
+}
+
+export async function getPoseDataset(matchId: number | string): Promise<any | null> {
+  try {
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem(`athletisis_poses_${matchId}`);
+      if (cached) {
+        try {
+          return JSON.parse(cached);
+        } catch {}
+      }
+    }
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(POSE_STORE_NAME, 'readonly');
+      const store = transaction.objectStore(POSE_STORE_NAME);
+      const request = store.get(matchId);
+
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error);
+    });
+  } catch (err) {
+    console.error('Failed to retrieve pose dataset from IndexedDB:', err);
+    return null;
   }
 }
 
