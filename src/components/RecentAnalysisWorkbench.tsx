@@ -22,6 +22,7 @@ import {
   getPoseForTimestamp,
 } from '@/lib/poseService';
 import { renderPoseOnCanvas } from '@/lib/poseRenderer';
+import { getVideoObjectUrl } from '@/lib/videoStore';
 
 interface RecentAnalysisWorkbenchProps {
   match: Match;
@@ -39,7 +40,7 @@ export function RecentAnalysisWorkbench({ match, sport }: RecentAnalysisWorkbenc
   const [duration, setDuration] = useState(15);
   const [poseDataset, setPoseDataset] = useState<VideoPoseDataset | null>(null);
 
-  const videoUrl =
+  const defaultUrl =
     match.videoUrl ||
     (sport === 'Cricket'
       ? '/sample-match2.mp4'
@@ -47,20 +48,32 @@ export function RecentAnalysisWorkbench({ match, sport }: RecentAnalysisWorkbenc
       ? '/sample-volleyball.mp4'
       : '/sample-match.mp4');
 
-  // Load calibrated pose track for the video
+  const [activeVideoSrc, setActiveVideoSrc] = useState<string>(defaultUrl);
+
   useEffect(() => {
     let isMounted = true;
-    const fetchPoses = async () => {
-      const data = await loadVideoPoseDataset(videoUrl, sport, match?.id, videoRef.current);
-      if (isMounted && data) {
-        setPoseDataset(data);
+    const resolveAndLoad = async () => {
+      let finalUrl = defaultUrl;
+      if ((match as any)?.videoKey) {
+        const stored = await getVideoObjectUrl((match as any).videoKey);
+        if (stored) finalUrl = stored;
+      } else if (match?.id && match.id > 1000) {
+        const stored = await getVideoObjectUrl(match.id);
+        if (stored) finalUrl = stored;
+      }
+      if (isMounted) {
+        setActiveVideoSrc(finalUrl);
+        const data = await loadVideoPoseDataset(finalUrl, sport, match?.id, videoRef.current);
+        if (isMounted && data) {
+          setPoseDataset(data);
+        }
       }
     };
-    fetchPoses();
+    resolveAndLoad();
     return () => {
       isMounted = false;
     };
-  }, [videoUrl, sport, match?.id]);
+  }, [match?.id, match?.videoUrl, sport]);
 
   // Main canvas render loop
   const drawFrame = useCallback(() => {
@@ -231,7 +244,7 @@ export function RecentAnalysisWorkbench({ match, sport }: RecentAnalysisWorkbenc
           >
             <video
               ref={videoRef}
-              src={videoUrl}
+              src={activeVideoSrc}
               muted
               playsInline
               loop

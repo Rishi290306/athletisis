@@ -60,6 +60,7 @@ export function MatchDashboardClient() {
   const { setSport } = useSportStore();
 
   const [match, setMatch] = useState<Match | null>(null);
+  const [resolvedVideoUrl, setResolvedVideoUrl] = useState<string>("");
   const [analysis, setAnalysis] = useState<SportAnalysisData | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'drills' | 'injury' | 'report' | 'chat'>('overview');
   const [showComparison, setShowComparison] = useState(false);
@@ -103,6 +104,7 @@ export function MatchDashboardClient() {
           3.5
         );
 
+        setResolvedVideoUrl(videoUrlToUse);
         dynamicResult.clips = dynamicResult.clips.map(c => ({ ...c, clipUrl: videoUrlToUse }));
 
         setAnalysis({
@@ -229,7 +231,7 @@ export function MatchDashboardClient() {
           {/* LEFT HERO PANE (Video Workbench & Tagging) */}
           <div className="lg:col-span-8 space-y-4">
             <VideoPlayer
-              videoUrl={match.videoUrl}
+              videoUrl={resolvedVideoUrl || match.videoUrl}
               clips={analysis.clips}
               sport={activeSportName}
               matchId={match.id}

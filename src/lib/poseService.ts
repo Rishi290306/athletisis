@@ -144,20 +144,21 @@ const poseDatasetCache: Record<string, VideoPoseDataset> = {};
  */
 export function resolvePoseTrackFile(videoSrc: string, sport?: string): string | null {
   const lower = (videoSrc || '').toLowerCase();
+  const sportLower = (sport || '').toLowerCase();
   
-  // Custom uploaded video (blob URL or user upload) should NEVER use hardcoded Bumrah coords!
+  // Custom uploaded video (blob URL or user upload) should NEVER use hardcoded demo coords
   if (lower.startsWith('blob:') || lower.startsWith('data:') || lower.includes('uploaded')) {
     return null;
   }
   
-  if (lower.includes('sample-volleyball.mp4') || (lower.includes('volleyball') && !lower.includes('custom'))) {
+  if (lower.includes('sample-volleyball.mp4') || lower.includes('volleyball') || sportLower === 'volleyball') {
     return '/sample-volleyball_poses.json';
   }
-  if (lower.includes('sample-match.mp4') || (lower.includes('football') && !lower.includes('bumrah') && !lower.includes('match2') && !lower.includes('custom'))) {
-    return '/sample-match_poses.json';
-  }
-  if (lower.includes('sample-match2.mp4') || lower.includes('bumrah2.mp4')) {
+  if (lower.includes('sample-match2.mp4') || lower.includes('bumrah2.mp4') || lower.includes('cricket') || sportLower === 'cricket') {
     return '/bumrah2_poses.json';
+  }
+  if (lower.includes('sample-match.mp4') || lower.includes('football') || sportLower === 'football') {
+    return '/sample-match_poses.json';
   }
   
   return null;
@@ -304,10 +305,36 @@ export function generateAdaptivePoseDataset(
   const timeline: VideoPoseTimelineFrame[] = [];
 
   const isPortrait = videoHeight > videoWidth;
-  // In portrait sport videos (mobile phone recordings), athlete stands in lower-mid frame
-  const baseCenterY = isPortrait ? 0.58 : 0.50;
-  const athleteHeight = isPortrait ? 0.48 : 0.65;
-  const athleteWidthRatio = isPortrait ? 0.26 : 0.18;
+  const isCricket = sport.toLowerCase().includes('cricket');
+  const isVolleyball = sport.toLowerCase().includes('volleyball');
+
+  // Adaptive athlete framing matching natural sport camera perspectives
+  let baseCenterY = 0.50;
+  let athleteHeight = 0.55;
+  let athleteWidthRatio = 0.20;
+
+  if (isPortrait) {
+    if (isCricket) {
+      // Cricket net & crease batsman stance in lower frame
+      baseCenterY = 0.68;
+      athleteHeight = 0.35;
+      athleteWidthRatio = 0.21;
+    } else if (isVolleyball) {
+      baseCenterY = 0.52;
+      athleteHeight = 0.46;
+      athleteWidthRatio = 0.22;
+    } else {
+      baseCenterY = 0.60;
+      athleteHeight = 0.42;
+      athleteWidthRatio = 0.22;
+    }
+  } else {
+    if (isCricket) {
+      baseCenterY = 0.54;
+      athleteHeight = 0.52;
+      athleteWidthRatio = 0.19;
+    }
+  }
 
   for (let f = 0; f < totalFrames; f++) {
     const t = f / fps;
@@ -420,7 +447,7 @@ export function generateAdaptivePoseDataset(
 
 /**
  * Finds the closest pose frame from the timeline for the specified timestamp,
- * with optional temporal interpolation between consecutive frames.
+ * with temporal fallback to prevent skeleton flicker during brief dropouts.
  */
 export function getPoseForTimestamp(
   dataset: VideoPoseDataset,
@@ -431,25 +458,52 @@ export function getPoseForTimestamp(
 
   // Modulo loop if time exceeds duration (supports video looping)
   const duration = dataset.videoInfo?.durationSec || 15.0;
-  const loopTime = duration > 0 ? (currentTimeSec >= duration ? (currentTimeSec % duration) : currentTimeSec) : currentTimeSec;
+  const loopTime = duration > 0 ? (currentTimeSec >= duration ? (currentTimeSec % duration) : Math.max(0, currentTimeSec)) : Math.max(0, currentTimeSec);
 
-  // Binary search for closest frame
+  // Fast binary search to find insertion position
   let low = 0;
   let high = timeline.length - 1;
 
   while (low <= high) {
     const mid = Math.floor((low + high) / 2);
-    const frameTime = timeline[mid].timestampSec;
-
-    if (Math.abs(frameTime - loopTime) < 0.035) {
-      return timeline[mid];
-    } else if (frameTime < loopTime) {
+    if (timeline[mid].timestampSec < loopTime) {
       low = mid + 1;
     } else {
       high = mid - 1;
     }
   }
 
-  const idx = Math.max(0, Math.min(timeline.length - 1, low));
-  return timeline[idx];
+  // Check local neighborhood to find the closest frame in time
+  let bestIdx = Math.max(0, Math.min(timeline.length - 1, low));
+  let minDiff = Math.abs(timeline[bestIdx].timestampSec - loopTime);
+
+  for (const offset of [-2, -1, 1, 2]) {
+    const checkIdx = bestIdx + offset;
+    if (checkIdx >= 0 && checkIdx < timeline.length) {
+      const diff = Math.abs(timeline[checkIdx].timestampSec - loopTime);
+      if (diff < minDiff) {
+        minDiff = diff;
+        bestIdx = checkIdx;
+      }
+    }
+  }
+
+  // If closest frame has detected persons, return immediately
+  if (timeline[bestIdx].persons && timeline[bestIdx].persons.length > 0) {
+    return timeline[bestIdx];
+  }
+
+  // Otherwise, search nearest non-empty frame in the temporal neighborhood
+  for (let step = 1; step < 25; step++) {
+    const left = bestIdx - step;
+    if (left >= 0 && timeline[left].persons && timeline[left].persons.length > 0) {
+      return timeline[left];
+    }
+    const right = bestIdx + step;
+    if (right < timeline.length && timeline[right].persons && timeline[right].persons.length > 0) {
+      return timeline[right];
+    }
+  }
+
+  return timeline[bestIdx];
 }
